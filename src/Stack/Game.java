@@ -17,6 +17,9 @@ public class Game {
         }
         board[0][0] = true;
         piles = new Stack[4];
+        for (int i = 0; i < 4; i++) {
+            piles[i] = new Stack<String>(8);
+        }
     }
 
 
@@ -37,7 +40,7 @@ public class Game {
         List<Position> possibilities = horse.whereToJump(currentPosition);
 
         for (int i = 0; i < piles.length; i++) {
-            if(piles[i].isEmpty()){
+            if(piles[i].isEmpty()) {
                 for (int j = 0; j < possibilities.size(); j++) {
                     piles[i].push(possibilities.get(j).toString());
                 }
