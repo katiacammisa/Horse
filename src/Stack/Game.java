@@ -1,5 +1,6 @@
 package Stack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
@@ -25,11 +26,11 @@ public class Game {
 
     public void horsePossibleJumps() {
         //posibilidades por lugar
-        //llenar el stack
         //imprimir
+        List<Possibility> possibilityList = new ArrayList<Possibility>();
 
-        int number = 0;
-        while(number <398) {
+        int totalPossibilities = 0;
+        while(totalPossibilities < 398) {
 
             Position currentPosition = new Position(0, 0);
 
@@ -41,21 +42,35 @@ public class Game {
                 }
             }
 
-            List<Position> possibilities = horse.whereToJump(currentPosition);
-
-            for (int i = 0; i < piles.length; i++) {
-                if (piles[i].isEmpty()) {
-                    for (int j = 0; j < possibilities.size(); j++) {
-                        piles[i].push(possibilities.get(j).toString());
-                    }
-                    board[new Position(piles[i].peek()).getX()][new Position(piles[i].peek()).getY()] = true;
-
-                }
+            while(piles[3].isEmpty()){
+                fillOnePile(currentPosition);
             }
+
+            possibilityList.add(new Possibility(new Position(piles[0].peek()),
+                                                new Position(piles[1].peek()),
+                                                new Position(piles[2].peek()),
+                                                new Position(piles[3].peek())));
 
             board[currentPosition.getX()][currentPosition.getY()] = false;
 
-            ++number;
+            ++totalPossibilities;
         }
+    }
+
+    private void fillOnePile(Position currentPosition){
+
+        List<Position> possibilities = horse.whereToJump(currentPosition);
+
+        for (int i = 0; i < piles.length; i++) {
+            if (piles[i].isEmpty()) {
+                for (int j = 0; j < possibilities.size(); j++) {
+                    piles[i].push(possibilities.get(j).toString());
+                }
+                board[new Position(piles[i].peek()).getX()][new Position(piles[i].peek()).getY()] = true;
+                piles[i].pop();
+                break;
+            }
+        }
+
     }
 }
