@@ -8,6 +8,7 @@ public class Game {
     private boolean[][] board = new boolean[8][8];
     private Horse horse;
     private Stack<String>[] piles;
+    private Position currentPosition;
 
     public Game(Horse horse) {
         this.horse = horse;
@@ -21,6 +22,7 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             piles[i] = new Stack<String>(8);
         }
+        currentPosition = new Position(0,0);
     }
 
 
@@ -29,35 +31,45 @@ public class Game {
         //imprimir
         List<Possibility> possibilityList = new ArrayList<Possibility>();
 
-        int totalPossibilities = 0;
-        while(totalPossibilities < 398) {
-
-            Position currentPosition = new Position(0, 0);
-
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[i].length; j++) {
-                    if (board[i][j]) {
-                        currentPosition = new Position(i, j);
+            while(piles[3].isEmpty()){
+                fillOnePile();
+                for (int i = 0; i < board.length; i++) {
+                    for (int j = 0; j < board[i].length; j++) {
+                        if (board[i][j]) {
+                            currentPosition = new Position(i, j);
+                        }
                     }
                 }
             }
 
-            while(piles[3].isEmpty()){
-                fillOnePile(currentPosition);
+            int number = 3;
+
+            while(number >= 0 && !piles[number].isEmpty()) {
+                if(piles[number].isEmpty()){
+                    number--;
+
+                }
+                possibilityList.add(new Possibility(new Position(piles[0].peek()),
+                        new Position(piles[1].peek()),
+                        new Position(piles[2].peek()),
+                        new Position(piles[3].peek())));
+                piles[number].pop();
+                while(piles[number].isEmpty()){
+                    fillOnePile();
+                    for (int i = 0; i < board.length; i++) {
+                        for (int j = 0; j < board[i].length; j++) {
+                            if (board[i][j]) {
+                                currentPosition = new Position(i, j);
+                            }
+                        }
+                    }
+                }
             }
 
-            possibilityList.add(new Possibility(new Position(piles[0].peek()),
-                                                new Position(piles[1].peek()),
-                                                new Position(piles[2].peek()),
-                                                new Position(piles[3].peek())));
-
-            board[currentPosition.getX()][currentPosition.getY()] = false;
-
-            ++totalPossibilities;
-        }
+        System.out.println(possibilityList.toString());
     }
 
-    private void fillOnePile(Position currentPosition){
+    private void fillOnePile(){
 
         List<Position> possibilities = horse.whereToJump(currentPosition);
 
@@ -67,10 +79,10 @@ public class Game {
                     piles[i].push(possibilities.get(j).toString());
                 }
                 board[new Position(piles[i].peek()).getX()][new Position(piles[i].peek()).getY()] = true;
-                piles[i].pop();
+                board[currentPosition.getX()][currentPosition.getY()] = false;
+                //piles[i].pop();
                 break;
             }
         }
-
     }
 }

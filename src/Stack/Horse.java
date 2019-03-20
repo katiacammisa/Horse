@@ -20,24 +20,22 @@ public class Horse {
     }
 
     public List<Position> whereToJump(Position actualPosition){
-        List<Position> aux = possibilities;
+        List<Position> aux = new ArrayList<Position>();
         List<Position> result = new ArrayList<Position>();
 
-        for (int i = 0; i <possibilities.size(); i++) {
-            aux.get(i).setX(possibilities.get(i).getX()+actualPosition.getX());
-            aux.get(i).setY(possibilities.get(i).getY()+actualPosition.getY());
+        for (int i = 0; i < possibilities.size(); i++) {
+            aux.add(new Position(possibilities.get(i).getX()+actualPosition.getX(),possibilities.get(i).getY()+actualPosition.getY()));
         }
 
         for (int i = 0; i < 8; i++) {
-            if(aux.get(i).getX() >= 0 && aux.get(i).getY() >= 0){
+            if(aux.get(i).getX() >= 0 &&
+                    aux.get(i).getY() >= 0 &&
+                    aux.get(i).getX() < 8 &&
+                    aux.get(i).getY() < 8) {
                 result.add(aux.get(i));
             }
         }
 
         return result;
     }
-
-
-
-
 }

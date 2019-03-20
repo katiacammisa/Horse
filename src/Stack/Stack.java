@@ -54,5 +54,4 @@ public class Stack<T> {
     public void empty(){
         length = -1;
     }
-
 }
