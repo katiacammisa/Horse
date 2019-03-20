@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class GameTest2 extends Assert {
 
     Horse horse = new Horse();
-    Game game = new Game(horse);
+    Game2 game = new Game2(horse);
 
     @Test
     public void horsePossibleJumps() {
