@@ -1,9 +1,8 @@
 package Stack;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-public class GameTest extends Assert {
+public class GameTest {
 
     Horse horse = new Horse();
     Game game = new Game(horse);

@@ -15,6 +15,6 @@ public class Possibility {
     }
 
     public String toString(){
-        return "<" + p1.toString() + ", " + p2.toString() + ", " + p3.toString() + ", " + p4.toString() + "> \n";
+        return "\n <" + p1.toString() + ", " + p2.toString() + ", " + p3.toString() + ", " + p4.toString() + ">";
     }
 }
