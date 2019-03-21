@@ -26,14 +26,6 @@ public class Game2 {
 
     private void fillOnePile(){
 
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j]) {
-                    currentPosition = new Position(i, j);
-                }
-            }
-        }
-
         List<Position> possibilities = horse.whereToJump(currentPosition);
 
 
@@ -45,6 +37,14 @@ public class Game2 {
                 board[new Position(piles[i].peek()).getX()][new Position(piles[i].peek()).getY()] = true;
                 board[currentPosition.getX()][currentPosition.getY()] = false;
                 break;
+            }
+        }
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j]) {
+                    currentPosition = new Position(i, j);
+                }
             }
         }
     }
@@ -62,15 +62,19 @@ public class Game2 {
 
         while(!piles[0].isEmpty()){
             currentPosition = deserialize(piles[0].peek());
+            board[currentPosition.getX()][currentPosition.getY()] = true;
             fillOnePile();
             while (!piles[1].isEmpty()){
                 currentPosition = deserialize(piles[1].peek());
+                board[currentPosition.getX()][currentPosition.getY()] = true;
                 fillOnePile();
                 while (!piles[2].isEmpty()) {
                     currentPosition = deserialize(piles[2].peek());
+                    board[currentPosition.getX()][currentPosition.getY()] = true;
                     fillOnePile();
                     while (!piles[3].isEmpty()) {
                         currentPosition = deserialize(piles[3].peek());
+                        board[currentPosition.getX()][currentPosition.getY()] = true;
                         possibilityList.add(new Possibility(new Position(piles[0].peek()),
                                 new Position(piles[1].peek()),
                                 new Position(piles[2].peek()),
@@ -78,6 +82,7 @@ public class Game2 {
                         piles[3].pop();
                     }
                     piles[2].pop();
+
                 }
                 piles[1].pop();
             }
