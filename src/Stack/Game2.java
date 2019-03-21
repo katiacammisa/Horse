@@ -49,6 +49,10 @@ public class Game2 {
         }
     }
 
+    public Position deserialize(String position){
+        return new Position(Integer.parseInt(position.split(",")[0]), Integer.parseInt(position.split(",")[1]));
+    }
+
     public void horsePossibleJumps() {
         List<Possibility> possibilityList = new ArrayList<Possibility>();
 
@@ -57,11 +61,16 @@ public class Game2 {
         }
 
         while(!piles[0].isEmpty()){
+            currentPosition = deserialize(piles[0].peek());
+            fillOnePile();
             while (!piles[1].isEmpty()){
+                currentPosition = deserialize(piles[1].peek());
                 fillOnePile();
                 while (!piles[2].isEmpty()) {
+                    currentPosition = deserialize(piles[2].peek());
                     fillOnePile();
                     while (!piles[3].isEmpty()) {
+                        currentPosition = deserialize(piles[3].peek());
                         possibilityList.add(new Possibility(new Position(piles[0].peek()),
                                 new Position(piles[1].peek()),
                                 new Position(piles[2].peek()),

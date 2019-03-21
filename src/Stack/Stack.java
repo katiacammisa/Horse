@@ -15,8 +15,8 @@ public class Stack<T> {
 
     public void pop(){
         length--;
-
     }
+
     public void push(T element){
         if (length == pile.length-1){
             extend();
