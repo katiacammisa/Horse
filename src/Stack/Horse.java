@@ -6,6 +6,7 @@ import java.util.List;
 public class Horse {
 
     private List<Position> possibilities;
+    private Position actualPosition;
 
     public Horse() {
         possibilities = new ArrayList<>();
@@ -17,9 +18,10 @@ public class Horse {
         possibilities.add(new Position("2,-1"));
         possibilities.add(new Position("-2,1"));
         possibilities.add(new Position("-2,-1"));
+        actualPosition = new Position(0, 0);
     }
 
-    public List<Position> whereToJump(Position actualPosition){
+    public List<Position> whereToJump(){
         List<Position> aux = new ArrayList<Position>();
         List<Position> result = new ArrayList<Position>();
 
@@ -37,5 +39,13 @@ public class Horse {
         }
 
         return result;
+    }
+
+    public Position getActualPosition() {
+        return actualPosition;
+    }
+
+    public void setActualPosition(Position actualPosition) {
+        this.actualPosition = actualPosition;
     }
 }
