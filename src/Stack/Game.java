@@ -6,7 +6,7 @@ import java.util.List;
 public class Game {
     private boolean[][] board = new boolean[8][8];
     private Horse horse;
-    private Stack<String>[] piles;
+    private StackD<String>[] piles;
     private Position currentPosition;
 
     public Game(Horse horse) {
@@ -17,9 +17,9 @@ public class Game {
             }
         }
         board[0][0] = true;
-        piles = new Stack[4];
+        piles = new StackD[4];
         for (int i = 0; i < 4; i++) {
-            piles[i] = new Stack<String>(8);
+            piles[i] = new StackD<String>();
         }
         currentPosition = new Position(0,0);
     }
