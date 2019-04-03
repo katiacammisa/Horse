@@ -20,7 +20,7 @@ public class PriorityQueue<T> {
 
     public void add(T element, int priority) {
         for (int i = 0; i < queues.length; i++) {
-            if(i == priority) {
+            if(i == (priority - 1)) {
                 queues[i].enqueue(element);
             }
         }
