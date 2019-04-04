@@ -15,7 +15,12 @@ public class PriorityQueue<T> {
     }
 
     public T peek() {
-        return (T) queues[0].peek();
+        for (int i = 0; i <queues.length ; i++) {
+            if(!queues[i].isEmpty()){
+                return (T) queues[i].peek();
+            }
+        }
+        return null;
     }
 
     public T peek(int priority) {

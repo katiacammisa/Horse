@@ -11,9 +11,9 @@ public class PriorityQueueTest{
     @Test
     public void xxxx() {
        queue.add(56, 1);
-       queue.add(7, 1);
-        queue.add(72, 1);
-        queue.add(92, 1);
+       queue.add(7, 2);
+        queue.add(72, 2);
+        queue.add(92, 2);
        queue.add(40, 2);
         System.out.println(queue.peek());
         System.out.println(queue.peek(2));

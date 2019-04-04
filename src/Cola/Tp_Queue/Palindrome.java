@@ -1,6 +1,7 @@
 package Cola.Tp_Queue;
 
 import Queue.DynamicQueue;
+import Queue.StaticQueue;
 import Stack.DynamicStack;
 
 public class Palindrome {
