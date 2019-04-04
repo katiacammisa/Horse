@@ -26,17 +26,13 @@ public class PriorityQueue<T> {
 
         queues[--priority].enqueue(element);
 
-//        for (int i = 0; i < queues.length; i++) {
-//            if(i == (priority - 1)) {
-//                queues[i].enqueue(element);
-//            }
-//        }
     }
 
     public void dequeue() {
         for (int i = 0; i < queues.length; i++) {
             if(!queues[i].isEmpty()) {
                 queues[i].dequeue();
+                break;
             }
         }
     }

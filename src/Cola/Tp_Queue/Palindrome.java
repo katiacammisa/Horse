@@ -5,13 +5,15 @@ import Stack.DynamicStack;
 
 public class Palindrome {
 
-    private static DynamicStack<Character> stack;
-    private static DynamicQueue<Character> queue;
+    private DynamicStack<Character> stack;
+    private DynamicQueue<Character> queue;
 
-    public static boolean isPalindrome(String text){
-
+    public Palindrome(){
         stack = new DynamicStack<Character>();
         queue = new DynamicQueue<Character>();
+    }
+
+    public boolean isPalindrome(String text){
 
         text = text.toLowerCase();
 

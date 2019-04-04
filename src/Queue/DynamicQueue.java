@@ -5,6 +5,8 @@ public class DynamicQueue<T> {
     Node<T> first;
     Node<T> last;
 
+    public DynamicQueue(){}
+
 
     public void enqueue(T x){
         Node next = new Node();
