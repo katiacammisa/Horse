@@ -1,90 +1,34 @@
 package Queue;
 
-public class DynamicQueue<T> implements Queue<T> {
+public class DynamicQueue<T> {
 
-    private Node<T> front;
-    private Node<T> back;
-    private int amount;
-    private int size;
-
-    public DynamicQueue(int size){
-        this.size  = size;
-        this.amount = 0;
-        front = null;
-        back = null;
-    }
-
-    public DynamicQueue() {
-        this.size = 1000000000;
-        this.amount = 0;
-        front = null;
-        back = null;
-    }
-
-    public T peek() {
-        return (T) front;
-    }
+    Node<T> first;
+    Node<T> last;
 
 
-    @Override
-    public void enqueue(T t) {
-        Node newNode = new Node();
-        newNode.data = t;
-        newNode.next = null;
-        if (amount < size){
-            if (isEmpty()){
-                front = newNode;
-                back = newNode;
-            }
-            else{
-                back.next = newNode;
-                back = newNode;
-            }
-            amount++;
+    public void enqueue(T x){
+        Node next = new Node();
+        next.data = x;
+        if(first == null){
+            first = next;
         }
-        else{
-            throw new IllegalStateException("Queue is already full.");
+        if(last != null){
+            last.next = next;
+        }
+        last = next;
+    }
+
+    public void dequeue(){
+        if(!isEmpty()) {
+            first = first.next;
         }
     }
 
-    @Override
-    public T dequeue() {
-        if (!isEmpty()){
-            T data = front.data;
-            if (front == back){
-                front = null;
-                back = null;
-            }
-            else{
-                front = front.next;
-            }
-            amount--;
-            return data;
-        }
-        else{
-            throw new RuntimeException("Cannot remove elements from empty queue.");
-        }
+    public T peek(){
+        return first.data;
     }
 
-    @Override
     public boolean isEmpty() {
-        return (amount == 0)? true : false;
-    }
-
-    @Override
-    public int length() {
-        return amount;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public void empty() {
-        front = null;
-        back = null;
-        amount = 0;
+        return first == null;
     }
 }

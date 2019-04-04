@@ -1,10 +1,10 @@
 package Stack;
 
-public class StackD<T> {
+public class DynamicStack<T> {
 
     Node<T> top;
 
-    public StackD() {}
+    public DynamicStack() {}
 
     public void push(T element){
        Node<T> aux = new Node<T>();
@@ -14,7 +14,7 @@ public class StackD<T> {
     }
 
     public void pop(){
-        top = top.next;
+         top = top.next;
     }
 
     public T peek(){
@@ -22,10 +22,7 @@ public class StackD<T> {
     }
 
     public boolean isEmpty(){
-        if(top == null){
-            return true;
-        }
-        return false;
+        return top == null;
     }
 
     public int size(){

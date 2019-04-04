@@ -2,11 +2,9 @@ package Stack;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class StackDTest{
 
-    StackD<Integer> stack = new StackD<Integer>();
+    DynamicStack<Integer> stack = new DynamicStack<Integer>();
 
     @Test
     public void push() {

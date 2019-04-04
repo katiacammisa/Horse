@@ -8,8 +8,8 @@ public class GameTest {
     Game game = new Game();
 
     @Test
-    public void horsePossibleJumps() {
-        game.horsePossibleJumps(horse);
+    public void possibilitiesIn4Jumps() {
+        game.possibilitiesIn4Jumps(horse);
     }
 
 }
