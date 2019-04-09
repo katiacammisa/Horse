@@ -163,23 +163,6 @@ public class TreeApi<T> {
         return false;
     }
 
-    private boolean aux(BinaryTree<T> a, BinaryTree<T> b){
-        if (!a.isEmpty()){
-            if (!belongs(b, a.getRoot()))
-                return false;
-            if (!a.getLeft().isEmpty() && !a.getRight().isEmpty())
-                return true;
-            return aux(a.getRight(), b) && aux(a.getLeft(), b);
-        }
-        return b.isEmpty();
-    }
-
-    public boolean similar(BinaryTree<T> a, BinaryTree<T> b) {
-        if(size(a) != size(b)) {
-            return false;
-        }
-        return aux(a, b);
-    }
     public boolean stable(BinaryTree<Comparable> a){
         if(a.isEmpty() || size(a) == 1 || isMax(a, a.getRoot())){
             return true;
@@ -187,8 +170,8 @@ public class TreeApi<T> {
         return false;
     }
 
-    public List getElements(BinaryTree a, List arr){
-        if(!a.isEmpty()){
+    public List getElements(BinaryTree a, List arr) {
+        if (!a.isEmpty()) {
             getElements(a.getLeft(), arr);
             arr.add(a.getRoot());
             getElements(a.getRight(), arr);
@@ -206,7 +189,37 @@ public class TreeApi<T> {
         return true;
     }
 
+    private boolean comparator(BinaryTree<T> a, BinaryTree<T> b){
+        if (!a.isEmpty()){
+            if (!belongs(b, a.getRoot()))
+                return false;
+            if (!a.getLeft().isEmpty() && !a.getRight().isEmpty())
+                return true;
+            return comparator(a.getRight(), b) && comparator(a.getLeft(), b);
+        }
+        return b.isEmpty();
+    }
 
+    public boolean similar(BinaryTree<T> a, BinaryTree<T> b) {
+        if(size(a) != size(b)) {
+            return false;
+        }
+        return comparator(a, b);
+    }
 
+    public boolean happensInB(BinaryTree<T> a, BinaryTree<T> b) {
+        if(b.isEmpty()) {
+            return true;
+        }
 
+        if(equals(a, b)) {
+            return true;
+        }
+
+        if(size(b) < size(a)) {
+            return happensInB(a.getRight(), b) || happensInB(a.getLeft(), b);
+        } else {
+            return false;
+        }
+    }
 }

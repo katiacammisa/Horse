@@ -26,8 +26,10 @@ public class TreeApiTest {
 
         System.out.println(api.complete(c));
         System.out.println(api.height(a));
-        System.out.println(api.full(a));
-        System.out.println(api.similar(a, d));
+        System.out.println(api.full(c)); // false
+        System.out.println(api.similar(a, d)); //true
+
+        System.out.println("Happens: " + api.happensInB(c, b));
 
     }
 }
