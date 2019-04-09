@@ -1,4 +1,4 @@
-package Queue;
+package Nodes;
 
 public class Node<T> {
     T data;
