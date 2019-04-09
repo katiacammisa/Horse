@@ -9,6 +9,7 @@ public class TreeApiTest {
     BinaryTree<Integer> y = new BinaryTree<Integer>(6);
     BinaryTree<Integer> a = new BinaryTree<Integer>(8,x,y);
     BinaryTree<Integer> b = new BinaryTree<Integer>(5, y, x);
+    BinaryTree<Integer> c = new BinaryTree<Integer>(2, a, y);
 
     TreeApi<Integer> api = new TreeApi<>();
 
@@ -20,6 +21,7 @@ public class TreeApiTest {
         System.out.println(api.equals(a, a));
         System.out.println(api.isomorphicTrees(a, b));
         System.out.println(api.isomorphicTrees(a, x));
+        System.out.println(api.complete(c));
 
     }
 }

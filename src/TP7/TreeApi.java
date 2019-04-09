@@ -104,6 +104,16 @@ public class TreeApi<T> {
         return isomorphicTrees(a.getRight(), b.getRight()) && isomorphicTrees(a.getLeft(), b.getLeft());
     }
 
+    public boolean complete(BinaryTree a){
+        if(a.isEmpty()){
+            return true;
+        }
+        if((a.getRight().isEmpty() && !a.getLeft().isEmpty()) || (!a.getRight().isEmpty() && a.getLeft().isEmpty())){
+            return false;
+        }
+        return complete(a.getRight()) && complete(a.getLeft());
+    }
+
 
 
 }
