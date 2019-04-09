@@ -180,12 +180,12 @@ public class TreeApi<T> {
         }
         return aux(a, b);
     }
-    public boolean stable(BinaryTree<Comparable> a){
-        if(a.isEmpty() || size(a) == 1 || isMax(a, a.getRoot())){
-            return true;
-        }
-        return false;
-    }
+//    public boolean stable(BinaryTree<Comparable> a){
+//        if(a.isEmpty() || size(a) == 1 || inOrder(a)){
+//            return true;
+//        }
+//        return false;
+//    }
 
     public List getElements(BinaryTree a, List arr){
         if(!a.isEmpty()){
@@ -196,16 +196,34 @@ public class TreeApi<T> {
         return arr;
     }
 //
-    private boolean isMax(BinaryTree a, Comparable elem){
-        List arr = getElements(a, new ArrayList());
-        for (int i = 0; i < size(a); i++) {
-            if(elem.compareTo(arr.get(i)) < 0){
-                return false;
-            }
+//    private boolean inOrder(BinaryTree a){
+//        if(a.isEmpty()){
+//            return true;
+//        }
+//        if(a.getRoot() <  )
+//    }
+
+    public List<BinaryTree> frontier(BinaryTree a){
+        List<BinaryTree> list = new ArrayList<BinaryTree>();
+        if(a.getLeft().isEmpty() && a.getRight().isEmpty()){
+            list.add(a);
         }
-        return true;
+        if (!a.getRight().isEmpty()){
+            list.addAll(frontier(a.getRight()));
+        }
+        if(!a.getLeft().isEmpty()){
+            list.addAll(frontier(a.getLeft()));
+        }
+        return list;
     }
 
+
+    public void showFrontier(BinaryTree a){
+        List<BinaryTree> list = frontier(a);
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).getRoot());
+        }
+    }
 
 
 

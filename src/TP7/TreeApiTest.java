@@ -3,6 +3,8 @@ package TP7;
 import BinaryTree.BinaryTree;
 import org.junit.Test;
 
+import java.util.List;
+
 public class TreeApiTest {
 
     BinaryTree<Integer> x = new BinaryTree<Integer>(5);
@@ -28,6 +30,10 @@ public class TreeApiTest {
         System.out.println(api.height(a));
         System.out.println(api.full(a));
         System.out.println(api.similar(a, d));
+        List<BinaryTree> list = api.frontier(a);
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).getRoot());
+        }
 
     }
 }
