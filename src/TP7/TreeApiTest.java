@@ -31,5 +31,16 @@ public class TreeApiTest {
 
         System.out.println("Happens: " + api.happensInB(c, b));
 
+        System.out.println(api.ElementsAtLevel(a, 2));
+
+        api.print( (BinaryTree) api.ElementsAtLevel(a, 2).peek());
+        api.ElementsAtLevel(a, 2).dequeue();
+        api.print( (BinaryTree) api.ElementsAtLevel(a, 2).peek());
+        api.ElementsAtLevel(a, 2).dequeue();
+        api.print( (BinaryTree) api.ElementsAtLevel(a, 2).peek());
+        api.ElementsAtLevel(a, 2).dequeue();
+        api.print( (BinaryTree) api.ElementsAtLevel(a, 2).peek());
+        api.ElementsAtLevel(a, 2).dequeue();
+        api.print( (BinaryTree) api.ElementsAtLevel(a, 2).peek());
     }
 }
