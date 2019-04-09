@@ -45,6 +45,10 @@ public class TreeApi<T> {
             return occurrences(a.getLeft(),o)+occurrences(a.getRight(),o);
     }
 
+    public boolean belongs(BinaryTree a, T o) {
+        return occurrences(a, o) >= 1;
+    }
+
     public int level(BinaryTree a, T element){
         if(occurrences(a, element) == 0){
             return 0;
@@ -146,7 +150,7 @@ public class TreeApi<T> {
         }
     }
 
-    public boolean full(BinaryTree<Integer> a) {
+    public boolean full(BinaryTree a) {
         if(complete(a)){
             if(size(a) == (Math.pow(2, height(a) + 1) - 1)) {
                 return true;
@@ -156,8 +160,21 @@ public class TreeApi<T> {
         return false;
     }
 
-    public boolean similar(BinaryTree<Integer> a, BinaryTree<Integer> b) {
-        return similar(a.)
+    private boolean aux(BinaryTree<T> a, BinaryTree<T> b){
+        if (!a.isEmpty()){
+            if (!belongs(b, a.getRoot()))
+                return false;
+            if (!a.getLeft().isEmpty() && !a.getRight().isEmpty())
+                return true;
+            return aux(a.getRight(), b) && aux(a.getLeft(), b);
+        }
+        return b.isEmpty();
     }
 
+    public boolean similar(BinaryTree<T> a, BinaryTree<T> b) {
+        if(size(a) != size(b)) {
+            return false;
+        }
+        return aux(a, b);
+    }
 }

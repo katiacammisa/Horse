@@ -8,6 +8,7 @@ public class TreeApiTest {
     BinaryTree<Integer> x = new BinaryTree<Integer>(5);
     BinaryTree<Integer> y = new BinaryTree<Integer>(6);
     BinaryTree<Integer> a = new BinaryTree<Integer>(8,x,y);
+    BinaryTree<Integer> d = new BinaryTree<Integer>(8,x,y);
     BinaryTree<Integer> b = new BinaryTree<Integer>(5, y, x);
     BinaryTree<Integer> c = new BinaryTree<Integer>(2, a, y);
 
@@ -24,6 +25,7 @@ public class TreeApiTest {
         System.out.println(api.complete(c));
         System.out.println(api.height(a));
         System.out.println(api.full(a));
+        System.out.println(api.similar(a, d));
 
     }
 }
