@@ -15,11 +15,11 @@ public class TreeApi<T> {
         }
     }
 
-    public int leafs(BinaryTree a){
+    public int leaves(BinaryTree a){
         if(a.getLeft().isEmpty() && a.getRight().isEmpty()){
             return 1;
         }
-        return leafs(a.getLeft()) + leafs(a.getRight());
+        return leaves(a.getLeft()) + leaves(a.getRight());
     }
 
     public int completeNodes(BinaryTree a){
@@ -85,15 +85,18 @@ public class TreeApi<T> {
         return aux;
     }
 
-    public void inOrder(BinaryTree a){
+    public void print(BinaryTree a){
         if(!a.isEmpty()){
-            inOrder(a.getLeft());
+            print(a.getLeft());
             System.out.println(a.getRoot());
-            inOrder(a.getRight());
+            print(a.getRight());
         }
     }
 
     public boolean equals(BinaryTree a, BinaryTree b){
+        if(size(a) != size(b)){
+            return false;
+        }
         if(a.isEmpty() && b.isEmpty()){
             return true;
         }
@@ -177,4 +180,33 @@ public class TreeApi<T> {
         }
         return aux(a, b);
     }
+    public boolean stable(BinaryTree<Comparable> a){
+        if(a.isEmpty() || size(a) == 1 || isMax(a, a.getRoot())){
+            return true;
+        }
+        return false;
+    }
+
+    public List getElements(BinaryTree a, List arr){
+        if(!a.isEmpty()){
+            getElements(a.getLeft(), arr);
+            arr.add(a.getRoot());
+            getElements(a.getRight(), arr);
+        }
+        return arr;
+    }
+//
+    private boolean isMax(BinaryTree a, Comparable elem){
+        List arr = getElements(a, new ArrayList());
+        for (int i = 0; i < size(a); i++) {
+            if(elem.compareTo(arr.get(i)) < 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
 }

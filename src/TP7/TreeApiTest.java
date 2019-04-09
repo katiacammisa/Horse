@@ -16,12 +16,14 @@ public class TreeApiTest {
 
     @Test
     public void leafs() {
-        System.out.println(api.leafs(a));
-        System.out.println(api.level(a,6));
+        System.out.println("Leaves: " + api.leaves(a));
+        System.out.println("Level: " + api.level(a,6));
         System.out.println(api.elementsInLevel(a,1));
-        System.out.println(api.equals(a, a));
-        System.out.println(api.isomorphicTrees(a, b));
+        System.out.println("Equals: " + api.equals(a, b));
+        System.out.println("Isomorphic: " + api.isomorphicTrees(a, b));
         System.out.println(api.isomorphicTrees(a, x));
+        System.out.println("Complete: " + api.complete(c));
+
         System.out.println(api.complete(c));
         System.out.println(api.height(a));
         System.out.println(api.full(a));
