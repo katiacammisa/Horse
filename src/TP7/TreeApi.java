@@ -1,12 +1,17 @@
 package TP7;
 
 import BinaryTree.BinaryTree;
+import Queue.DynamicQueue;
+import Queue.Queue;
+import Queue.StaticQueue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TreeApi<T> {
 
+
+    //Ejercicio 13 a.
     public int size(BinaryTree a){
         if(a.isEmpty()){
             return 0;
@@ -15,6 +20,7 @@ public class TreeApi<T> {
         }
     }
 
+    //Ejercicio 13 b.
     public int leaves(BinaryTree a){
         if(a.getLeft().isEmpty() && a.getRight().isEmpty()){
             return 1;
@@ -36,6 +42,8 @@ public class TreeApi<T> {
         return 1+completeNodes(a.getLeft()) + completeNodes(a.getRight());
     }
 
+
+    //Ejercicio 13 c.
     public int occurrences(BinaryTree a, T o){
         if(a.isEmpty())
             return 0;
@@ -44,6 +52,24 @@ public class TreeApi<T> {
         else
             return occurrences(a.getLeft(),o)+occurrences(a.getRight(),o);
     }
+
+    //Ejercicio 13 d.
+//    public DynamicQueue ElementsAtLevel(BinaryTree a, int level){
+//        DynamicQueue<BinaryTree<T>> dq = new DynamicQueue<BinaryTree<T>>();
+//        //todo fijarse que level no se mayor a los niveles totales.
+//        dq.enqueue(a); // nivel 1
+//
+//        while (level > 0) {
+//            if (!dq.peek().getLeft().isEmpty())
+//                dq.enqueue(dq.peek().getLeft());
+//            if (!dq.peek().getRight().isEmpty())
+//                dq.enqueue(dq.peek().getRight());
+//            else if (dq.peek().getRight().isEmpty() && dq.peek().getLeft().isEmpty())
+//                dq.dequeue();
+//            level--;
+//        }
+//        return dq;
+//    }
 
     public boolean belongs(BinaryTree a, T o) {
         return occurrences(a, o) >= 1;
@@ -74,6 +100,7 @@ public class TreeApi<T> {
         return elementsInLevel(a.getLeft(), level) + elementsInLevel(a.getRight(), level);
     }
 
+    //Ejercicio 13 e.
     public int height(BinaryTree a){
         if(a.isEmpty()) {
             return 0;
