@@ -82,4 +82,28 @@ public class TreeApi<T> {
             inOrder(a.getRight());
         }
     }
+
+    public boolean equals(BinaryTree a, BinaryTree b){
+        if(a.isEmpty() && b.isEmpty()){
+            return true;
+        }
+        if(a.getRoot().equals(b.getRoot())){
+            return equals(a.getRight(), b.getRight()) && equals(a.getLeft(), b.getLeft());
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isomorphicTrees(BinaryTree a, BinaryTree b){
+        if(a.isEmpty() && b.isEmpty()){
+            return true;
+        }
+        if((a.isEmpty() && !b.isEmpty()) || (!a.isEmpty() && b.isEmpty())){
+            return false;
+        }
+        return isomorphicTrees(a.getRight(), b.getRight()) && isomorphicTrees(a.getLeft(), b.getLeft());
+    }
+
+
+
 }

@@ -1,5 +1,6 @@
 package Queue;
 
+
 import Nodes.Node;
 
 public class DynamicQueue<T> {
