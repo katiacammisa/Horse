@@ -1,4 +1,4 @@
-package Cola;
+package Cola.Tp_Queue;
 
 
 import Queue.DynamicQueue;

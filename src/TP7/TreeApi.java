@@ -2,6 +2,9 @@ package TP7;
 
 import BinaryTree.BinaryTree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TreeApi<T> {
 
     public int size(BinaryTree a){
@@ -67,13 +70,16 @@ public class TreeApi<T> {
         return elementsInLevel(a.getLeft(), level) + elementsInLevel(a.getRight(), level);
     }
 
-//    public int height(BinaryTree a){
-//        if(a.getRight().isEmpty() && a.getLeft().isEmpty()){
-//            return 0;
-//        }
-//
-//    }
-
+    public int height(BinaryTree a){
+        if(a.isEmpty()) {
+            return 0;
+        }
+        int aux = 0;
+        while (elementsInLevel(a, aux) != 0) {
+            aux++;
+        }
+        return aux;
+    }
 
     public void inOrder(BinaryTree a){
         if(!a.isEmpty()){
@@ -105,15 +111,53 @@ public class TreeApi<T> {
     }
 
     public boolean complete(BinaryTree a){
+        if(a.isEmpty() && size(a) == 0) {
+            return false;
+        }
         if(a.isEmpty()){
             return true;
         }
-        if((a.getRight().isEmpty() && !a.getLeft().isEmpty()) || (!a.getRight().isEmpty() && a.getLeft().isEmpty())){
-            return false;
+        if(a.getLeft().isEmpty()) {
+            return a.getRight().isEmpty();
+        }
+        if(a.getRight().isEmpty()) {
+            return a.getLeft().isEmpty();
         }
         return complete(a.getRight()) && complete(a.getLeft());
     }
 
 
+    public int sum(BinaryTree<Integer> a) {
+        if(a.isEmpty()) {
+            return 0;
+        } else {
+            return a.getRoot() + sum(a.getRight()) + sum(a.getLeft());
+        }
+    }
+
+    public int sumMultiplesOf3(BinaryTree<Integer> a) {
+        if(a.isEmpty()){
+            return 0;
+        }
+        if(a.getRoot()%3 == 0) {
+           return a.getRoot() + sumMultiplesOf3(a.getRight()) + sumMultiplesOf3(a.getLeft());
+        } else {
+            return sumMultiplesOf3(a.getRight()) + sumMultiplesOf3(a.getLeft());
+        }
+    }
+
+    public boolean full(BinaryTree<Integer> a) {
+        if(complete(a)){
+            if(size(a) == (Math.pow(2, height(a) + 1) - 1)) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public boolean similar(BinaryTree<Integer> a, BinaryTree<Integer> b) {
+        return similar(a.)
+    }
 
 }

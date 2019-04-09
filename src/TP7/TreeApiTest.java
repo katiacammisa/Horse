@@ -22,6 +22,8 @@ public class TreeApiTest {
         System.out.println(api.isomorphicTrees(a, b));
         System.out.println(api.isomorphicTrees(a, x));
         System.out.println(api.complete(c));
+        System.out.println(api.height(a));
+        System.out.println(api.full(a));
 
     }
 }
