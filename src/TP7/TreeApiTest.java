@@ -3,8 +3,6 @@ package TP7;
 import BinaryTree.BinaryTree;
 import org.junit.Test;
 
-import java.util.List;
-
 public class TreeApiTest {
 
     BinaryTree<Integer> x = new BinaryTree<Integer>(5);
@@ -34,6 +32,10 @@ public class TreeApiTest {
         for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i).getRoot());
         }
+        System.out.println(api.full(c)); // false
+        System.out.println(api.similar(a, d)); //true
+
+        System.out.println("Happens: " + api.happensInB(c, b));
 
     }
 }
