@@ -189,24 +189,6 @@ public class TreeApi<T> {
         }
         return false;
     }
-
-    private boolean aux(BinaryTree<T> a, BinaryTree<T> b){
-        if (!a.isEmpty()){
-            if (!belongs(b, a.getRoot()))
-                return false;
-            if (!a.getLeft().isEmpty() && !a.getRight().isEmpty())
-                return true;
-            return aux(a.getRight(), b) && aux(a.getLeft(), b);
-        }
-        return b.isEmpty();
-    }
-
-    public boolean similar(BinaryTree<T> a, BinaryTree<T> b) {
-        if(size(a) != size(b)) {
-            return false;
-        }
-        return aux(a, b);
-    }
 //    public boolean stable(BinaryTree<Comparable> a){
 //        if(a.isEmpty() || size(a) == 1 || inOrder(a)){
 //            return true;

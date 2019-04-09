@@ -3,6 +3,8 @@ package TP7;
 import BinaryTree.BinaryTree;
 import org.junit.Test;
 
+import java.util.List;
+
 public class TreeApiTest {
 
     BinaryTree<Integer> x = new BinaryTree<Integer>(5);
