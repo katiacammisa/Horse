@@ -54,22 +54,15 @@ public class TreeApi<T> {
     }
 
     //Ejercicio 13 d.
-//    public DynamicQueue ElementsAtLevel(BinaryTree a, int level){
-//        DynamicQueue<BinaryTree<T>> dq = new DynamicQueue<BinaryTree<T>>();
-//        //todo fijarse que level no se mayor a los niveles totales.
-//        dq.enqueue(a); // nivel 1
-//
-//        while (level > 0) {
-//            if (!dq.peek().getLeft().isEmpty())
-//                dq.enqueue(dq.peek().getLeft());
-//            if (!dq.peek().getRight().isEmpty())
-//                dq.enqueue(dq.peek().getRight());
-//            else if (dq.peek().getRight().isEmpty() && dq.peek().getLeft().isEmpty())
-//                dq.dequeue();
-//            level--;
-//        }
-//        return dq;
-//    }
+    public int elementsAtLevel(BinaryTree a, int level){
+        if(a.isEmpty()) {
+            return 0;
+        }
+        if(level == 0) {
+            return 1;
+        }
+        return elementsAtLevel(a.getLeft(), level-1) + elementsAtLevel(a.getRight(), level-1);
+    }
 
     public boolean belongs(BinaryTree a, T o) {
         return occurrences(a, o) >= 1;
@@ -110,14 +103,6 @@ public class TreeApi<T> {
             aux++;
         }
         return aux;
-    }
-
-    public void print(BinaryTree a){
-        if(!a.isEmpty()){
-            print(a.getLeft());
-            System.out.println(a.getRoot());
-            print(a.getRight());
-        }
     }
 
     public boolean equals(BinaryTree a, BinaryTree b){
@@ -189,12 +174,15 @@ public class TreeApi<T> {
         }
         return false;
     }
-//    public boolean stable(BinaryTree<Comparable> a){
-//        if(a.isEmpty() || size(a) == 1 || inOrder(a)){
-//            return true;
-//        }
-//        return false;
-//    }
+    public boolean stable(BinaryTree<Comparable> a){
+        if(a.isEmpty() || size(a) == 1){
+            return true;
+        }
+        if(a.getRoot().compareTo(a.getLeft().getRoot()) < 0 || a.getRoot().compareTo(a.getRight().getRoot()) < 0) {
+            return false;
+        }
+        return stable(a.getRight()) && stable(a.getLeft());
+    }
 
     public List getElements(BinaryTree a, List arr) {
         if (!a.isEmpty()) {
@@ -204,13 +192,6 @@ public class TreeApi<T> {
         }
         return arr;
     }
-//
-//    private boolean inOrder(BinaryTree a){
-//        if(a.isEmpty()){
-//            return true;
-//        }
-//        if(a.getRoot() <  )
-//    }
 
     public List<BinaryTree> frontier(BinaryTree a){
         List<BinaryTree> list = new ArrayList<BinaryTree>();
@@ -225,7 +206,6 @@ public class TreeApi<T> {
         }
         return list;
     }
-
 
     public void showFrontier(BinaryTree a){
         List<BinaryTree> list = frontier(a);
@@ -264,6 +244,49 @@ public class TreeApi<T> {
             return happensInB(a.getRight(), b) || happensInB(a.getLeft(), b);
         } else {
             return false;
+        }
+    }
+
+    public void preorder(BinaryTree<T> a){
+        if(!a.isEmpty()){
+            System.out.println(a.getRoot());
+            preorder(a.getLeft());
+            preorder(a.getRight());
+        }
+    }
+
+    public void inorder(BinaryTree a){
+        if(!a.isEmpty()){
+            inorder(a.getLeft());
+            System.out.println(a.getRoot());
+            inorder(a.getRight());
+        }
+    }
+
+    public void postorder(BinaryTree<T> a){
+        if(!a.isEmpty()){
+            preorder(a.getLeft());
+            preorder(a.getRight());
+            System.out.println(a.getRoot());
+        }
+    }
+
+    public void levelOrder(BinaryTree<T> a){
+        DynamicQueue<BinaryTree<T>> queue = new DynamicQueue<BinaryTree<T>>();
+        List<T> list = new ArrayList();
+        queue.enqueue(a);
+        while (!queue.isEmpty()){
+            if(!queue.peek().getRight().isEmpty()){
+                queue.enqueue(queue.peek().getRight());
+            }
+            if(!queue.peek().getLeft().isEmpty()){
+                queue.enqueue(queue.peek().getLeft());
+            }
+            list.add(queue.peek().getRoot());
+            queue.dequeue();
+        }
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
         }
     }
 }
