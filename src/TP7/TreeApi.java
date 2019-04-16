@@ -5,97 +5,53 @@ import Queue.DynamicQueue;
 import Queue.Queue;
 import Queue.StaticQueue;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreeApi<T> {
-
+public class TreeApi<T extends Serializable & Comparable> implements Serializable {
 
     //Ejercicio 13 a.
-    public int size(BinaryTree a){
-        if(a.isEmpty()){
+    public int size(BinaryTree a) {
+        if (a.isEmpty()) {
             return 0;
         } else {
-            return 1 + size(a.getRight())+ size(a.getLeft());
+            return 1 + size(a.getRight()) + size(a.getLeft());
         }
     }
 
     //Ejercicio 13 b.
-    public int leaves(BinaryTree a){
-        if(a.getLeft().isEmpty() && a.getRight().isEmpty()){
+    public int leaves(BinaryTree a) {
+        if (a.getLeft().isEmpty() && a.getRight().isEmpty()) {
             return 1;
         }
         return leaves(a.getLeft()) + leaves(a.getRight());
     }
 
-    public int completeNodes(BinaryTree a){
-        if(a.isEmpty()){
-            return 0;
-        }
-        if(a.getLeft().isEmpty()){
-            return completeNodes(a.getRight());
-        }
-        if(a.getRight().isEmpty()){
-            return completeNodes(a.getLeft());
-        }
-
-        return 1+completeNodes(a.getLeft()) + completeNodes(a.getRight());
-    }
-
-
     //Ejercicio 13 c.
-    public int occurrences(BinaryTree a, T o){
-        if(a.isEmpty())
+    public int occurrences(BinaryTree a, T o) {
+        if (a.isEmpty())
             return 0;
-        if(a.getRoot().equals(o))
-            return 1 + occurrences(a.getLeft(),o)+occurrences(a.getRight(),o);
+        if (a.getRoot().equals(o))
+            return 1 + occurrences(a.getLeft(), o) + occurrences(a.getRight(), o);
         else
-            return occurrences(a.getLeft(),o)+occurrences(a.getRight(),o);
+            return occurrences(a.getLeft(), o) + occurrences(a.getRight(), o);
     }
 
     //Ejercicio 13 d.
-    public int elementsAtLevel(BinaryTree a, int level){
-        if(a.isEmpty()) {
+    public int elementsAtLevel(BinaryTree a, int level) {
+        if (a.isEmpty()) {
             return 0;
         }
-        if(level == 0) {
+        if (level == 0) {
             return 1;
         }
-        return elementsAtLevel(a.getLeft(), level-1) + elementsAtLevel(a.getRight(), level-1);
-    }
-
-    public boolean belongs(BinaryTree a, T o) {
-        return occurrences(a, o) >= 1;
-    }
-
-    public int level(BinaryTree a, T element){
-        if(occurrences(a, element) == 0){
-            return 0;
-        }
-        if(occurrences(a, element) == 1){
-            if(a.getRoot().equals(element)){
-                return 0;
-            }
-            return 1 + level(a.getRight(), element) + level(a.getLeft(), element);
-        }
-        else{
-            throw new RuntimeException("More than one level");
-        }
-    }
-
-    public int elementsInLevel(BinaryTree<T> a, int level){
-        if(a.isEmpty()){
-            return 0;
-        }
-        if(level(a, a.getRoot()) == level){
-            return 1;
-        }
-        return elementsInLevel(a.getLeft(), level) + elementsInLevel(a.getRight(), level);
+        return elementsAtLevel(a.getLeft(), level - 1) + elementsAtLevel(a.getRight(), level - 1);
     }
 
     //Ejercicio 13 e.
-    public int height(BinaryTree a){
-        if(a.isEmpty()) {
+    public int height(BinaryTree a) {
+        if (a.isEmpty()) {
             return 0;
         }
         int aux = 0;
@@ -105,41 +61,84 @@ public class TreeApi<T> {
         return aux;
     }
 
-    public boolean equals(BinaryTree a, BinaryTree b){
-        if(size(a) != size(b)){
+    public int completeNodes(BinaryTree a) {
+        if (a.isEmpty()) {
+            return 0;
+        }
+        if (a.getLeft().isEmpty()) {
+            return completeNodes(a.getRight());
+        }
+        if (a.getRight().isEmpty()) {
+            return completeNodes(a.getLeft());
+        }
+
+        return 1 + completeNodes(a.getLeft()) + completeNodes(a.getRight());
+    }
+
+
+    public boolean belongs(BinaryTree a, T o) {
+        return occurrences(a, o) >= 1;
+    }
+
+    public int level(BinaryTree a, T element) {
+        if (occurrences(a, element) == 0) {
+            return 0;
+        }
+        if (occurrences(a, element) == 1) {
+            if (a.getRoot().equals(element)) {
+                return 0;
+            }
+            return 1 + level(a.getRight(), element) + level(a.getLeft(), element);
+        } else {
+            throw new RuntimeException("More than one level");
+        }
+    }
+
+    public int elementsInLevel(BinaryTree<T> a, int level) {
+        if (a.isEmpty()) {
+            return 0;
+        }
+        if (level(a, a.getRoot()) == level) {
+            return 1;
+        }
+        return elementsInLevel(a.getLeft(), level) + elementsInLevel(a.getRight(), level);
+    }
+
+    public boolean equals(BinaryTree a, BinaryTree b) {
+        if (size(a) != size(b)) {
             return false;
         }
-        if(a.isEmpty() && b.isEmpty()){
+        if (a.isEmpty() && b.isEmpty()) {
             return true;
         }
-        if(a.getRoot().equals(b.getRoot())){
+        if (a.getRoot().equals(b.getRoot())) {
             return equals(a.getRight(), b.getRight()) && equals(a.getLeft(), b.getLeft());
         } else {
             return false;
         }
     }
 
-    public boolean isomorphicTrees(BinaryTree a, BinaryTree b){
-        if(a.isEmpty() && b.isEmpty()){
+    public boolean isomorphicTrees(BinaryTree a, BinaryTree b) {
+        if (a.isEmpty() && b.isEmpty()) {
             return true;
         }
-        if((a.isEmpty() && !b.isEmpty()) || (!a.isEmpty() && b.isEmpty())){
+        if ((a.isEmpty() && !b.isEmpty()) || (!a.isEmpty() && b.isEmpty())) {
             return false;
         }
         return isomorphicTrees(a.getRight(), b.getRight()) && isomorphicTrees(a.getLeft(), b.getLeft());
     }
 
-    public boolean complete(BinaryTree a){
-        if(a.isEmpty() && size(a) == 0) {
+    public boolean complete(BinaryTree a) {
+        if (a.isEmpty() && size(a) == 0) {
             return false;
         }
-        if(a.isEmpty()){
+        if (a.isEmpty()) {
             return true;
         }
-        if(a.getLeft().isEmpty()) {
+        if (a.getLeft().isEmpty()) {
             return a.getRight().isEmpty();
         }
-        if(a.getRight().isEmpty()) {
+        if (a.getRight().isEmpty()) {
             return a.getLeft().isEmpty();
         }
         return complete(a.getRight()) && complete(a.getLeft());
@@ -147,7 +146,7 @@ public class TreeApi<T> {
 
 
     public int sum(BinaryTree<Integer> a) {
-        if(a.isEmpty()) {
+        if (a.isEmpty()) {
             return 0;
         } else {
             return a.getRoot() + sum(a.getRight()) + sum(a.getLeft());
@@ -155,30 +154,31 @@ public class TreeApi<T> {
     }
 
     public int sumMultiplesOf3(BinaryTree<Integer> a) {
-        if(a.isEmpty()){
+        if (a.isEmpty()) {
             return 0;
         }
-        if(a.getRoot()%3 == 0) {
-           return a.getRoot() + sumMultiplesOf3(a.getRight()) + sumMultiplesOf3(a.getLeft());
+        if (a.getRoot() % 3 == 0) {
+            return a.getRoot() + sumMultiplesOf3(a.getRight()) + sumMultiplesOf3(a.getLeft());
         } else {
             return sumMultiplesOf3(a.getRight()) + sumMultiplesOf3(a.getLeft());
         }
     }
 
     public boolean full(BinaryTree a) {
-        if(complete(a)){
-            if(size(a) == (Math.pow(2, height(a) + 1) - 1)) {
+        if (complete(a)) {
+            if (size(a) == (Math.pow(2, height(a) + 1) - 1)) {
                 return true;
             }
             return false;
         }
         return false;
     }
-    public boolean stable(BinaryTree<Comparable> a){
-        if(a.isEmpty() || size(a) == 1){
+
+    public boolean stable(BinaryTree<T> a) {
+        if (a.isEmpty() || size(a) == 1) {
             return true;
         }
-        if(a.getRoot().compareTo(a.getLeft().getRoot()) < 0 || a.getRoot().compareTo(a.getRight().getRoot()) < 0) {
+        if (a.getRoot().compareTo(a.getLeft().getRoot()) < 0 || a.getRoot().compareTo(a.getRight().getRoot()) < 0) {
             return false;
         }
         return stable(a.getRight()) && stable(a.getLeft());
@@ -193,28 +193,29 @@ public class TreeApi<T> {
         return arr;
     }
 
-    public List<BinaryTree> frontier(BinaryTree a){
+    public List<BinaryTree> frontier(BinaryTree a) {
         List<BinaryTree> list = new ArrayList<BinaryTree>();
-        if(a.getLeft().isEmpty() && a.getRight().isEmpty()){
+        if (a.getLeft().isEmpty() && a.getRight().isEmpty()) {
             list.add(a);
         }
-        if (!a.getRight().isEmpty()){
+        if (!a.getRight().isEmpty()) {
             list.addAll(frontier(a.getRight()));
         }
-        if(!a.getLeft().isEmpty()){
+        if (!a.getLeft().isEmpty()) {
             list.addAll(frontier(a.getLeft()));
         }
         return list;
     }
 
-    public void showFrontier(BinaryTree a){
+    public void showFrontier(BinaryTree a) {
         List<BinaryTree> list = frontier(a);
         for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i).getRoot());
         }
     }
-    private boolean comparator(BinaryTree<T> a, BinaryTree<T> b){
-        if (!a.isEmpty()){
+
+    private boolean comparator(BinaryTree<T> a, BinaryTree<T> b) {
+        if (!a.isEmpty()) {
             if (!belongs(b, a.getRoot()))
                 return false;
             if (!a.getLeft().isEmpty() && !a.getRight().isEmpty())
@@ -225,61 +226,61 @@ public class TreeApi<T> {
     }
 
     public boolean similar(BinaryTree<T> a, BinaryTree<T> b) {
-        if(size(a) != size(b)) {
+        if (size(a) != size(b)) {
             return false;
         }
         return comparator(a, b);
     }
 
     public boolean happensInB(BinaryTree<T> a, BinaryTree<T> b) {
-        if(b.isEmpty()) {
+        if (b.isEmpty()) {
             return true;
         }
 
-        if(equals(a, b)) {
+        if (equals(a, b)) {
             return true;
         }
 
-        if(size(b) < size(a)) {
+        if (size(b) < size(a)) {
             return happensInB(a.getRight(), b) || happensInB(a.getLeft(), b);
         } else {
             return false;
         }
     }
 
-    public void preorder(BinaryTree<T> a){
-        if(!a.isEmpty()){
+    public void preorder(BinaryTree<T> a) {
+        if (!a.isEmpty()) {
             System.out.println(a.getRoot());
             preorder(a.getLeft());
             preorder(a.getRight());
         }
     }
 
-    public void inorder(BinaryTree a){
-        if(!a.isEmpty()){
+    public void inorder(BinaryTree a) {
+        if (!a.isEmpty()) {
             inorder(a.getLeft());
             System.out.println(a.getRoot());
             inorder(a.getRight());
         }
     }
 
-    public void postorder(BinaryTree<T> a){
-        if(!a.isEmpty()){
+    public void postorder(BinaryTree<T> a) {
+        if (!a.isEmpty()) {
             preorder(a.getLeft());
             preorder(a.getRight());
             System.out.println(a.getRoot());
         }
     }
 
-    public void levelOrder(BinaryTree<T> a){
+    public void levelOrder(BinaryTree<T> a) {
         DynamicQueue<BinaryTree<T>> queue = new DynamicQueue<BinaryTree<T>>();
         List<T> list = new ArrayList();
         queue.enqueue(a);
-        while (!queue.isEmpty()){
-            if(!queue.peek().getRight().isEmpty()){
+        while (!queue.isEmpty()) {
+            if (!queue.peek().getRight().isEmpty()) {
                 queue.enqueue(queue.peek().getRight());
             }
-            if(!queue.peek().getLeft().isEmpty()){
+            if (!queue.peek().getLeft().isEmpty()) {
                 queue.enqueue(queue.peek().getLeft());
             }
             list.add(queue.peek().getRoot());
@@ -288,5 +289,56 @@ public class TreeApi<T> {
         for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i));
         }
+    }
+
+    public List inorden(BinaryTree<T> a, List<T> list) {
+        if (!a.isEmpty()) {
+            inorden(a.getLeft(), list);
+            list.add(a.getRoot());
+            inorden(a.getRight(), list);
+        }
+        return list;
+    }
+
+    public void save(BinaryTree<T> a) {
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream("Hola"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos.writeObject(a);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public BinaryTree load() {
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream("Hola"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BinaryTree a = null;
+        try {
+            a = (BinaryTree) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            ois.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return a;
     }
 }

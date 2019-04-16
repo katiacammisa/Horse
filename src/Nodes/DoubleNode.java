@@ -1,6 +1,8 @@
 package Nodes;
 
-public class DoubleNode<T> {
+import java.io.Serializable;
+
+public class DoubleNode<T extends Serializable> implements Serializable {
     T data;
     DoubleNode<T> left;
     DoubleNode<T> right;

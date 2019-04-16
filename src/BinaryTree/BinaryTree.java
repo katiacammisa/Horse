@@ -2,7 +2,9 @@ package BinaryTree;
 
 import Nodes.DoubleNode;
 
-public class BinaryTree<T> {
+import java.io.Serializable;
+
+public class BinaryTree<T extends Serializable & Comparable> implements Serializable {
 
     private DoubleNode<T> root;
 
