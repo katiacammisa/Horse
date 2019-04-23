@@ -60,6 +60,6 @@ public class Data implements Comparable {
 
     @Override
     public String toString(){
-        return lampCode + ": " + "Watts: " + watts + ", Type: " + lampType + ", Amount: " + amount + ".";
+        return lampCode + ": " + "Watts: " + watts + ", Type: " + lampType + ", Amount: " + amount + "." + '\n';
     }
 }

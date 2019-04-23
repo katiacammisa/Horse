@@ -19,6 +19,6 @@ public class CompanyTest {
 
         Company com = new Company(list);
         String p = com.inOrder();
-        System.out.println();
+        System.out.println(p);
     }
 }

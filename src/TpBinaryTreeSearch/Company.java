@@ -11,28 +11,13 @@ public class Company {
     private SearchBinaryTree<Data> tree;
 
     public Company(LinkedList<Data> list) {
-        tree = transformToTree(list);
+        tree = new SearchBinaryTree<>();
+        put(list);
     }
 
-    private SearchBinaryTree<Data> transformToTree(LinkedList<Data> list) {
-        sortList(list);
-        SearchBinaryTree<Data> a = new SearchBinaryTree<>();
-        return a;
-    }
-
-    private void sortList(LinkedList<Data> list) {
-        list.sort(new Comparator<Data>() {
-            @Override
-            public int compare(Data o1, Data o2) {
-                return o1.compareTo(o2);
-            }
-        });
-
-    }
-
-    public void put(SearchBinaryTree<Data> a, List<Data> list) {
+    public void put(List<Data> list) {
         for (int i = 0; i < list.size(); i++) {
-            a.insert(list.get(i));
+            tree.insert(list.get(i));
         }
     }
 
