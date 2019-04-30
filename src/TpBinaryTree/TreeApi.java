@@ -21,8 +21,14 @@ public class TreeApi<T extends Serializable & Comparable> implements Serializabl
 
     //b
     public int leaves(BinaryTree a) {
+        if(a.isEmpty()){
+            return 0;
+        }
         if (a.getLeft().isEmpty() && a.getRight().isEmpty()) {
             return 1;
+        }
+        if(a.getLeft().isEmpty() || a.getRight().isEmpty()){
+            return 0;
         }
         return leaves(a.getLeft()) + leaves(a.getRight());
     }
@@ -51,7 +57,7 @@ public class TreeApi<T extends Serializable & Comparable> implements Serializabl
     //e
     public int height(BinaryTree a) {
         if (a.isEmpty()) {
-            return 0;
+            return -1;
         }
         int aux = 0;
         while (elementsInLevel(a, aux) != 0) {
@@ -120,10 +126,10 @@ public class TreeApi<T extends Serializable & Comparable> implements Serializabl
 
         //iv
     public boolean complete(BinaryTree a) {
-        if (a.isEmpty() && size(a) == 0) {
+        if (a.isEmpty()) {
             return false;
         }
-        if (a.isEmpty()) {
+        if(a.getLeft().isEmpty() && a.getRight().isEmpty()){
             return true;
         }
         if (a.getLeft().isEmpty()) {
