@@ -8,7 +8,6 @@ import java.io.Serializable;
 public class RedBlackTree<T extends Comparable>{
 
     private DoubleNodeRB<T> root;
-    private boolean black;
 
     public RedBlackTree() {
         root = null;
@@ -108,10 +107,11 @@ public class RedBlackTree<T extends Comparable>{
     }
 
     private boolean isBalanced(){
-        if(!black && (!root.getLeft().isBlack() || !root.getRight().isBlack())){
+        if(!root.isBlack() && (!root.getLeft().isBlack() || !root.getRight().isBlack())){
             return false;
         }
         //Falta igualdad en trayecto
+        //Cualquier trayecto desde un nodo hacia una hoja contiene el mismo número de nodos negros.
         return false;
     }
 

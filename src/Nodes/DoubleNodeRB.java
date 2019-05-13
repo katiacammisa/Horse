@@ -1,6 +1,7 @@
 package Nodes;
 
 public class DoubleNodeRB<T extends Comparable> {
+
     T data;
     boolean black;
     DoubleNodeRB<T> left;
@@ -9,6 +10,7 @@ public class DoubleNodeRB<T extends Comparable> {
     public DoubleNodeRB(T data) {
         this.data = data;
     }
+
     public DoubleNodeRB(T data, DoubleNodeRB<T> left, DoubleNodeRB<T> right) {
         this.data = data;
         this.left = left;
