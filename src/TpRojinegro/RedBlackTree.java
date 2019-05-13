@@ -1,14 +1,14 @@
 package TpRojinegro;
 
-import Nodes.DoubleNode;
-import Nodes.DoubleNodeSearch;
+import Nodes.DoubleNodeRB;
 import TpBinaryTreeSearch.SearchBinaryTree;
 
 import java.io.Serializable;
 
 public class RedBlackTree<T extends Comparable>{
 
-    private DoubleNodeSearch<T> root;
+    private DoubleNodeRB<T> root;
+    private boolean black;
 
     public RedBlackTree() {
         root = null;
@@ -18,7 +18,7 @@ public class RedBlackTree<T extends Comparable>{
         return root == null;
     }
 
-    public void setRoot(DoubleNodeSearch<T> root) {
+    public void setRoot(DoubleNodeRB<T> root) {
         this.root = root;
     }
 
@@ -58,7 +58,7 @@ public class RedBlackTree<T extends Comparable>{
         return getMin(root).getData();
     }
 
-    private boolean exists(DoubleNodeSearch<T> t, Comparable x) {
+    private boolean exists(DoubleNodeRB<T> t, Comparable x) {
         if (t == null)
             return false;
 
@@ -70,7 +70,7 @@ public class RedBlackTree<T extends Comparable>{
             return exists(t.getRight(), x);
     }
 
-    private DoubleNodeSearch<T> getMin(DoubleNodeSearch<T> t){
+    private DoubleNodeRB<T> getMin(DoubleNodeRB<T> t){
         if (t.getLeft() == null)
             return t;
         else
@@ -84,7 +84,7 @@ public class RedBlackTree<T extends Comparable>{
         return getMax(root).getData();
     }
 
-    private DoubleNodeSearch<T> getMax(DoubleNodeSearch<T> t){
+    private DoubleNodeRB<T> getMax(DoubleNodeRB<T> t){
         if (t.getRight() == null)
             return t;
         else
@@ -98,13 +98,21 @@ public class RedBlackTree<T extends Comparable>{
         return search(root, x).getData();
     }
 
-    private DoubleNodeSearch<T> search(DoubleNodeSearch<T> t, Comparable x){
+    private DoubleNodeRB<T> search(DoubleNodeRB<T> t, Comparable x){
         if (x.compareTo( t.getData())== 0)
             return t;
         else if (x.compareTo( t.getData())< 0)
             return search(t.getLeft(), x);
         else
             return search(t.getRight(), x);
+    }
+
+    private boolean isBalanced(){
+        if(!black && (!root.getLeft().isBlack() || !root.getRight().isBlack())){
+            return false;
+        }
+        //Falta igualdad en trayecto
+        return false;
     }
 
 
