@@ -1,5 +1,6 @@
 package TpRojinegro;
 
+import Nodes.DoubleNode;
 import Nodes.DoubleNodeRB;
 import TpBinaryTreeSearch.SearchBinaryTree;
 
@@ -8,9 +9,27 @@ import java.io.Serializable;
 public class RedBlackTree<T extends Comparable>{
 
     private DoubleNodeRB<T> root;
+    private DoubleNodeRB<T> current;
+    private DoubleNodeRB<T> parent;
+    private DoubleNodeRB<T> grand;
+    private DoubleNodeRB<T> great;
+    private static DoubleNodeRB nullNode;
+
+    static
+    {
+        nullNode = new DoubleNodeRB(0);
+        nullNode.right = nullNode;
+        nullNode.left = nullNode;
+    }
 
     public RedBlackTree() {
-        root = null;
+        root = nullNode;
+    }
+
+    public RedBlackTree(T data){
+        root = new DoubleNodeRB<>(data);
+        root.setLeft(nullNode);
+        root.setRight(nullNode);
     }
 
     public boolean isEmpty() {
@@ -106,14 +125,89 @@ public class RedBlackTree<T extends Comparable>{
             return search(t.getRight(), x);
     }
 
-    private boolean isBalanced(){
-        if(!root.isBlack() && (!root.getLeft().isBlack() || !root.getRight().isBlack())){
-            return false;
+    public void insert(T item){
+        current = parent = grand = root;
+        nullNode.data = item;
+        while (current.data != item)
+        {
+            great = grand;
+            grand = parent;
+            parent = current;
+            current = item.compareTo(current.data) > 0 ? current.left : current.right;
+
+            if (!current.left.isBlack() && !current.right.isBlack())
+                handleReorient( item );
         }
-        //Falta igualdad en trayecto
-        //Cualquier trayecto desde un nodo hacia una hoja contiene el mismo número de nodos negros.
-        return false;
+
+        if (current != nullNode)
+            return;
+        current = new DoubleNodeRB<>(item, nullNode, nullNode);
+
+        if (item.compareTo(parent.data) > 0)
+            parent.left = current;
+        else
+            parent.right = current;
+        handleReorient( item );
     }
+
+    private void handleReorient(T item) {
+        // Do the color flip
+        current.turnRed();
+        current.left.turnBlack();
+        current.right.turnBlack();
+
+        if (!parent.isBlack())
+        {
+            grand.turnRed();
+            if (item.compareTo(grand.data) < 0 != item.compareTo(parent.data) < 0)
+                parent = rotate( item, grand );
+            current = rotate(item, great );
+            current.turnBlack();
+        }
+        root.right.turnBlack();
+    }
+
+    private DoubleNodeRB<T> rotate(T item, DoubleNodeRB<T> parent) {
+        if(item.compareTo(parent.data) < 0)
+            return parent.left = item.compareTo(parent.left.data) < 0 ? rotateWithLeftChild(parent.left) : rotateWithRightChild(parent.left) ;
+        else
+            return parent.right = item.compareTo(parent.right.data) < 0 ? rotateWithLeftChild(parent.right) : rotateWithRightChild(parent.right);
+    }
+
+    private DoubleNodeRB rotateWithLeftChild(DoubleNodeRB k2)
+    {
+        DoubleNodeRB k1 = k2.left;
+        k2.left = k1.right;
+        k1.right = k2;
+        return k1;
+    }
+
+    private DoubleNodeRB<T> rotateWithRightChild(DoubleNodeRB k1) {
+        DoubleNodeRB k2 = k1.right;
+        k1.right = k2.left;
+        k2.left = k1;
+        return k2;
+    }
+
+    public int countNodes()
+    {
+        return countNodes(root.right);
+    }
+    private int countNodes(DoubleNodeRB r)
+    {
+        if (r == nullNode)
+            return 0;
+        else
+        {
+            int l = 1;
+            l += countNodes(r.left);
+            l += countNodes(r.right);
+            return l;
+        }
+    }
+
+    public void delete(T data){}
+
 
 
 

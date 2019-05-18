@@ -33,7 +33,7 @@ public class TreeApiTest extends Assert {
     }
 
     @Test
-    public void elementsAtLevel() {
+    public void datasAtLevel() {
         assertEquals(2, api.elementsAtLevel(a, 1));
     }
 

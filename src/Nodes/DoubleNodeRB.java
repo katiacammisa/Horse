@@ -2,10 +2,10 @@ package Nodes;
 
 public class DoubleNodeRB<T extends Comparable> {
 
-    T data;
-    boolean black;
-    DoubleNodeRB<T> left;
-    DoubleNodeRB<T> right;
+    public T data;
+    public boolean black;
+    public DoubleNodeRB<T> left;
+    public DoubleNodeRB<T> right;
 
     public DoubleNodeRB(T data) {
         this.data = data;
@@ -45,6 +45,10 @@ public class DoubleNodeRB<T extends Comparable> {
 
     public void turnBlack(){
         black = true;
+    }
+
+    public void turnRed(){
+        black = false;
     }
 
     public boolean isBlack(){
