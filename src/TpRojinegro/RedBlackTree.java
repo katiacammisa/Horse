@@ -125,47 +125,47 @@ public class RedBlackTree<T extends Comparable>{
             return search(t.getRight(), x);
     }
 
-    public void insert(T item){
-        current = parent = grand = root;
-        nullNode.data = item;
-        while (current.data != item)
-        {
-            great = grand;
-            grand = parent;
-            parent = current;
-            current = item.compareTo(current.data) > 0 ? current.left : current.right;
-
-            if (!current.left.isBlack() && !current.right.isBlack())
-                handleReorient( item );
-        }
-
-        if (current != nullNode)
-            return;
-        current = new DoubleNodeRB<>(item, nullNode, nullNode);
-
-        if (item.compareTo(parent.data) > 0)
-            parent.left = current;
-        else
-            parent.right = current;
-        handleReorient( item );
-    }
-
-    private void handleReorient(T item) {
-        // Do the color flip
-        current.turnRed();
-        current.left.turnBlack();
-        current.right.turnBlack();
-
-        if (!parent.isBlack())
-        {
-            grand.turnRed();
-            if (item.compareTo(grand.data) < 0 != item.compareTo(parent.data) < 0)
-                parent = rotate( item, grand );
-            current = rotate(item, great );
-            current.turnBlack();
-        }
-        root.right.turnBlack();
-    }
+//    public void insert(T item){
+//        current = parent = grand = root;
+//        nullNode.data = item;
+//        while (current.data != item)
+//        {
+//            great = grand;
+//            grand = parent;
+//            parent = current;
+//            current = item.compareTo(current.data) > 0 ? current.left : current.right;
+//
+//            if (!current.left.isBlack() && !current.right.isBlack())
+//                handleReorient( item );
+//        }
+//
+//        if (current != nullNode)
+//            return;
+//        current = new DoubleNodeRB<>(item, nullNode, nullNode);
+//
+//        if (item.compareTo(parent.data) > 0)
+//            parent.left = current;
+//        else
+//            parent.right = current;
+//        handleReorient( item );
+//    }
+//
+//    private void handleReorient(T item) {
+//        // Do the color flip
+//        current.turnRed();
+//        current.left.turnBlack();
+//        current.right.turnBlack();
+//
+//        if (!parent.isBlack())
+//        {
+//            grand.turnRed();
+//            if (item.compareTo(grand.data) < 0 != item.compareTo(parent.data) < 0)
+//                parent = rotate( item, grand );
+//            current = rotate(item, great );
+//            current.turnBlack();
+//        }
+//        root.right.turnBlack();
+//    }
 
     private DoubleNodeRB<T> rotate(T item, DoubleNodeRB<T> parent) {
         if(item.compareTo(parent.data) < 0)
@@ -205,11 +205,4 @@ public class RedBlackTree<T extends Comparable>{
             return l;
         }
     }
-
-    public void delete(T data){}
-
-
-
-
-
 }

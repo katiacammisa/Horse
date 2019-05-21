@@ -1,4 +1,4 @@
-package Lists;
+package Listss;
 
 public interface GeneralList<L>{
     void remove();
