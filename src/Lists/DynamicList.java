@@ -1,4 +1,4 @@
-package Listss;
+package Lists;
 
 public class DynamicList<T> implements List<T> {
     private Node<T> first, actual, sentinel;

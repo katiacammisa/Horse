@@ -1,4 +1,4 @@
-package Listss;
+package Lists;
 
 public class Node<T> {
     T data;

@@ -1,4 +1,4 @@
-package Listss;
+package Lists;
 
 public class StaticList<T> implements List<T> {
     private static final int DEFAULT_CAPACITY = 10;

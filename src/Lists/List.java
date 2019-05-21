@@ -1,4 +1,4 @@
-package Listss;
+package Lists;
 
 public interface List<L> extends GeneralList{
     void insertNext(L obj);
