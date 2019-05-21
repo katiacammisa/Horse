@@ -1,5 +1,7 @@
 package Nodes;
 
+import Interfaces.Comparable;
+
 import java.io.Serializable;
 
 public class DoubleNodeSearch<T extends Comparable>{

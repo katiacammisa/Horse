@@ -50,6 +50,10 @@ public class DynamicList<T> implements List<T> {
         actual = actual.next;
     }
 
+    public void first(){
+        actual = first;
+    }
+
     @Override
     public void goPrev() {
         if(actual == first.next){

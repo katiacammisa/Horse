@@ -174,19 +174,20 @@ public class RedBlackTree<T extends Comparable>{
             return parent.right = item.compareTo(parent.right.data) < 0 ? rotateWithLeftChild(parent.right) : rotateWithRightChild(parent.right);
     }
 
-    private DoubleNodeRB rotateWithLeftChild(DoubleNodeRB k2)
+    private DoubleNodeRB rotateWithLeftChild(DoubleNodeRB B)
     {
-        DoubleNodeRB k1 = k2.left;
-        k2.left = k1.right;
-        k1.right = k2;
-        return k1;
+        DoubleNodeRB A = B.left;
+        B.left = A.right;
+        A.right = B;
+        return A;
     }
 
-    private DoubleNodeRB<T> rotateWithRightChild(DoubleNodeRB k1) {
-        DoubleNodeRB k2 = k1.right;
-        k1.right = k2.left;
-        k2.left = k1;
-        return k2;
+    private DoubleNodeRB<T> rotateWithRightChild(DoubleNodeRB A) {
+
+        DoubleNodeRB B = A.right;
+        A.right = B.left;
+        B.left = A;
+        return B;
     }
 
     public int countNodes()
@@ -205,4 +206,13 @@ public class RedBlackTree<T extends Comparable>{
             return l;
         }
     }
+
+    public void delete(DoubleNodeRB n){
+
+    }
+
+
+
+
+
 }
