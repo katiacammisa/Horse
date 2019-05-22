@@ -53,4 +53,9 @@ public class Book implements Serializable, Comparable<Book> {
         }
     }
 
+    @Override
+    public String toString(){
+        return key + ": Title: " + title + ", Author: " + author + ", Code: " + code;
+    }
+
 }

@@ -8,6 +8,13 @@ public class Menu {
 
     public static void main(String[] args) {
 
+
+        /* FALTA:
+                   2 CON CONDICION
+                   SIZE
+
+
+        */
         Book book = new Book(15, "Hola", "Katy", 12345);
         RedBlackTree2 tree = new RedBlackTree2<>();
         Menu menu = new Menu(tree);
@@ -30,7 +37,7 @@ public class Menu {
                     System.out.println("Insert the Book's key");
                     int key = scanner.nextInt();
 
-//                    if(!menu.exists(key)) {
+                    if(!menu.exists(tree,key)) {
                         System.out.println("Insert the Book's title");
                         String title = scanner.next();
                         System.out.println("Insert the Book's author");
@@ -41,15 +48,15 @@ public class Menu {
                         Book book2 = new Book(key, title, author, code);
                         menu.insert(book2);
                         break;
-//                    } else {
-//                        System.out.println("There already exists a book with this key");
-//                        break;
-//                    }
+                    } else {
+                        System.out.println("There already exists a book with this key");
+                        break;
+                    }
 
                 case 2:
                     System.out.println("Insert the book's key");
                     int delete = scanner.nextInt();
-                    menu.delete(menu.findElement(delete)); // NO ANDA EL FIND ELEMENT
+                    menu.delete(menu.findElement(delete));
                     break;
 
                 case 3:
@@ -146,8 +153,9 @@ public class Menu {
     private void insert(Book element) {
         if(tree.isEmpty()) {
             tree = new RedBlackTree2<>(element);
+        } else {
+            tree.insert(element);
         }
-        tree.insert(element);
     }
 
     private void delete(Book element) {
@@ -191,7 +199,7 @@ public class Menu {
         return null;
     }
     private int amountOfElements() {
-        return tree.size();
+        return tree.size(tree);
     }
 
     private int amountOfElementWithCondition(/*condicion*/) {
@@ -199,7 +207,30 @@ public class Menu {
     }
 
     private void showEveryElement() {
-        tree.printInOrderAllNodes();
+        if (tree.getRootNode() != null) {
+            printInOrderAllNodes(tree.getRootNode(), 0, "root");
+        } else {
+            System.out.println("The RBT is empty");
+        }
+    }
+
+    private void printInOrderAllNodes(RedBlackTreeNode<Book> node, int level, String typeChild) {
+        if (node != null) {
+            if (node.getLeftChild() != null) {
+                printInOrderAllNodes(node.getLeftChild(), level + 1, "left child");
+            }
+
+            if (node.getKey() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+                        + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
+                        + node.getParent().getKey();
+                System.out.println(output);
+            }
+
+            if (node.getRightChild() != null) {
+                printInOrderAllNodes(node.getRightChild(), level + 1, "right child");
+            }
+        }
     }
 
     private void showElementsWithCondition() {

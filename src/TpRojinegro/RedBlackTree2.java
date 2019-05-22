@@ -349,16 +349,16 @@ public class RedBlackTree2<T extends Comparable<T> & Serializable> implements Se
             e.printStackTrace();
         }
     }
+//
+//    public int size() {
+//        return size(this);
+//    }
 
-    public int size() {
-        return size(this);
-    }
-
-    private int size(RedBlackTree2 a) {
+    public int size(RedBlackTree2 a) {
         if (a.isEmpty()) {
             return 0;
         } else {
-            return 1 + size(this.getRight()) + size(this.getLeft());
+            return 1 + size(a.getRight()) + size(a.getLeft());
         }
     }
 
@@ -371,7 +371,7 @@ public class RedBlackTree2<T extends Comparable<T> & Serializable> implements Se
             throw new RuntimeException("The tree is empty");
         }
         RedBlackTree2<T> t = new RedBlackTree2<>();
-        t.setRootNode(t.getNilNode().getLeftChild());
+        t.setRootNode(getRootNode().getLeftChild());
         return t;
     }
 
@@ -379,8 +379,7 @@ public class RedBlackTree2<T extends Comparable<T> & Serializable> implements Se
         if(isEmpty()) {
             throw new RuntimeException("The tree is empty");
         }
-        RedBlackTree2<T> t = new RedBlackTree2<>();
-        t.setRootNode(t.getNilNode().getRightChild());
+        RedBlackTree2<T> t = new RedBlackTree2<>(getRootNode().getRightChild());
         return t;
     }
 }
