@@ -1,7 +1,5 @@
 package TpRojinegro;
 
-import Interfaces.Comparable;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -20,31 +18,12 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
 
     public RedBlackTree() {
 
-         nullNode = new RedBlackNode<>( null );
+         nullNode = new RedBlackNode<>(null);
          nullNode.left = nullNode.right = nullNode;
          header = new RedBlackNode<>( null );
          header.left = header.right = nullNode;
     }
 
-    private static class RedBlackNode<T extends Serializable> implements Serializable {
-
-        T element;
-        RedBlackNode<T> left;
-        RedBlackNode<T> right;
-        int color;
-
-        // Constructors
-        RedBlackNode(T theElement) {
-            this(theElement, null, null);
-        }
-
-        RedBlackNode(T theElement, RedBlackNode<T> lt, RedBlackNode<T> rt) {
-            element = theElement;
-            left = lt;
-            right = rt;
-            color = RedBlackTree.BLACK;
-        }
-    }
 
     private RedBlackNode<T> rotate( T item, RedBlackNode<T> parent) {
          if(compare( item, parent)<0)
@@ -86,22 +65,22 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
          current = parent = grand = header;
          nullNode.element = item;
 
-         while(compare( item, current ) != 0) {
+         while(compare(item, current) != 0) {
              great = grand; grand = parent; parent = current;
-             current = compare( item, current )<0? current.left : current.right;
-             if( current.left.color == RED && current.right.color == RED )
-                handleReorient( item );
+             current = compare(item, current) < 0 ? current.left : current.right;
+             if(current.left.color == RED && current.right.color == RED )
+                handleReorient(item);
          }
 
-         if( current != nullNode )
+         if(current != nullNode)
              return;
-         current = new RedBlackNode<>( item, nullNode, nullNode );
+         current = new RedBlackNode<>(item, nullNode, nullNode);
 
-         if( compare( item, parent )<0)
+         if(compare(item, parent) < 0)
              parent.left = current;
          else
              parent.right = current;
-         handleReorient( item );
+         handleReorient(item);
     }
 
     private RedBlackNode rotateWithLeftChild(RedBlackNode B) {
@@ -194,6 +173,14 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
         return header.element;
     }
 
+
+    public RedBlackNode<T> getRootNode() {
+        if(isEmpty()) {
+            throw new RuntimeException("The tree is empty");
+        }
+        return header;
+    }
+
     public boolean exists(Comparable x){
         return exists(header, x);
     }
@@ -211,7 +198,7 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
 
         if (x.compareTo(t.element) == 0)
             return true;
-        else if (x.compareTo( t.element)< 0)
+        else if (x.compareTo( t.element) < 0)
             return exists(t.left, x);
         else
             return exists(t.right, x);
@@ -238,14 +225,14 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
             return getMax(t.right);
     }
 
-    public T search(Comparable x){
+    public T search(java.lang.Comparable x){
         if(!exists(x)) {
             throw new RuntimeException("The Book doesn't exist");
         }
         return search(header, x).element;
     }
 
-    private RedBlackNode<T> search(RedBlackNode<T> t, Comparable x){
+    private RedBlackNode<T> search(RedBlackNode<T> t, java.lang.Comparable x){
         if (x.compareTo( t.element)== 0)
             return t;
         else if (x.compareTo( t.element)< 0)

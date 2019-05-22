@@ -1,8 +1,5 @@
 package TpRojinegro;
 
-import Interfaces.Comparable;
-import Nodes.DoubleNodeRB;
-
 import java.util.Scanner;
 
 public class Menu {
@@ -11,6 +8,7 @@ public class Menu {
 
     public static void main(String[] args) {
 
+        Book book = new Book(15, "Hola", "Katy", 12345);
         RedBlackTree tree2 = new RedBlackTree<>();
         Menu menu = new Menu(tree2);
 
@@ -31,26 +29,32 @@ public class Menu {
                 case 1:
                     System.out.println("Insert the Book's key");
                     int key = scanner.nextInt();
-                    System.out.println("Insert the Book's title");
-                    String title = scanner.next();
-                    System.out.println("Insert the Book's author");
-                    String author = scanner.next();
-                    System.out.println("Insert the Book's code");
-                    long code = scanner.nextLong();
 
-                    Book book = new Book(key, title, author, code);
-                    menu.insert(book);
-                    break;
+                    if(!menu.exists(key)) {
+                        System.out.println("Insert the Book's title");
+                        String title = scanner.next();
+                        System.out.println("Insert the Book's author");
+                        String author = scanner.next();
+                        System.out.println("Insert the Book's code");
+                        long code = scanner.nextLong();
+
+                        Book book2 = new Book(key, title, author, code);
+                        menu.insert(book2);
+                        break;
+                    } else {
+                        System.out.println("There already exists a book with this key");
+                        break;
+                    }
 
                 case 2:
                     System.out.println("Insert the book's key");
-                    int delete = scanner.nextInt();
+                    Integer delete = scanner.nextInt();
                     menu.delete(menu.findElement(delete)); // NO ANDA EL FIND ELEMENT
                     break;
 
                 case 3:
                     System.out.println("Insert the key of the book you want to modify");
-                    int keyOfBook = scanner.nextInt();
+                    Integer keyOfBook = scanner.nextInt();
                     Book bookToModify = menu.findElement(keyOfBook);
                     int i;
                     System.out.println("Enter 1 to change title. \n" +
@@ -89,7 +93,7 @@ public class Menu {
                     switch (consult) {
                         case 1:
                             System.out.println("Insert the key of the element.");
-                            int elementToFind = scanner.nextInt();
+                            Integer elementToFind = scanner.nextInt();
                             Book bookToReturn = menu.findElement(elementToFind);
                             System.out.println(bookToReturn.getTitle() + ", " + bookToReturn.getAuthor() + ", " + bookToReturn.getCode());
                             break;
@@ -136,6 +140,7 @@ public class Menu {
     }
 
     public Menu(RedBlackTree<Book> tree) {
+        tree = new RedBlackTree();
         this.tree = tree;
     }
 
@@ -159,23 +164,21 @@ public class Menu {
         tree.search(toModify).setCode(newCode);
     }
 
-    private Book findElement(int key) {return null;}
-    //No se como hacer esto, por ahi podemos copiar el search y cambiar un par de cosas y listo
-//    public Book search (Comparable key){
-//        if (!tree.exists(key)) {
-//            throw new RuntimeException("The Book doesn't exist");          ////////NO
-//        }                                                                  ////////NO
-//        return search((Book)tree.getRoot(), key).element;                  ////////NO
-//                                                                           ////////NO
-//    }                                                                      ////////NO
-//    private DoubleNodeRB<Book> search(RedBlackTree<Book> t, Comparable x){ ////////NO
-//        if (x.compareTo(t.data)== 0)                                       ////////NO
-//            return t;                                                      ////////NO
-//        else if (x.compareTo( t.data)< 0)                                  ////////NO
-//            return search(t.left, x);                                      ////////NO
-//        else                                                               ////////NO
-//            return search(t.right, x);                                     ////////NO
-//    }                                                                      ////////NO
+    public Book findElement(int key) {
+        if(!tree.exists(key)) {
+            throw new RuntimeException("The Book doesn't exist");
+        }
+        return search(tree.getRootNode(), key).element;
+    }
+
+    private RedBlackNode<Book> search(RedBlackNode<Book> t, int key){
+        if ((t.element.getKey() - key) == 0)
+            return t;
+        else if ((t.element.getKey() - key) < 0)
+            return search(t.left, key);
+        else
+            return search(t.right, key);
+    }
 
     private int amountOfElements() {
         return tree.size();
@@ -197,10 +200,11 @@ public class Menu {
         tree.save();
     }
 
-
-
-
-
-
-
+    private boolean exists(Integer key) {
+        if(tree.exists(key)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

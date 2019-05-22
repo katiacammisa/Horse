@@ -1,10 +1,9 @@
 package TpRojinegro;
 
-import Interfaces.Comparable;
 
 import java.io.Serializable;
 
-public class Book implements Comparable, java.lang.Comparable, Serializable {
+public class Book implements Comparable, Serializable {
 
     private int key;
     private String title;
