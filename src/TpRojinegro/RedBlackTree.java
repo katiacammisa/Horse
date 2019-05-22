@@ -1,9 +1,13 @@
 package TpRojinegro;
 
-import BinaryTree.BinaryTree;
 import Interfaces.Comparable;
 
-public class RedBlackTree<T extends Comparable>{
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class RedBlackTree<T extends Comparable & Serializable> implements Serializable {
 
     private RedBlackNode<T> header;
     private RedBlackNode<T> nullNode;
@@ -22,7 +26,7 @@ public class RedBlackTree<T extends Comparable>{
          header.left = header.right = nullNode;
     }
 
-    private static class RedBlackNode<T> {
+    private static class RedBlackNode<T extends Serializable> implements Serializable {
 
         T element;
         RedBlackNode<T> left;
@@ -236,7 +240,7 @@ public class RedBlackTree<T extends Comparable>{
 
     public T search(Comparable x){
         if(!exists(x)) {
-            throw new RuntimeException("The book doesn't exist");
+            throw new RuntimeException("The Book doesn't exist");
         }
         return search(header, x).element;
     }
@@ -250,5 +254,22 @@ public class RedBlackTree<T extends Comparable>{
             return search(t.right, x);
     }
 
-
+    public void save() {
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream("Hola"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

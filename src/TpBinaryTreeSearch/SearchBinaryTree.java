@@ -67,21 +67,21 @@ public class SearchBinaryTree<T extends Comparable> {
 
     public Object search(Comparable x){
         if(!exists(x)) {
-            throw new RuntimeException("The book doesn't exist");
+            throw new RuntimeException("The Book doesn't exist");
         }
         return search(root, x).getData();
     }
 
     public void insert(Comparable x){
         if(exists(x)) {
-            throw new RuntimeException("The book doesn't exist");
+            throw new RuntimeException("The Book doesn't exist");
         }
         root = insert(root, x);
     }
 
     public void eliminate(Comparable x){
         if(!exists(x)) {
-            throw new RuntimeException("The book doesn't exist");
+            throw new RuntimeException("The Book doesn't exist");
         }
         root = eliminate(root, x);
     }

@@ -2,14 +2,16 @@ package TpRojinegro;
 
 import Interfaces.Comparable;
 
-public class book implements Comparable {
+import java.io.Serializable;
+
+public class Book implements Comparable, java.lang.Comparable, Serializable {
 
     private int key;
     private String title;
     private String author;
     private long code;
 
-    public book(int key, String title, String author, long code) {
+    public Book(int key, String title, String author, long code) {
         this.key = key;
         this.title = title;
         this.author = author;
@@ -46,8 +48,8 @@ public class book implements Comparable {
 
     @Override
     public int compareTo(Object x) {
-        if(x instanceof book) {
-            return Integer.compare(key, ((book) x).key);
+        if(x instanceof Book) {
+            return Integer.compare(key, ((Book) x).key);
         } else{
             throw new RuntimeException("Not Comparable");
         }
