@@ -9,8 +9,8 @@ public class Menu {
     public static void main(String[] args) {
 
         Book book = new Book(15, "Hola", "Katy", 12345);
-        RedBlackTree2 tree2 = new RedBlackTree2<>(book);
-        Menu menu = new Menu(tree2, 15);
+        RedBlackTree2 tree = new RedBlackTree2<>();
+        Menu menu = new Menu(tree);
 
         Scanner scanner = new Scanner(System.in);
         int n = 0;
@@ -139,17 +139,23 @@ public class Menu {
         }
     }
 
-    public Menu(RedBlackTree2<Book> tree2, Comparable x) {
+    public Menu(RedBlackTree2<Book> tree2) {
         tree = tree2;
     }
 
     private void insert(Book element) {
+        if(tree.isEmpty()) {
+            tree = new RedBlackTree2<>(element);
+        }
         tree.insert(element);
     }
 
     private void delete(Book element) {
-        RedBlackTreeNode a = new RedBlackTreeNode<Book>(element);
-        tree.delete(a);
+        if(tree.isEmpty()) {
+            System.out.println("The tree is empty.");
+        } else {
+            tree.delete(search(element));
+        }
     }
 
     private void modifyTitle(Book toModify, String newTitle) {
