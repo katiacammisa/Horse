@@ -1,9 +1,8 @@
 package TpRojinegro;
 
-
 import java.io.Serializable;
 
-public class Book implements Comparable, Serializable {
+public class Book implements Serializable, Comparable<Book> {
 
     private int key;
     private String title;
@@ -46,11 +45,12 @@ public class Book implements Comparable, Serializable {
     }
 
     @Override
-    public int compareTo(Object x) {
+    public int compareTo(Book x) {
         if(x instanceof Book) {
             return Integer.compare(key, ((Book) x).key);
         } else{
             throw new RuntimeException("Not Comparable");
         }
     }
+
 }

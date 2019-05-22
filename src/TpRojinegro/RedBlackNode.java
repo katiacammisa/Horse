@@ -21,4 +21,35 @@ public class RedBlackNode<T extends Comparable & Serializable> implements Serial
             color = 1;
         }
 
+    public T getElement() {
+        return element;
+    }
+
+    public void setElement(T element) {
+        this.element = element;
+    }
+
+    public RedBlackNode<T> getLeft() {
+        return left;
+    }
+
+    public void setLeft(RedBlackNode<T> left) {
+        this.left = left;
+    }
+
+    public RedBlackNode<T> getRight() {
+        return right;
+    }
+
+    public void setRight(RedBlackNode<T> right) {
+        this.right = right;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 }

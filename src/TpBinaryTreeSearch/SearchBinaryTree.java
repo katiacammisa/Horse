@@ -1,7 +1,6 @@
 package TpBinaryTreeSearch;
 
 import BinaryTree.BinaryTree;
-import Interfaces.Comparable;
 import Nodes.DoubleNodeSearch;
 
 import java.io.Serializable;

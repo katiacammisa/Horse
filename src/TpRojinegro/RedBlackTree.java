@@ -240,23 +240,4 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
         else
             return search(t.right, x);
     }
-
-    public void save() {
-        ObjectOutputStream oos = null;
-        try {
-            oos = new ObjectOutputStream(new FileOutputStream("Hola"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            oos.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            oos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -1,6 +1,5 @@
 package TpHashTable;
 
-import Interfaces.Comparable;
 import Interfaces.Hashable;
 import Lists.DynamicList;
 import TpBinaryTreeSearch.SearchBinaryTree;

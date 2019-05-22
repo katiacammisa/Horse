@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public RedBlackTree<Book> tree;
+    private RedBlackTree2<Book> tree;
 
     public static void main(String[] args) {
 
         Book book = new Book(15, "Hola", "Katy", 12345);
-        RedBlackTree tree2 = new RedBlackTree<>();
-        Menu menu = new Menu(tree2);
+        RedBlackTree2 tree2 = new RedBlackTree2<>(book);
+        Menu menu = new Menu(tree2, 15);
 
         Scanner scanner = new Scanner(System.in);
         int n = 0;
@@ -30,7 +30,7 @@ public class Menu {
                     System.out.println("Insert the Book's key");
                     int key = scanner.nextInt();
 
-                    if(!menu.exists(key)) {
+//                    if(!menu.exists(key)) {
                         System.out.println("Insert the Book's title");
                         String title = scanner.next();
                         System.out.println("Insert the Book's author");
@@ -41,20 +41,20 @@ public class Menu {
                         Book book2 = new Book(key, title, author, code);
                         menu.insert(book2);
                         break;
-                    } else {
-                        System.out.println("There already exists a book with this key");
-                        break;
-                    }
+//                    } else {
+//                        System.out.println("There already exists a book with this key");
+//                        break;
+//                    }
 
                 case 2:
                     System.out.println("Insert the book's key");
-                    Integer delete = scanner.nextInt();
+                    int delete = scanner.nextInt();
                     menu.delete(menu.findElement(delete)); // NO ANDA EL FIND ELEMENT
                     break;
 
                 case 3:
                     System.out.println("Insert the key of the book you want to modify");
-                    Integer keyOfBook = scanner.nextInt();
+                    int keyOfBook = scanner.nextInt();
                     Book bookToModify = menu.findElement(keyOfBook);
                     int i;
                     System.out.println("Enter 1 to change title. \n" +
@@ -65,8 +65,8 @@ public class Menu {
                     switch (i) {
                         case 1:
                             System.out.println("Insert the new title");
-                            String modifyTitile = scanner.next();
-                            menu.modifyTitle(bookToModify, modifyTitile);
+                            String modifyTitle = scanner.next();
+                            menu.modifyTitle(bookToModify, modifyTitle);
                             break;
 
                         case 2:
@@ -93,7 +93,7 @@ public class Menu {
                     switch (consult) {
                         case 1:
                             System.out.println("Insert the key of the element.");
-                            Integer elementToFind = scanner.nextInt();
+                            int elementToFind = scanner.nextInt();
                             Book bookToReturn = menu.findElement(elementToFind);
                             System.out.println(bookToReturn.getTitle() + ", " + bookToReturn.getAuthor() + ", " + bookToReturn.getCode());
                             break;
@@ -139,9 +139,8 @@ public class Menu {
         }
     }
 
-    public Menu(RedBlackTree<Book> tree) {
-        tree = new RedBlackTree();
-        this.tree = tree;
+    public Menu(RedBlackTree2<Book> tree2, Comparable x) {
+        tree = tree2;
     }
 
     private void insert(Book element) {
@@ -149,37 +148,42 @@ public class Menu {
     }
 
     private void delete(Book element) {
-        tree.delete(element);
+        RedBlackTreeNode a = new RedBlackTreeNode<Book>(element);
+        tree.delete(a);
     }
 
     private void modifyTitle(Book toModify, String newTitle) {
-        tree.search(toModify).setTitle(newTitle);
+        tree.search(toModify).getKey().setTitle(newTitle);
     }
 
     private void modifyAuthor(Book toModify, String newAuthor) {
-        tree.search(toModify).setAuthor(newAuthor);
+        tree.search(toModify).getKey().setAuthor(newAuthor);
     }
 
     private void modifyCode(Book toModify, long newCode) {
-        tree.search(toModify).setCode(newCode);
+        tree.search(toModify).getKey().setCode(newCode);
     }
 
     public Book findElement(int key) {
-        if(!tree.exists(key)) {
+        if(!exists(tree, key)) {
             throw new RuntimeException("The Book doesn't exist");
         }
-        return search(tree.getRootNode(), key).element;
+        return search(tree.getRootNode().getKey()).getKey();
     }
 
-    private RedBlackNode<Book> search(RedBlackNode<Book> t, int key){
-        if ((t.element.getKey() - key) == 0)
-            return t;
-        else if ((t.element.getKey() - key) < 0)
-            return search(t.left, key);
-        else
-            return search(t.right, key);
+    public RedBlackTreeNode<Book> search(Book book) {
+        RedBlackTreeNode<Book> x = tree.getRootNode();
+        while (!x.equals(tree.getNilNode())) {
+            if (x.getKey().equals(book)) {
+                return x;
+            } else if (x.getKey().compareTo(book) > 0) {
+                x = x.getLeftChild();
+            } else {
+                x = x.getRightChild();
+            }
+        }
+        return null;
     }
-
     private int amountOfElements() {
         return tree.size();
     }
@@ -189,7 +193,7 @@ public class Menu {
     }
 
     private void showEveryElement() {
-        tree.print();
+        tree.printInOrderAllNodes();
     }
 
     private void showElementsWithCondition() {
@@ -200,11 +204,19 @@ public class Menu {
         tree.save();
     }
 
-    private boolean exists(Integer key) {
-        if(tree.exists(key)) {
-            return true;
-        } else {
+    public boolean exists(RedBlackTree2 a, int x){
+        return exists(a.getRootNode(), x);
+    }
+
+    private boolean exists(RedBlackTreeNode<Book> t, Integer x) {
+        if (t == null)
             return false;
-        }
+
+        if (x.compareTo(t.getKey().getKey()) == 0)
+            return true;
+        else if (x.compareTo( t.getKey().getKey()) < 0)
+            return exists(t.getLeftChild(), x);
+        else
+            return exists(t.getRightChild(), x);
     }
 }

@@ -1,5 +1,5 @@
-package Interfaces;
-
-public interface Comparable {
-    int compareTo(Object x);
-}
+//package Interfaces;
+//
+//public interface Comparable {
+//    int compareTo(Object x);
+//}
