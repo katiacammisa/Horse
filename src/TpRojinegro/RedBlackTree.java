@@ -1,43 +1,168 @@
 package TpRojinegro;
 
-import Nodes.DoubleNode;
-import Nodes.DoubleNodeRB;
-import TpBinaryTreeSearch.SearchBinaryTree;
-
-import java.io.Serializable;
+import BinaryTree.BinaryTree;
+import Interfaces.Comparable;
 
 public class RedBlackTree<T extends Comparable>{
 
-    private DoubleNodeRB<T> root;
-    private DoubleNodeRB<T> current;
-    private DoubleNodeRB<T> parent;
-    private DoubleNodeRB<T> grand;
-    private DoubleNodeRB<T> great;
-    private static DoubleNodeRB nullNode;
-
-    static
-    {
-        nullNode = new DoubleNodeRB(0);
-        nullNode.right = nullNode;
-        nullNode.left = nullNode;
-    }
+    private RedBlackNode<T> header;
+    private RedBlackNode<T> nullNode;
+    private RedBlackNode<T> current;
+    private RedBlackNode<T> parent;
+    private RedBlackNode<T> grand;
+    private RedBlackNode<T> great;
+    private static final int BLACK = 1;
+    private static final int RED = 0;
 
     public RedBlackTree() {
-        root = nullNode;
+
+         nullNode = new RedBlackNode<>( null );
+         nullNode.left = nullNode.right = nullNode;
+         header = new RedBlackNode<>( null );
+         header.left = header.right = nullNode;
     }
 
-    public RedBlackTree(T data){
-        root = new DoubleNodeRB<>(data);
-        root.setLeft(nullNode);
-        root.setRight(nullNode);
+    private static class RedBlackNode<T> {
+
+        T element;
+        RedBlackNode<T> left;
+        RedBlackNode<T> right;
+        int color;
+
+        // Constructors
+        RedBlackNode(T theElement) {
+            this(theElement, null, null);
+        }
+
+        RedBlackNode(T theElement, RedBlackNode<T> lt, RedBlackNode<T> rt) {
+            element = theElement;
+            left = lt;
+            right = rt;
+            color = RedBlackTree.BLACK;
+        }
     }
+
+    private RedBlackNode<T> rotate( T item, RedBlackNode<T> parent) {
+         if(compare( item, parent)<0)
+             return parent.left = compare( item, parent.left )<0?
+                 rotateWithLeftChild( parent.left ) :
+         rotateWithRightChild( parent.left );
+         else
+         return parent.right = compare( item, parent.right )<0?
+                rotateWithLeftChild( parent.right ) :
+         rotateWithRightChild( parent.right );
+    }
+
+    private final int compare(T item, RedBlackNode<T> t) {
+        if(t == header)
+            return 1;
+        else
+            return item.compareTo(t.element);
+    }
+
+    private void handleReorient(T item) {
+         current.color = RED;
+         current.left.color = BLACK;
+         current.right.color = BLACK;
+
+         if( parent.color == RED )
+             {
+             grand.color = RED;
+             if( ( compare( item, grand ) < 0 ) !=
+                     ( compare( item, parent )<0))
+             parent = rotate( item, grand );
+             current = rotate( item, great );
+             current.color = BLACK;
+             }
+         header.right.color = BLACK;
+
+    }
+
+    public void insert(T item) {
+         current = parent = grand = header;
+         nullNode.element = item;
+
+         while(compare( item, current ) != 0) {
+             great = grand; grand = parent; parent = current;
+             current = compare( item, current )<0? current.left : current.right;
+             if( current.left.color == RED && current.right.color == RED )
+                handleReorient( item );
+         }
+
+         if( current != nullNode )
+             return;
+         current = new RedBlackNode<>( item, nullNode, nullNode );
+
+         if( compare( item, parent )<0)
+             parent.left = current;
+         else
+             parent.right = current;
+         handleReorient( item );
+    }
+
+    private RedBlackNode rotateWithLeftChild(RedBlackNode B) {
+        RedBlackNode A = B.left;
+        B.left = A.right;
+        A.right = B;
+        return A;
+    }
+
+    private RedBlackNode<T> rotateWithRightChild(RedBlackNode A) {
+        RedBlackNode B = A.right;
+        A.right = B.left;
+        B.left = A;
+        return B;
+    }
+
+
+
+
+
+
+
+    public void delete(T x) {
+
+    }
+
+
+    public int size(){
+        return size(this);
+    }
+
+    private int size(RedBlackTree a) {
+        if (a.isEmpty()) {
+            return 0;
+        } else {
+            return 1 + size(a.getRight()) + size(a.getLeft());
+        }
+    }
+
+    public void print(){
+        inOrder(this);
+    }
+
+    public void inOrder(RedBlackTree<T> a) {
+        if (!a.isEmpty()) {
+            inOrder(a.getLeft());
+            System.out.println(a.getRoot());
+            inOrder(a.getRight());
+        }
+    }
+
+
+
+
+
+
+
+
 
     public boolean isEmpty() {
-        return root == null;
+        return header == null;
     }
 
-    public void setRoot(DoubleNodeRB<T> root) {
-        this.root = root;
+    public void setRoot(RedBlackNode<T> root) {
+        this.header = root;
     }
 
     public RedBlackTree<T> getLeft() {
@@ -45,7 +170,7 @@ public class RedBlackTree<T extends Comparable>{
             throw new RuntimeException("The tree is empty");
         }
         RedBlackTree<T> t = new RedBlackTree<>();
-        t.root = root.getLeft();
+        t.header = header.left;
         return t;
     }
 
@@ -54,165 +179,76 @@ public class RedBlackTree<T extends Comparable>{
             throw new RuntimeException("The tree is empty");
         }
         RedBlackTree<T> t = new RedBlackTree<>();
-        t.root = root.getRight();
+        t.header = header.right;
         return t;
     }
 
-    public Object getRoot() {
+    public T getRoot() {
         if(isEmpty()) {
             throw new RuntimeException("The tree is empty");
         }
-        return root.getData();
+        return header.element;
     }
 
     public boolean exists(Comparable x){
-        return exists(root, x);
+        return exists(header, x);
     }
 
     public Object getMin(){
         if(isEmpty()) {
             throw new RuntimeException("The tree is empty");
         }
-        return getMin(root).getData();
+        return getMin(header).element;
     }
 
-    private boolean exists(DoubleNodeRB<T> t, Comparable x) {
+    private boolean exists(RedBlackNode<T> t, Comparable x) {
         if (t == null)
             return false;
 
-        if (x.compareTo(t.getData()) == 0)
+        if (x.compareTo(t.element) == 0)
             return true;
-        else if (x.compareTo( t.getData())< 0)
-            return exists(t.getLeft(), x);
+        else if (x.compareTo( t.element)< 0)
+            return exists(t.left, x);
         else
-            return exists(t.getRight(), x);
+            return exists(t.right, x);
     }
 
-    private DoubleNodeRB<T> getMin(DoubleNodeRB<T> t){
-        if (t.getLeft() == null)
+    private RedBlackNode<T> getMin(RedBlackNode<T> t){
+        if (t.left == null)
             return t;
         else
-            return getMin(t.getLeft());
+            return getMin(t.left);
     }
 
     public Object getMax(){
         if(isEmpty()) {
             throw new RuntimeException("The tree is empty");
         }
-        return getMax(root).getData();
+        return getMax(header).element;
     }
 
-    private DoubleNodeRB<T> getMax(DoubleNodeRB<T> t){
-        if (t.getRight() == null)
+    private RedBlackNode<T> getMax(RedBlackNode<T> t){
+        if (t.right == null)
             return t;
         else
-            return getMax(t.getRight());
+            return getMax(t.right);
     }
 
-    public Object search(Comparable x){
+    public T search(Comparable x){
         if(!exists(x)) {
-            throw new RuntimeException("The element doesn't exist");
+            throw new RuntimeException("The book doesn't exist");
         }
-        return search(root, x).getData();
+        return search(header, x).element;
     }
 
-    private DoubleNodeRB<T> search(DoubleNodeRB<T> t, Comparable x){
-        if (x.compareTo( t.getData())== 0)
+    private RedBlackNode<T> search(RedBlackNode<T> t, Comparable x){
+        if (x.compareTo( t.element)== 0)
             return t;
-        else if (x.compareTo( t.getData())< 0)
-            return search(t.getLeft(), x);
+        else if (x.compareTo( t.element)< 0)
+            return search(t.left, x);
         else
-            return search(t.getRight(), x);
+            return search(t.right, x);
     }
-
-//    public void insert(T item){
-//        current = parent = grand = root;
-//        nullNode.data = item;
-//        while (current.data != item)
-//        {
-//            great = grand;
-//            grand = parent;
-//            parent = current;
-//            current = item.compareTo(current.data) > 0 ? current.left : current.right;
-//
-//            if (!current.left.isBlack() && !current.right.isBlack())
-//                handleReorient( item );
-//        }
-//
-//        if (current != nullNode)
-//            return;
-//        current = new DoubleNodeRB<>(item, nullNode, nullNode);
-//
-//        if (item.compareTo(parent.data) > 0)
-//            parent.left = current;
-//        else
-//            parent.right = current;
-//        handleReorient( item );
-//    }
-//
-//    private void handleReorient(T item) {
-//        // Do the color flip
-//        current.turnRed();
-//        current.left.turnBlack();
-//        current.right.turnBlack();
-//
-//        if (!parent.isBlack())
-//        {
-//            grand.turnRed();
-//            if (item.compareTo(grand.data) < 0 != item.compareTo(parent.data) < 0)
-//                parent = rotate( item, grand );
-//            current = rotate(item, great );
-//            current.turnBlack();
-//        }
-//        root.right.turnBlack();
-//    }
-
-    private DoubleNodeRB<T> rotate(T item, DoubleNodeRB<T> parent) {
-        if(item.compareTo(parent.data) < 0)
-            return parent.left = item.compareTo(parent.left.data) < 0 ? rotateWithLeftChild(parent.left) : rotateWithRightChild(parent.left) ;
-        else
-            return parent.right = item.compareTo(parent.right.data) < 0 ? rotateWithLeftChild(parent.right) : rotateWithRightChild(parent.right);
-    }
-
-    private DoubleNodeRB rotateWithLeftChild(DoubleNodeRB B)
-    {
-        DoubleNodeRB A = B.left;
-        B.left = A.right;
-        A.right = B;
-        return A;
-    }
-
-    private DoubleNodeRB<T> rotateWithRightChild(DoubleNodeRB A) {
-
-        DoubleNodeRB B = A.right;
-        A.right = B.left;
-        B.left = A;
-        return B;
-    }
-
-    public int countNodes()
-    {
-        return countNodes(root.right);
-    }
-    private int countNodes(DoubleNodeRB r)
-    {
-        if (r == nullNode)
-            return 0;
-        else
-        {
-            int l = 1;
-            l += countNodes(r.left);
-            l += countNodes(r.right);
-            return l;
-        }
-    }
-
-    public void delete(DoubleNodeRB n){
-
-    }
-
-
-
 
 
 }

@@ -20,11 +20,11 @@ public class OpenHashTable<T extends Hashable> {
     }
 
     public void insert (T x) {
-        int k =(x).hash(capacity);
+        int k = x.hash(capacity);
         t[k].insertNext(x);
     }
     public Object search (T x) {
-        int k = ((Hashable) x).hash(capacity);
+        int k = x.hash(capacity);
         t[k].first();
         int l = t[k].size();
         for (int i = 0 ; i < l ; i ++ )
