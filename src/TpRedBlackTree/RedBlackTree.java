@@ -1,4 +1,4 @@
-package TpRojinegro;
+package TpRedBlackTree;
 
 import BinaryTree.BinaryTree;
 
