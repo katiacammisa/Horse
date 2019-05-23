@@ -10,10 +10,6 @@ public class Menu {
 
     public static void main(String[] args) {
 
-
-        /* FALTA:
-                   2 CON CONDICION
-        */
         RedBlackTree tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
 
