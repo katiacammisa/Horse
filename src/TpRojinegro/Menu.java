@@ -165,7 +165,7 @@ public class Menu {
         if(tree.isEmpty()) {
             System.out.println("The tree is empty.");
         } else {
-            tree.delete(search(element));
+            tree.delete(search(element.getKey()));
         }
     }
 
@@ -185,15 +185,15 @@ public class Menu {
         if(!exists(tree, key)) {
             throw new RuntimeException("The Book doesn't exist");
         }
-        return search(tree.getRootNode().getKey()).getKey();
+        return search(key).getKey();
     }
 
-    public RedBlackTreeNode<Book> search(Book book) {
+    public RedBlackTreeNode<Book> search(int key) {
         RedBlackTreeNode<Book> x = tree.getRootNode();
         while (!x.equals(tree.getNilNode())) {
-            if (x.getKey().equals(book)) {
+            if (x.getKey().getKey() == key) {
                 return x;
-            } else if (x.getKey().compareTo(book) > 0) {
+            } else if (x.getKey().getKey() > key) {
                 x = x.getLeftChild();
             } else {
                 x = x.getRightChild();

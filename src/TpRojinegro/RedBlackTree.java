@@ -381,7 +381,7 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
     }
 
     public boolean isEmpty() {
-        return root == null;
+        return root == null || root.getKey() == null;
     }
 
     public RedBlackTree<T> getLeft() {
