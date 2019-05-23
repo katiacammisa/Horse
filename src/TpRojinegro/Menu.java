@@ -29,15 +29,15 @@ class Menu {
     }
 
     void modifyTitle(Book toModify, String newTitle) {
-        tree.search(toModify).getKey().setTitle(newTitle);
+        tree.search(toModify).getElement().setTitle(newTitle);
     }
 
     void modifyAuthor(Book toModify, String newAuthor) {
-        tree.search(toModify).getKey().setAuthor(newAuthor);
+        tree.search(toModify).getElement().setAuthor(newAuthor);
     }
 
     void modifyCode(Book toModify, long newCode) {
-        tree.search(toModify).getKey().setCode(newCode);
+        tree.search(toModify).getElement().setCode(newCode);
     }
 
     int amountOfElements() {
@@ -58,10 +58,10 @@ class Menu {
                 printInOrderAllNodes(node.getLeftChild(), level + 1, "left child");
             }
 
-            if (node.getKey() != null && node.getColor() != null) {
-                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+            if (node.getElement() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getElement().toString() + ". Color: "
                         + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
-                        + node.getParent().getKey();
+                        + node.getParent().getElement();
                 System.out.println(output);
             }
 
@@ -83,9 +83,9 @@ class Menu {
         if (t == null)
             return false;
 
-        if (x.compareTo(t.getKey().getKey()) == 0)
+        if (x.compareTo(t.getElement().getKey()) == 0)
             return true;
-        else if (x.compareTo( t.getKey().getKey()) < 0)
+        else if (x.compareTo( t.getElement().getKey()) < 0)
             return exists(t.getLeftChild(), x);
         else
             return exists(t.getRightChild(), x);
@@ -99,15 +99,15 @@ class Menu {
         if(exists(tree, key)) {
             throw new RuntimeException("The Book doesn't exist");
         }
-        return Objects.requireNonNull(search(key)).getKey();
+        return Objects.requireNonNull(search(key)).getElement();
     }
 
     private RedBlackTreeNode<Book> search(int key) {
         RedBlackTreeNode<Book> x = tree.getRootNode();
         while (!x.equals(tree.getNilNode())) {
-            if (x.getKey().getKey() == key) {
+            if (x.getElement().getKey() == key) {
                 return x;
-            } else if (x.getKey().getKey() > key) {
+            } else if (x.getElement().getKey() > key) {
                 x = x.getLeftChild();
             } else {
                 x = x.getRightChild();

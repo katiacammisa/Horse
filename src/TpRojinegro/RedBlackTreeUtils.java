@@ -2,9 +2,9 @@ package TpRojinegro;
 
 import java.io.Serializable;
 
-public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
+class RedBlackTreeUtils implements Serializable {
 
-    static <T extends Comparable<T> & Serializable> void leftRotate(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
+    private static <T extends Comparable<T> & Serializable> void leftRotate(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
         RedBlackTreeNode<T> child = node.getRightChild();
         node.setRightChild(child.getLeftChild());
         if (child.getLeftChild() != tree.getNilNode()) {
@@ -22,7 +22,7 @@ public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
         node.setParent(child);
     }
 
-    static <T extends Comparable<T> & Serializable> void rightRotate(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
+    private static <T extends Comparable<T> & Serializable> void rightRotate(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
         RedBlackTreeNode<T> child = node.getLeftChild();
         node.setLeftChild(child.getRightChild());
         if (child.getRightChild() != tree.getNilNode()) {
@@ -100,7 +100,7 @@ public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
      *            The node to remove
      */
     static <T extends Comparable<T> & Serializable> void deleteFixup(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
-        RedBlackTreeNode<T> x = tree.getNilNode();
+        RedBlackTreeNode<T> x;
         while (!node.equals(tree.getRootNode()) && node.getColor() == RedBlackTreeNode.RBT_COLORS.BLACK) {
             if (node.equals(node.getParent().getLeftChild())) {
                 x = node.getParent().getRightChild();

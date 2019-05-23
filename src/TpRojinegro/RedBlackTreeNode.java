@@ -12,14 +12,14 @@ class RedBlackTreeNode<T extends Comparable<T> & Serializable> implements Serial
     private RedBlackTreeNode<T> leftChild;
     private RedBlackTreeNode<T> rightChild;
     private RedBlackTreeNode.RBT_COLORS color;
-    private T key;
+    private T element;
 
     RedBlackTreeNode(){
         this.color = RedBlackTreeNode.RBT_COLORS.BLACK;
     }
 
-    RedBlackTreeNode(T key) {
-        this.key = key;
+    RedBlackTreeNode(T element) {
+        this.element = element;
         this.color = RedBlackTreeNode.RBT_COLORS.BLACK;
     }
 
@@ -55,7 +55,7 @@ class RedBlackTreeNode<T extends Comparable<T> & Serializable> implements Serial
         this.color = color;
     }
 
-    T getKey() {
-        return key;
+    T getElement() {
+        return element;
     }
 }

@@ -9,45 +9,45 @@ public class Book implements Serializable, Comparable<Book> {
     private String author;
     private long code;
 
-    public Book(int key, String title, String author, long code) {
+    Book(int key, String title, String author, long code) {
         this.key = key;
         this.title = title;
         this.author = author;
         this.code = code;
     }
 
-    public int getKey() {
+    int getKey() {
         return key;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public String getAuthor() {
+    String getAuthor() {
         return author;
     }
 
-    public long getCode() {
+    long getCode() {
         return code;
     }
 
-    public void setTitle(String title) {
+    void setTitle(String title) {
         this.title = title;
     }
 
-    public void setAuthor(String author) {
+    void setAuthor(String author) {
         this.author = author;
     }
 
-    public void setCode(long code) {
+    void setCode(long code) {
         this.code = code;
     }
 
     @Override
     public int compareTo(Book x) {
-        if(x instanceof Book) {
-            return Integer.compare(key, ((Book) x).key);
+        if(x != null) {
+            return Integer.compare(key, x.key);
         } else{
             throw new RuntimeException("Not Comparable");
         }

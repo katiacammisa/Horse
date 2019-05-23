@@ -67,9 +67,9 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
     RedBlackTreeNode<T> search(T key) {
         RedBlackTreeNode<T> x = root;
         while (!x.equals(nil)) {
-            if (x.getKey().equals(key)) {
+            if (x.getElement().equals(key)) {
                 return x;
-            } else if (x.getKey().compareTo(key) > 0) {
+            } else if (x.getElement().compareTo(key) > 0) {
                 x = x.getLeftChild();
             } else {
                 x = x.getRightChild();
@@ -123,13 +123,13 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
         RedBlackTreeNode<T> y = nil;
         while (!x.equals(nil)) {
             y = x;
-            if (node.getKey().compareTo(x.getKey()) >= 0) {
+            if (node.getElement().compareTo(x.getElement()) >= 0) {
                 x = x.getRightChild();
-            } else if (node.getKey().compareTo(x.getKey()) < 0) {
+            } else if (node.getElement().compareTo(x.getElement()) < 0) {
                 x = x.getLeftChild();
             }
         }
-        if (y.getKey().compareTo(node.getKey()) > 0) {
+        if (y.getElement().compareTo(node.getElement()) > 0) {
             y.setLeftChild(node);
         } else {
             y.setRightChild(node);
@@ -187,10 +187,10 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
                 printInOrderAllNodes(node.getLeftChild(), level + 1, "left child");
             }
 
-            if (node.getKey() != null && node.getColor() != null) {
-                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+            if (node.getElement() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getElement().toString() + ". Color: "
                         + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
-                        + node.getParent().getKey();
+                        + node.getParent().getElement();
                 System.out.println(output);
             }
 
@@ -211,10 +211,10 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
 //    private void printPreOrderAllNodes(RedBlackTreeNode<T> node, int level, String typeChild) {
 //        if (node != nil) {
 //
-//            if (node.getKey() != null && node.getColor() != null) {
-//                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+//            if (node.getElement() != null && node.getColor() != null) {
+//                String output = "Node at level " + level + ". Key: " + node.getElement().toString() + ". Color: "
 //                        + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
-//                        + node.getParent().getKey();
+//                        + node.getParent().getElement();
 //                System.out.println(output);
 //            }
 //
@@ -248,10 +248,10 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
                 printPostOrderAllNodes(node.getRightChild(), level + 1, "right child");
             }
 
-            if (node.getKey() != null && node.getColor() != null) {
-                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+            if (node.getElement() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getElement().toString() + ". Color: "
                         + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
-                        + node.getParent().getKey();
+                        + node.getParent().getElement();
                 System.out.println(output);
             }
         }
@@ -265,7 +265,7 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
 
     private void fromRBTtoPreOrderList(RedBlackTreeNode<T> node, ArrayList<T> list) {
 
-        list.add(node.getKey());
+        list.add(node.getElement());
 
         if (node.getLeftChild() != nil) {
             fromRBTtoPreOrderList(node.getLeftChild(), list);
@@ -288,7 +288,7 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
             fromRBTtoInOrderList(node.getLeftChild(), list);
         }
 
-        list.add(node.getKey());
+        list.add(node.getElement());
 
         if (node.getRightChild() != nil) {
             fromRBTtoInOrderList(node.getRightChild(), list);
@@ -311,7 +311,7 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
             fromRBTtoPostOrderList(node.getRightChild(), list);
         }
 
-        list.add(node.getKey());
+        list.add(node.getElement());
     }
 
 
@@ -323,9 +323,9 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
         if (t == null)
             return false;
 
-        if (x.compareTo(t.getKey()) == 0)
+        if (x.compareTo(t.getElement()) == 0)
             return true;
-        else if (x.compareTo(t.getKey()) < 0)
+        else if (x.compareTo(t.getElement()) < 0)
             return exists(t.getLeftChild(), x);
         else
             return exists(t.getRightChild(), x);
@@ -382,7 +382,7 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
     }
 
     public boolean isEmpty() {
-        return root == null || root.getKey() == null;
+        return root == null || root.getElement() == null;
     }
 
     private RedBlackTree<T> getLeft() {
