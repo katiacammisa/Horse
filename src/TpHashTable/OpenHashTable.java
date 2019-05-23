@@ -1,5 +1,6 @@
 package TpHashTable;
 
+
 import Interfaces.Hashable;
 import Lists.DynamicList;
 import TpBinaryTreeSearch.SearchBinaryTree;
@@ -46,4 +47,7 @@ public class OpenHashTable<T extends Hashable> {
         return a;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
 }
