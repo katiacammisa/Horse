@@ -15,7 +15,6 @@ public class Menu {
 
 
         */
-        Book book = new Book(15, "Hola", "Katy", 12345);
         RedBlackTree tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
 
@@ -33,6 +32,7 @@ public class Menu {
                     "Enter 6 to save tree \n" +
                     "Enter 7 to exit.");
             n = scanner.nextInt();
+            //Faltan los cases, dio demasiada paja en este momento
 
             switch (n) {
                 case 1:
@@ -66,7 +66,6 @@ public class Menu {
                     int keyOfBook = scanner.nextInt();
                     Book bookToModify = menu.findElement(keyOfBook);
                     int i;
-
                     System.out.println("Enter 1 to change title. \n" +
                             "Enter 2 to change author. \n" +
                             "Enter 3 to change code");
@@ -204,7 +203,6 @@ public class Menu {
     }
     private int amountOfElements() {
         return tree.size(tree);
-
     }
 
     private int amountOfElementWithCondition(/*condicion*/) {
