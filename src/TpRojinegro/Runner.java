@@ -13,8 +13,8 @@ public class Runner {
             menu.recover();
         }
         Scanner scanner = new Scanner(System.in);
-        int n = 0;
-        while(n != 7){
+        int n;
+        while(true){
             System.out.println("Enter 1 to insert a book. \n" +
                     "Enter 2 to delete a Book \n" +
                     "Enter 3 to modify something about a book \n" +

@@ -2,9 +2,9 @@ package TpRojinegro;
 
 import java.io.Serializable;
 
-public class RedBlackTreeNode<T extends Comparable<T> & Serializable> implements Serializable {
+class RedBlackTreeNode<T extends Comparable<T> & Serializable> implements Serializable {
 
-    public static enum RBT_COLORS {
+    public enum RBT_COLORS {
         RED, BLACK
     }
 
@@ -14,52 +14,48 @@ public class RedBlackTreeNode<T extends Comparable<T> & Serializable> implements
     private RedBlackTreeNode.RBT_COLORS color;
     private T key;
 
-    public RedBlackTreeNode(){
+    RedBlackTreeNode(){
         this.color = RedBlackTreeNode.RBT_COLORS.BLACK;
     }
 
-    public RedBlackTreeNode(T key) {
+    RedBlackTreeNode(T key) {
         this.key = key;
         this.color = RedBlackTreeNode.RBT_COLORS.BLACK;
     }
 
-    public RedBlackTreeNode<T> getParent() {
+    RedBlackTreeNode<T> getParent() {
         return parent;
     }
 
-    public void setParent(RedBlackTreeNode<T> parent) {
+    void setParent(RedBlackTreeNode<T> parent) {
         this.parent = parent;
     }
 
-    public RedBlackTreeNode<T> getLeftChild() {
+    RedBlackTreeNode<T> getLeftChild() {
         return leftChild;
     }
 
-    public void setLeftChild(RedBlackTreeNode<T> childLeft) {
+    void setLeftChild(RedBlackTreeNode<T> childLeft) {
         this.leftChild = childLeft;
     }
 
-    public RedBlackTreeNode<T> getRightChild() {
+    RedBlackTreeNode<T> getRightChild() {
         return rightChild;
     }
 
-    public void setRightChild(RedBlackTreeNode<T> childRight) {
+    void setRightChild(RedBlackTreeNode<T> childRight) {
         this.rightChild = childRight;
     }
 
-    public RedBlackTreeNode.RBT_COLORS getColor() {
+    RedBlackTreeNode.RBT_COLORS getColor() {
         return color;
     }
 
-    public void setColor(RedBlackTreeNode.RBT_COLORS color) {
+    void setColor(RedBlackTreeNode.RBT_COLORS color) {
         this.color = color;
     }
 
-    public T getKey() {
+    T getKey() {
         return key;
-    }
-
-    public void setKey(T key) {
-        this.key = key;
     }
 }

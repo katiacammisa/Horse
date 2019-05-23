@@ -24,7 +24,7 @@ class Menu {
         if(tree.isEmpty()) {
             System.out.println("The tree is empty.");
         } else {
-            tree.delete(search(element.getKey()));
+            tree.delete(Objects.requireNonNull(search(element.getKey())));
         }
     }
 
