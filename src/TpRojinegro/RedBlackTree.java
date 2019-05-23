@@ -1,118 +1,378 @@
 package TpRojinegro;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import BinaryTree.BinaryTree;
 
-public class RedBlackTree<T extends Comparable & Serializable> implements Serializable {
+import java.io.*;
+import java.util.ArrayList;
 
-    private RedBlackNode<T> header;
-    private RedBlackNode<T> nullNode;
-    private RedBlackNode<T> current;
-    private RedBlackNode<T> parent;
-    private RedBlackNode<T> grand;
-    private RedBlackNode<T> great;
-    private static final int BLACK = 1;
-    private static final int RED = 0;
+public class RedBlackTree<T extends Comparable<T> & Serializable> implements Serializable {
+
+    private RedBlackTreeNode<T> nil;
+    private RedBlackTreeNode<T> root;
 
     public RedBlackTree() {
+    }
 
-         nullNode = new RedBlackNode<>(null);
-         nullNode.left = nullNode.right = nullNode;
-         header = new RedBlackNode<>( null );
-         header.left = header.right = nullNode;
+    public RedBlackTree(T key) {
+        this(new RedBlackTreeNode<>(key));
+    }
+
+    private RedBlackTree(RedBlackTreeNode<T> root) {
+        this.nil = new RedBlackTreeNode<T>();
+        this.root = root;
+        root.setLeftChild(nil);
+        root.setRightChild(nil);
+        root.setParent(nil);
+        root.setColor(RedBlackTreeNode.RBT_COLORS.BLACK);
+    }
+
+    void setRootNode(RedBlackTreeNode<T> root) {
+        this.root = root;
+    }
+
+    RedBlackTreeNode<T> getRootNode() {
+        return root;
+    }
+
+    RedBlackTreeNode<T> getNilNode() {
+        return nil;
+    }
+
+    public RedBlackTreeNode<T> treeSuccessor(RedBlackTreeNode<T> node) {
+        if (!node.getRightChild().equals(nil)) {
+            return getMinNodeStartingFrom(node.getRightChild());
+        }
+
+        RedBlackTreeNode<T> successor = node.getParent();
+        while (!successor.equals(nil) && node.equals(successor.getRightChild())) {
+            node = successor;
+            successor = successor.getParent();
+        }
+        return successor;
+    }
+
+    public RedBlackTreeNode<T> treePredecessor(RedBlackTreeNode<T> node) {
+        if (!node.getLeftChild().equals(nil)) {
+            return getMaxNodeStartingFrom(node.getLeftChild());
+        }
+
+        RedBlackTreeNode<T> predecessor = node.getParent();
+        while (!predecessor.equals(nil) && node.equals(predecessor.getLeftChild())) {
+            node = predecessor;
+            predecessor = predecessor.getParent();
+        }
+        return predecessor;
+    }
+
+    public RedBlackTreeNode<T> search(T key) {
+        RedBlackTreeNode<T> x = root;
+        while (!x.equals(nil)) {
+            if (x.getKey().equals(key)) {
+                return x;
+            } else if (x.getKey().compareTo(key) > 0) {
+                x = x.getLeftChild();
+            } else {
+                x = x.getRightChild();
+            }
+        }
+        return null;
+    }
+
+    public RedBlackTreeNode<T> getMinNodeStartingFrom(RedBlackTreeNode<T> startingNode) {
+        RedBlackTreeNode<T> x = startingNode;
+        RedBlackTreeNode<T> y = nil;
+        while (!x.equals(nil)) {
+            y = x;
+            x = x.getLeftChild();
+        }
+        if (y != nil) {
+            return y;
+        } else {
+            return null;
+        }
+    }
+
+    public RedBlackTreeNode<T> getMinNode() {
+        return getMinNodeStartingFrom(root);
+    }
+
+    public RedBlackTreeNode<T> getMaxNodeStartingFrom(RedBlackTreeNode<T> startingNode) {
+        RedBlackTreeNode<T> x = startingNode;
+        RedBlackTreeNode<T> y = nil;
+        while (!x.equals(nil)) {
+            y = x;
+            x = x.getRightChild();
+        }
+        if (y != nil) {
+            return y;
+        } else {
+            return null;
+        }
+    }
+
+    public RedBlackTreeNode<T> getMaxNode() {
+        return getMaxNodeStartingFrom(root);
+    }
+
+    public void insert(T key) {
+        insert(new RedBlackTreeNode<T>(key));
+    }
+
+    private void insert(RedBlackTreeNode<T> node) {
+        RedBlackTreeNode<T> x = root;
+        RedBlackTreeNode<T> y = nil;
+        while (!x.equals(nil)) {
+            y = x;
+            if (node.getKey().compareTo(x.getKey()) >= 0) {
+                x = x.getRightChild();
+            } else if (node.getKey().compareTo(x.getKey()) < 0) {
+                x = x.getLeftChild();
+            }
+        }
+        if (y.getKey().compareTo(node.getKey()) > 0) {
+            y.setLeftChild(node);
+        } else {
+            y.setRightChild(node);
+        }
+        node.setParent(y);
+        node.setLeftChild(nil);
+        node.setRightChild(nil);
+        node.setColor(RedBlackTreeNode.RBT_COLORS.RED);
+        RedBlackTreeUtils.rbtInsertFixup(this, node);
+    }
+
+    public void delete(RedBlackTreeNode<T> node) {
+        RedBlackTreeNode<T> y = node;
+        RedBlackTreeNode<T> x;
+        RedBlackTreeNode.RBT_COLORS y_original_color = y.getColor();
+        if (node.getLeftChild().equals(nil)) {
+            x = node.getRightChild();
+            RedBlackTreeUtils.rbtTransplant(this, node, node.getRightChild());
+        } else if (node.getRightChild().equals(nil)) {
+            x = node.getLeftChild();
+            RedBlackTreeUtils.rbtTransplant(this, node, node.getLeftChild());
+        } else {
+            y = getMinNodeStartingFrom(node.getRightChild());
+            y_original_color = y.getColor();
+            x = y.getRightChild();
+            if (y.getParent().equals(node)) {
+                x.setParent(y);
+            } else {
+                RedBlackTreeUtils.rbtTransplant(this, y, y.getRightChild());
+                y.setRightChild(node.getRightChild());
+                y.getRightChild().setParent(y);
+            }
+            RedBlackTreeUtils.rbtTransplant(this, node, y);
+            y.setLeftChild(node.getLeftChild());
+            y.getLeftChild().setParent(y);
+            y.setColor(node.getColor());
+        }
+        if (y_original_color == RedBlackTreeNode.RBT_COLORS.BLACK) {
+            RedBlackTreeUtils.deleteFixup(this, x);
+        }
+    }
+
+    public void printInOrderAllNodes() {
+        if (root != nil) {
+            printInOrderAllNodes(root, 0, "root");
+        } else {
+            System.out.println("The RBT is empty");
+        }
+    }
+
+    private void printInOrderAllNodes(RedBlackTreeNode<T> node, int level, String typeChild) {
+        if (node != nil) {
+            if (node.getLeftChild() != nil) {
+                printInOrderAllNodes(node.getLeftChild(), level + 1, "left child");
+            }
+
+            if (node.getKey() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+                        + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
+                        + node.getParent().getKey();
+                System.out.println(output);
+            }
+
+            if (node.getRightChild() != nil) {
+                printInOrderAllNodes(node.getRightChild(), level + 1, "right child");
+            }
+        }
+    }
+
+    public void printPreOrderAllNodes() {
+        if (root != nil) {
+            printPreOrderAllNodes(root, 0, "root");
+        } else {
+            System.out.println("The RBT is empty");
+        }
+    }
+
+    private void printPreOrderAllNodes(RedBlackTreeNode<T> node, int level, String typeChild) {
+        if (node != nil) {
+
+            if (node.getKey() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+                        + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
+                        + node.getParent().getKey();
+                System.out.println(output);
+            }
+
+            if (node.getLeftChild() != nil) {
+                printPreOrderAllNodes(node.getLeftChild(), level + 1, "left child");
+            }
+
+            if (node.getRightChild() != nil) {
+                printPreOrderAllNodes(node.getRightChild(), level + 1, "right child");
+            }
+        }
     }
 
 
-    private RedBlackNode<T> rotate( T item, RedBlackNode<T> parent) {
-         if(compare( item, parent)<0)
-             return parent.left = compare( item, parent.left )<0?
-                 rotateWithLeftChild( parent.left ) :
-         rotateWithRightChild( parent.left );
-         else
-         return parent.right = compare( item, parent.right )<0?
-                rotateWithLeftChild( parent.right ) :
-         rotateWithRightChild( parent.right );
+    public void printPostOrderAllNodes() {
+        if (root != nil) {
+            printPostOrderAllNodes(root, 0, "root");
+        } else {
+            System.out.println("The RBT is empty");
+        }
     }
 
-    private final int compare(T item, RedBlackNode<T> t) {
-        if(t == header)
-            return 1;
+    private void printPostOrderAllNodes(RedBlackTreeNode<T> node, int level, String typeChild) {
+        if (node != nil) {
+
+            if (node.getLeftChild() != nil) {
+                printPostOrderAllNodes(node.getLeftChild(), level + 1, "left child");
+            }
+
+            if (node.getRightChild() != nil) {
+                printPostOrderAllNodes(node.getRightChild(), level + 1, "right child");
+            }
+
+            if (node.getKey() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getKey().toString() + ". Color: "
+                        + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
+                        + node.getParent().getKey();
+                System.out.println(output);
+            }
+        }
+    }
+
+    public ArrayList<T> toPreOrderList() {
+        ArrayList<T> list = new ArrayList<T>();
+        fromRBTtoPreOrderList(root, list);
+        return list;
+    }
+
+    private void fromRBTtoPreOrderList(RedBlackTreeNode<T> node, ArrayList<T> list) {
+
+        list.add(node.getKey());
+
+        if (node.getLeftChild() != nil) {
+            fromRBTtoPreOrderList(node.getLeftChild(), list);
+        }
+
+        if (node.getRightChild() != nil) {
+            fromRBTtoPreOrderList(node.getRightChild(), list);
+        }
+    }
+
+    public ArrayList<T> toInOrderList() {
+        ArrayList<T> list = new ArrayList<T>();
+        fromRBTtoInOrderList(root, list);
+        return list;
+    }
+
+    private void fromRBTtoInOrderList(RedBlackTreeNode<T> node, ArrayList<T> list) {
+
+        if (node.getLeftChild() != nil) {
+            fromRBTtoInOrderList(node.getLeftChild(), list);
+        }
+
+        list.add(node.getKey());
+
+        if (node.getRightChild() != nil) {
+            fromRBTtoInOrderList(node.getRightChild(), list);
+        }
+    }
+
+    public ArrayList<T> toPostOrderList() {
+        ArrayList<T> list = new ArrayList<T>();
+        fromRBTtoPostOrderList(root, list);
+        return list;
+    }
+
+    private void fromRBTtoPostOrderList(RedBlackTreeNode<T> node, ArrayList<T> list) {
+
+        if (node.getLeftChild() != nil) {
+            fromRBTtoPostOrderList(node.getLeftChild(), list);
+        }
+
+        if (node.getRightChild() != nil) {
+            fromRBTtoPostOrderList(node.getRightChild(), list);
+        }
+
+        list.add(node.getKey());
+    }
+
+
+    public boolean exists(Comparable x){
+        return exists(root, x);
+    }
+
+    private boolean exists(RedBlackTreeNode<T> t, Comparable x) {
+        if (t == null)
+            return false;
+
+        if (x.compareTo(t.getKey()) == 0)
+            return true;
+        else if (x.compareTo( t.getKey()) < 0)
+            return exists(t.getLeftChild(), x);
         else
-            return item.compareTo(t.element);
+            return exists(t.getRightChild(), x);
     }
 
-    private void handleReorient(T item) {
-         current.color = RED;
-         current.left.color = BLACK;
-         current.right.color = BLACK;
-
-         if( parent.color == RED )
-             {
-             grand.color = RED;
-             if( ( compare( item, grand ) < 0 ) !=
-                     ( compare( item, parent )<0))
-             parent = rotate( item, grand );
-             current = rotate( item, great );
-             current.color = BLACK;
-             }
-         header.right.color = BLACK;
-
+    public void save() {
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream("Hola"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void insert(T item) {
-         current = parent = grand = header;
-         nullNode.element = item;
-
-         while(compare(item, current) != 0) {
-             great = grand; grand = parent; parent = current;
-             current = compare(item, current) < 0 ? current.left : current.right;
-             if(current.left.color == RED && current.right.color == RED )
-                handleReorient(item);
-         }
-
-         if(current != nullNode)
-             return;
-         current = new RedBlackNode<>(item, nullNode, nullNode);
-
-         if(compare(item, parent) < 0)
-             parent.left = current;
-         else
-             parent.right = current;
-         handleReorient(item);
+    public BinaryTree recover() {
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream("Hola"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BinaryTree a = null;
+        try {
+            a = (BinaryTree) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            ois.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return a;
     }
 
-    private RedBlackNode rotateWithLeftChild(RedBlackNode B) {
-        RedBlackNode A = B.left;
-        B.left = A.right;
-        A.right = B;
-        return A;
-    }
-
-    private RedBlackNode<T> rotateWithRightChild(RedBlackNode A) {
-        RedBlackNode B = A.right;
-        A.right = B.left;
-        B.left = A;
-        return B;
-    }
-
-
-
-
-
-
-
-    public void delete(T x) {
-
-    }
-
-
-    public int size(){
-        return size(this);
-    }
-
-    private int size(RedBlackTree a) {
+    public int size(RedBlackTree a) {
         if (a.isEmpty()) {
             return 0;
         } else {
@@ -120,32 +380,8 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
         }
     }
 
-    public void print(){
-        inOrder(this);
-    }
-
-    public void inOrder(RedBlackTree<T> a) {
-        if (!a.isEmpty()) {
-            inOrder(a.getLeft());
-            System.out.println(a.getRoot());
-            inOrder(a.getRight());
-        }
-    }
-
-
-
-
-
-
-
-
-
     public boolean isEmpty() {
-        return header == null;
-    }
-
-    public void setRoot(RedBlackNode<T> root) {
-        this.header = root;
+        return root == null;
     }
 
     public RedBlackTree<T> getLeft() {
@@ -153,7 +389,7 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
             throw new RuntimeException("The tree is empty");
         }
         RedBlackTree<T> t = new RedBlackTree<>();
-        t.header = header.left;
+        t.setRootNode(getRootNode().getLeftChild());
         return t;
     }
 
@@ -161,83 +397,7 @@ public class RedBlackTree<T extends Comparable & Serializable> implements Serial
         if(isEmpty()) {
             throw new RuntimeException("The tree is empty");
         }
-        RedBlackTree<T> t = new RedBlackTree<>();
-        t.header = header.right;
+        RedBlackTree<T> t = new RedBlackTree<>(getRootNode().getRightChild());
         return t;
-    }
-
-    public T getRoot() {
-        if(isEmpty()) {
-            throw new RuntimeException("The tree is empty");
-        }
-        return header.element;
-    }
-
-
-    public RedBlackNode<T> getRootNode() {
-        if(isEmpty()) {
-            throw new RuntimeException("The tree is empty");
-        }
-        return header;
-    }
-
-    public boolean exists(Comparable x){
-        return exists(header, x);
-    }
-
-    public Object getMin(){
-        if(isEmpty()) {
-            throw new RuntimeException("The tree is empty");
-        }
-        return getMin(header).element;
-    }
-
-    private boolean exists(RedBlackNode<T> t, Comparable x) {
-        if (t == null)
-            return false;
-
-        if (x.compareTo(t.element) == 0)
-            return true;
-        else if (x.compareTo( t.element) < 0)
-            return exists(t.left, x);
-        else
-            return exists(t.right, x);
-    }
-
-    private RedBlackNode<T> getMin(RedBlackNode<T> t){
-        if (t.left == null)
-            return t;
-        else
-            return getMin(t.left);
-    }
-
-    public Object getMax(){
-        if(isEmpty()) {
-            throw new RuntimeException("The tree is empty");
-        }
-        return getMax(header).element;
-    }
-
-    private RedBlackNode<T> getMax(RedBlackNode<T> t){
-        if (t.right == null)
-            return t;
-        else
-            return getMax(t.right);
-    }
-
-    public T search(java.lang.Comparable x){
-        if(!exists(x)) {
-            throw new RuntimeException("The Book doesn't exist");
-        }
-        return search(header, x).element;
-    }
-
-    private RedBlackNode<T> search(RedBlackNode<T> t, java.lang.Comparable x){
-        if (x.compareTo( t.element)== 0)
-            return t;
-        else if (x.compareTo( t.element)< 0)
-            return search(t.left, x);
-        else
-            return search(t.right, x);
     }
 }

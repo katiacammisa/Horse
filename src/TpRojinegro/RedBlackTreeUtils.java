@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
 
-    static <T extends Comparable<T> & Serializable> void leftRotate(RedBlackTree2<T> tree, RedBlackTreeNode<T> node) {
+    static <T extends Comparable<T> & Serializable> void leftRotate(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
         RedBlackTreeNode<T> child = node.getRightChild();
         node.setRightChild(child.getLeftChild());
         if (child.getLeftChild() != tree.getNilNode()) {
@@ -22,7 +22,7 @@ public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
         node.setParent(child);
     }
 
-    static <T extends Comparable<T> & Serializable> void rightRotate(RedBlackTree2<T> tree, RedBlackTreeNode<T> node) {
+    static <T extends Comparable<T> & Serializable> void rightRotate(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
         RedBlackTreeNode<T> child = node.getLeftChild();
         node.setLeftChild(child.getRightChild());
         if (child.getRightChild() != tree.getNilNode()) {
@@ -40,7 +40,7 @@ public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
         node.setParent(child);
     }
 
-    static <T extends Comparable<T> & Serializable> void rbtInsertFixup(RedBlackTree2<T> tree, RedBlackTreeNode<T> node) {
+    static <T extends Comparable<T> & Serializable> void rbtInsertFixup(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
         while (node.getParent().getColor().equals(RedBlackTreeNode.RBT_COLORS.RED)) {
             if (node.getParent().equals(node.getParent().getParent().getLeftChild())) {
                 RedBlackTreeNode<T> uncle = node.getParent().getParent().getRightChild();
@@ -79,7 +79,7 @@ public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
         tree.getRootNode().setColor(RedBlackTreeNode.RBT_COLORS.BLACK);
     }
 
-    static <T extends Comparable<T> & Serializable> void rbtTransplant(RedBlackTree2<T> tree, RedBlackTreeNode<T> oldNode,
+    static <T extends Comparable<T> & Serializable> void rbtTransplant(RedBlackTree<T> tree, RedBlackTreeNode<T> oldNode,
                                                                        RedBlackTreeNode<T> newNode) {
         if (oldNode.getParent().equals(tree.getNilNode())) {
             tree.setRootNode(newNode);
@@ -99,7 +99,7 @@ public class RedBlackTreeUtils<T extends Serializable> implements Serializable {
      * @param node
      *            The node to remove
      */
-    static <T extends Comparable<T> & Serializable> void deleteFixup(RedBlackTree2<T> tree, RedBlackTreeNode<T> node) {
+    static <T extends Comparable<T> & Serializable> void deleteFixup(RedBlackTree<T> tree, RedBlackTreeNode<T> node) {
         RedBlackTreeNode<T> x = tree.getNilNode();
         while (!node.equals(tree.getRootNode()) && node.getColor() == RedBlackTreeNode.RBT_COLORS.BLACK) {
             if (node.equals(node.getParent().getLeftChild())) {

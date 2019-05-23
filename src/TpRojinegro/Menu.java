@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private RedBlackTree2<Book> tree;
+    private RedBlackTree<Book> tree;
 
     public static void main(String[] args) {
 
@@ -16,9 +16,12 @@ public class Menu {
 
         */
         Book book = new Book(15, "Hola", "Katy", 12345);
-        RedBlackTree2 tree = new RedBlackTree2<>();
+        RedBlackTree tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
 
+        if(!tree.isEmpty()) {
+            menu.recover();
+        }
         Scanner scanner = new Scanner(System.in);
         int n = 0;
         while(n != 7){
@@ -30,7 +33,6 @@ public class Menu {
                     "Enter 6 to save tree \n" +
                     "Enter 7 to exit.");
             n = scanner.nextInt();
-            //Faltan los cases, dio demasiada paja en este momento
 
             switch (n) {
                 case 1:
@@ -64,6 +66,7 @@ public class Menu {
                     int keyOfBook = scanner.nextInt();
                     Book bookToModify = menu.findElement(keyOfBook);
                     int i;
+
                     System.out.println("Enter 1 to change title. \n" +
                             "Enter 2 to change author. \n" +
                             "Enter 3 to change code");
@@ -139,6 +142,7 @@ public class Menu {
                     break;
 
                 case 7:
+                    menu.save();
                     System.exit(0);
                     break;
 
@@ -146,13 +150,13 @@ public class Menu {
         }
     }
 
-    public Menu(RedBlackTree2<Book> tree2) {
+    public Menu(RedBlackTree<Book> tree2) {
         tree = tree2;
     }
 
     private void insert(Book element) {
         if(tree.isEmpty()) {
-            tree = new RedBlackTree2<>(element);
+            tree = new RedBlackTree<>(element);
         } else {
             tree.insert(element);
         }
@@ -200,6 +204,7 @@ public class Menu {
     }
     private int amountOfElements() {
         return tree.size(tree);
+
     }
 
     private int amountOfElementWithCondition(/*condicion*/) {
@@ -241,7 +246,7 @@ public class Menu {
         tree.save();
     }
 
-    public boolean exists(RedBlackTree2 a, int x){
+    public boolean exists(RedBlackTree a, int x){
         return exists(a.getRootNode(), x);
     }
 
@@ -255,5 +260,9 @@ public class Menu {
             return exists(t.getLeftChild(), x);
         else
             return exists(t.getRightChild(), x);
+    }
+
+    private void recover() {
+        tree.recover();
     }
 }
