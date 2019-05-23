@@ -324,7 +324,7 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
 
         if (x.compareTo(t.getKey()) == 0)
             return true;
-        else if (x.compareTo( t.getKey()) < 0)
+        else if (x.compareTo(t.getKey()) < 0)
             return exists(t.getLeftChild(), x);
         else
             return exists(t.getRightChild(), x);

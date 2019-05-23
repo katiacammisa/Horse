@@ -1,5 +1,7 @@
 package TpRojinegro;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -11,9 +13,6 @@ public class Menu {
 
         /* FALTA:
                    2 CON CONDICION
-                   SIZE
-
-
         */
         RedBlackTree tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
@@ -32,7 +31,6 @@ public class Menu {
                     "Enter 6 to save tree \n" +
                     "Enter 7 to exit.");
             n = scanner.nextInt();
-            //Faltan los cases, dio demasiada paja en este momento
 
             switch (n) {
                 case 1:
@@ -49,11 +47,10 @@ public class Menu {
 
                         Book book2 = new Book(key, title, author, code);
                         menu.insert(book2);
-                        break;
                     } else {
                         System.out.println("There already exists a book with this key");
-                        break;
                     }
+                    break;
 
                 case 2:
                     System.out.println("Insert the book's key");
@@ -108,13 +105,39 @@ public class Menu {
                             break;
 
                         case 2:
-                            System.out.println(menu.amountOfElements());
+                            if(!tree.isEmpty()) {
+                                System.out.println(menu.amountOfElements());
+                            } else {
+                                System.out.println("The tree is empty.");
+                            }
                             break;
 
                         case 3:
-                            System.out.println("Enter the condition");
-                            String condition = scanner.next(); //CUAL PUEDE SER LA CONDICION?
-                            System.out.println(menu.amountOfElementWithCondition(/*condicion*/));
+                            System.out.println("Enter 1 to look by title. \n" +
+                                    "Enter 2 to look by author. \n" +
+                                    "Enter 3 to look by code.");
+                            int condition = scanner.nextInt();
+
+                            switch (condition) {
+                                case 1:
+                                    System.out.println("Insert the title.");
+                                    String lookByTitle = scanner.next();
+                                    System.out.println(menu.amountOfElementWithTitleCondition(lookByTitle));
+                                    break;
+
+                                case 2:
+                                    System.out.println("Insert the author.");
+                                    String lookByAuthor = scanner.next();
+                                    System.out.println(menu.amountOfElementWithAuthorCondition(lookByAuthor));
+                                    break;
+
+                                case 3:
+                                    System.out.println("Insert the code.");
+                                    long lookByCode = scanner.nextLong();
+                                    System.out.println(menu.amountOfElementWithCodeCondition(lookByCode));
+                                    break;
+
+                            }
                             break;
                     }
                     break;
@@ -131,7 +154,31 @@ public class Menu {
                             break;
 
                         case 2:
-                            menu.showElementsWithCondition();
+                            System.out.println("Enter 1 to look by title. \n" +
+                                    "Enter 2 to look by author. \n" +
+                                    "Enter 3 to look by code.");
+                            int condition = scanner.nextInt();
+
+                            switch (condition) {
+                                case 1:
+                                    System.out.println("Insert the title.");
+                                    String lookByTitle = scanner.next();
+                                    System.out.println(menu.elementWithTitleCondition(lookByTitle));
+                                    break;
+
+                                case 2:
+                                    System.out.println("Insert the author.");
+                                    String lookByAuthor = scanner.next();
+                                    System.out.println(menu.elementWithAuthorCondition(lookByAuthor));
+                                    break;
+
+                                case 3:
+                                    System.out.println("Insert the code.");
+                                    long lookByCode = scanner.nextLong();
+                                    System.out.println(menu.elementWithCodeCondition(lookByCode));
+                                    break;
+
+                            }
                             break;
                     }
                     break;
@@ -181,32 +228,8 @@ public class Menu {
         tree.search(toModify).getKey().setCode(newCode);
     }
 
-    public Book findElement(int key) {
-        if(!exists(tree, key)) {
-            throw new RuntimeException("The Book doesn't exist");
-        }
-        return search(key).getKey();
-    }
-
-    public RedBlackTreeNode<Book> search(int key) {
-        RedBlackTreeNode<Book> x = tree.getRootNode();
-        while (!x.equals(tree.getNilNode())) {
-            if (x.getKey().getKey() == key) {
-                return x;
-            } else if (x.getKey().getKey() > key) {
-                x = x.getLeftChild();
-            } else {
-                x = x.getRightChild();
-            }
-        }
-        return null;
-    }
     private int amountOfElements() {
         return tree.size(tree);
-    }
-
-    private int amountOfElementWithCondition(/*condicion*/) {
-        return 0; // -\(. _ .)/-
     }
 
     private void showEveryElement() {
@@ -236,10 +259,6 @@ public class Menu {
         }
     }
 
-    private void showElementsWithCondition() {
-        // -\(. _ .)/-
-    }
-
     private void save() {
         tree.save();
     }
@@ -262,5 +281,100 @@ public class Menu {
 
     private void recover() {
         tree.recover();
+    }
+
+    public Book findElement(int key) {
+        if(!exists(tree, key)) {
+            throw new RuntimeException("The Book doesn't exist");
+        }
+        return search(key).getKey();
+    }
+
+    public RedBlackTreeNode<Book> search(int key) {
+        RedBlackTreeNode<Book> x = tree.getRootNode();
+        while (!x.equals(tree.getNilNode())) {
+            if (x.getKey().getKey() == key) {
+                return x;
+            } else if (x.getKey().getKey() > key) {
+                x = x.getLeftChild();
+            } else {
+                x = x.getRightChild();
+            }
+        }
+        return null;
+    }
+
+    private int amountOfElementWithTitleCondition(String title) {
+        List<Book> aux = tree.toInOrderList();
+        List<Book> finalList = new ArrayList<>();
+        for (int i = 0; i < aux.size(); i++) {
+            if(aux.get(i).getTitle().equals(title)) {
+                finalList.add(aux.get(i));
+            }
+        }
+        return (finalList.size());
+    }
+
+    private int amountOfElementWithAuthorCondition(String author) {
+        List<Book> aux = tree.toInOrderList();
+        List<Book> finalList = new ArrayList<>();
+        for (int i = 0; i < aux.size(); i++) {
+            if(aux.get(i).getAuthor().equals(author)) {
+                finalList.add(aux.get(i));
+            }
+        }
+        return (finalList.size());
+    }
+
+    private int amountOfElementWithCodeCondition(Long code) {
+        List<Book> aux = tree.toInOrderList();
+        List<Book> finalList = new ArrayList<>();
+        for (int i = 0; i < aux.size(); i++) {
+            if(aux.get(i).getCode() == code) {
+                finalList.add(aux.get(i));
+            }
+        }
+        return (finalList.size());
+    }
+
+    private String elementWithTitleCondition(String title) {
+        List<Book> aux = tree.toInOrderList();
+        List<Book> finalList = new ArrayList<>();
+        for (int i = 0; i < aux.size(); i++) {
+            if(aux.get(i).getTitle().equals(title)) {
+                finalList.add(aux.get(i));
+            }
+        }
+        return myToString(finalList);
+    }
+
+    private String elementWithAuthorCondition(String author) {
+        List<Book> aux = tree.toInOrderList();
+        List<Book> finalList = new ArrayList<>();
+        for (int i = 0; i < aux.size(); i++) {
+            if(aux.get(i).getAuthor().equals(author)) {
+                finalList.add(aux.get(i));
+            }
+        }
+        return myToString(finalList);
+    }
+
+    private String elementWithCodeCondition(Long code) {
+        List<Book> aux = tree.toInOrderList();
+        List<Book> finalList = new ArrayList<>();
+        for (int i = 0; i < aux.size(); i++) {
+            if(aux.get(i).getCode() == code) {
+                finalList.add(aux.get(i));
+            }
+        }
+        return myToString(finalList);
+    }
+
+    public String myToString(List<Book> list) {
+        String aux = "";
+        for (int i = 0; i < list.size(); i++) {
+            aux += list.get(i).toString() + "\n";
+        }
+        return aux;
     }
 }
