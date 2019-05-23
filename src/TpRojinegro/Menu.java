@@ -105,10 +105,10 @@ public class Menu {
                             break;
 
                         case 2:
-                            if(!tree.isEmpty()) {
-                                System.out.println(menu.amountOfElements());
-                            } else {
+                            if(menu.tree.isEmpty()) {
                                 System.out.println("The tree is empty.");
+                            } else {
+                                System.out.println(menu.amountOfElements());
                             }
                             break;
 
