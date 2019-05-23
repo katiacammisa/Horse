@@ -54,6 +54,7 @@ public class Runner {
                     System.out.println("Insert the key of the book you want to modify");
                     int keyOfBook = scanner.nextInt();
                     Book bookToModify = menu.findElement(keyOfBook);
+
                     int i;
                     System.out.println("Enter 1 to change title. \n" +
                             "Enter 2 to change author. \n" +
