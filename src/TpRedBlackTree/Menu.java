@@ -82,11 +82,11 @@ class Menu {
     }
 
     boolean doesNotExist(RedBlackTree<Book> a, int x){
-        return !exists(a.getRootNode(), x);
+        return !exists(a.getRootNode(),x);
     }
 
     private boolean exists(RedBlackTreeNode<Book> t, Integer x) {
-        if (t == null)
+        if (t == null || t.getElement() == null)
             return false;
 
         if (x.compareTo(t.getElement().getKey()) == 0)

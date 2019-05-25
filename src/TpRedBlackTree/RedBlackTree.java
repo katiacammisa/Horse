@@ -284,22 +284,22 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
         list.add(node.getElement());
     }
 
-
-    public boolean exists(Comparable x){
-        return exists(root, x);
-    }
-
-    private boolean exists(RedBlackTreeNode<T> t, Comparable<T> x) {
-        if (t == null)
-            return false;
-
-        if (x.compareTo(t.getElement()) == 0)
-            return true;
-        else if (x.compareTo(t.getElement()) < 0)
-            return exists(t.getLeftChild(), x);
-        else
-            return exists(t.getRightChild(), x);
-    }
+//
+//    public boolean exists(Comparable x){
+//        return exists(root, x);
+//    }
+//
+//    private boolean exists(RedBlackTreeNode<T> t, Comparable<T> x) {
+//        if (t == null)
+//            return false;
+//
+//        if (x.compareTo(t.getElement()) == 0)
+//            return true;
+//        else if (x.compareTo(t.getElement()) < 0)
+//            return exists(t.getLeftChild(), x);
+//        else
+//            return exists(t.getRightChild(), x);
+//    }
 
     void save() throws IOException {
 
