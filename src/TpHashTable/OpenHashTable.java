@@ -7,7 +7,7 @@ import TpBinaryTreeSearch.SearchBinaryTree;
 
 public class OpenHashTable<T extends Hashable> {
 
-    private DynamicList<T> t[];
+    private DynamicList[] t;
     private int capacity;
 
     public OpenHashTable(int M) {
@@ -32,8 +32,8 @@ public class OpenHashTable<T extends Hashable> {
                 return t[k].getActual();
         return x;
     }
-    public SearchBinaryTree getBinarySearchTree () {
-        SearchBinaryTree a = new SearchBinaryTree();
+    public SearchBinaryTree<Comparable> getBinarySearchTree () {
+        SearchBinaryTree<Comparable> a = new SearchBinaryTree<>();
         for (int i = 0; i < capacity; i++ ) {
             if (!t[i].isVoid()) {
                 t[i].first();

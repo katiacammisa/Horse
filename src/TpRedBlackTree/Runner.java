@@ -8,6 +8,7 @@ public class Runner {
 
         RedBlackTree<Book> tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
+        menu.recover();
 
         if(!tree.isEmpty()) {
             menu.recover();
@@ -29,7 +30,7 @@ public class Runner {
                     System.out.println("Insert the Book's key");
                     int key = scanner.nextInt();
 
-                    if(menu.exists(tree, key)) {
+                    if(menu.doesNotExist(menu.tree, key)) {
                         System.out.println("Insert the Book's title");
                         String title = scanner.next();
                         System.out.println("Insert the Book's author");

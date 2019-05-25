@@ -2,7 +2,7 @@ package TpRedBlackTree;
 
 import java.io.Serializable;
 
-class RedBlackTreeNode<T extends Comparable<T> & Serializable> implements Serializable {
+class RedBlackTreeNode<T extends Comparable & Serializable> implements Serializable {
 
     public enum RBT_COLORS {
         RED, BLACK

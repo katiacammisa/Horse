@@ -1,5 +1,6 @@
 package TpRedBlackTree;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,8 @@ class Menu {
     void insert(Book element) {
         if(tree.isEmpty()) {
             tree = new RedBlackTree<>(element);
-        } else {
+        } else if(doesNotExist(tree, element.getKey())){
+            System.out.println(tree.getRootNode().getElement().getKey());
             tree.insert(element);
         }
     }
@@ -72,10 +74,14 @@ class Menu {
     }
 
     void save() {
-        tree.save();
+        try {
+            tree.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    boolean exists(RedBlackTree<Book> a, int x){
+    boolean doesNotExist(RedBlackTree<Book> a, int x){
         return !exists(a.getRootNode(), x);
     }
 
@@ -92,11 +98,15 @@ class Menu {
     }
 
     void recover() {
-        tree.recover();
+        try {
+           tree =  tree.recover();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     Book findElement(int key) {
-        if(exists(tree, key)) {
+        if(doesNotExist(tree, key)) {
             throw new RuntimeException("The Book doesn't exist");
         }
         return Objects.requireNonNull(search(key)).getElement();
