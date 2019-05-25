@@ -10,9 +10,8 @@ public class Runner {
         Menu menu = new Menu(tree);
         menu.recover();
 
-        if(!tree.isEmpty()) {
-            menu.recover();
-        }
+        menu.recover();
+
         Scanner scanner = new Scanner(System.in);
         int n;
         while(true){
@@ -179,13 +178,13 @@ public class Runner {
 
                 case 6:
                     menu.save();
+                    System.out.println("Data base saved");
                     break;
 
                 case 7:
                     menu.save();
                     System.exit(0);
                     break;
-
             }
         }
     }
