@@ -2,7 +2,7 @@ package TpRedBlackTree;
 
 import java.util.Scanner;
 
-public class Runner implements Comparable{
+public class Runner {
 
     public static void main(String[] args) {
 
@@ -184,15 +184,7 @@ public class Runner implements Comparable{
                     menu.save();
                     System.exit(0);
                     break;
-//
-//                case 8:
-//                    menu.deleteAllElements();
-//                    break;
             }
         }
-    }
-
-    public int compareTo(Object o) {
-        return 0;
     }
 }

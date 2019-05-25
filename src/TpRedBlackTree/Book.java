@@ -4,19 +4,19 @@ import java.io.Serializable;
 
 public class Book implements Serializable, Comparable<Book> {
 
-    private Integer key;
+    private int key;
     private String title;
     private String author;
     private long code;
 
-    Book(Integer key, String title, String author, long code) {
+    Book(int key, String title, String author, long code) {
         this.key = key;
         this.title = title;
         this.author = author;
         this.code = code;
     }
 
-    Integer getKey() {
+    int getKey() {
         return key;
     }
 

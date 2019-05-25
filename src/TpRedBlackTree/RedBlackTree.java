@@ -1,10 +1,7 @@
 package TpRedBlackTree;
 
-import BinaryTree.BinaryTree;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class RedBlackTree<T extends Comparable<T> & Serializable> implements Serializable {
 
@@ -400,31 +397,5 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
             throw new RuntimeException("The tree is empty");
         }
         return new RedBlackTree<>(getRootNode().getRightChild());
-    }
-
-    public void deleteAllElements() {
-        List<RedBlackTreeNode> aux = toInOrderListOfNodes();
-        for (int i = 0; i < aux.size(); i++) {
-            this.delete(aux.get(i));
-        }
-    }
-
-    ArrayList<RedBlackTreeNode> toInOrderListOfNodes() {
-        ArrayList<RedBlackTreeNode> list = new ArrayList<>();
-        fromRBTtoInOrderListOfNodes(root, list);
-        return list;
-    }
-
-    private void fromRBTtoInOrderListOfNodes(RedBlackTreeNode<T> node, ArrayList<RedBlackTreeNode> list) {
-
-        if (node.getLeftChild() != nil) {
-            fromRBTtoInOrderListOfNodes(node.getLeftChild(), list);
-        }
-
-        list.add(node);
-
-        if (node.getRightChild() != nil) {
-            fromRBTtoInOrderListOfNodes(node.getRightChild(), list);
-        }
     }
 }
