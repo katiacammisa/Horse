@@ -4,6 +4,7 @@ import BinaryTree.BinaryTree;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RedBlackTree<T extends Comparable<T> & Serializable> implements Serializable {
 
@@ -114,8 +115,8 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
 //        return getMaxNodeStartingFrom(root);
 //    }
 
-    void insert(T key) {
-        insert(new RedBlackTreeNode<>(key));
+    void insert(T element) {
+        insert(new RedBlackTreeNode<>(element));
     }
 
     private void insert(RedBlackTreeNode<T> node) {
@@ -200,33 +201,33 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
         }
     }
 
-//    public void printPreOrderAllNodes() {
-//        if (root != nil) {
-//            printPreOrderAllNodes(root, 0, "root");
-//        } else {
-//            System.out.println("The RBT is empty");
-//        }
-//    }
+    public void printPreOrderAllNodes() {
+        if (root != nil) {
+            printPreOrderAllNodes(root, 0, "root");
+        } else {
+            System.out.println("The RBT is empty");
+        }
+    }
 
-//    private void printPreOrderAllNodes(RedBlackTreeNode<T> node, int level, String typeChild) {
-//        if (node != nil) {
-//
-//            if (node.getElement() != null && node.getColor() != null) {
-//                String output = "Node at level " + level + ". Key: " + node.getElement().toString() + ". Color: "
-//                        + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
-//                        + node.getParent().getElement();
-//                System.out.println(output);
-//            }
-//
-//            if (node.getLeftChild() != nil) {
-//                printPreOrderAllNodes(node.getLeftChild(), level + 1, "left child");
-//            }
-//
-//            if (node.getRightChild() != nil) {
-//                printPreOrderAllNodes(node.getRightChild(), level + 1, "right child");
-//            }
-//        }
-//    }
+    private void printPreOrderAllNodes(RedBlackTreeNode<T> node, int level, String typeChild) {
+        if (node != nil) {
+
+            if (node.getElement() != null && node.getColor() != null) {
+                String output = "Node at level " + level + ". Key: " + node.getElement().toString() + ". Color: "
+                        + node.getColor().toString() + ". Type child: " + typeChild + ". Parent: "
+                        + node.getParent().getElement();
+                System.out.println(output);
+            }
+
+            if (node.getLeftChild() != nil) {
+                printPreOrderAllNodes(node.getLeftChild(), level + 1, "left child");
+            }
+
+            if (node.getRightChild() != nil) {
+                printPreOrderAllNodes(node.getRightChild(), level + 1, "right child");
+            }
+        }
+    }
 
 
     public void printPostOrderAllNodes() {
@@ -351,17 +352,17 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
         }
     }
 
-    BinaryTree recover() {
+    RedBlackTree recover() {
         ObjectInputStream ois = null;
         try {
             ois = new ObjectInputStream(new FileInputStream("Hola"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        BinaryTree a = null;
+        RedBlackTree a = null;
         try {
             assert ois != null;
-            a = (BinaryTree) ois.readObject();
+            a = (RedBlackTree) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -399,5 +400,31 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
             throw new RuntimeException("The tree is empty");
         }
         return new RedBlackTree<>(getRootNode().getRightChild());
+    }
+
+    public void deleteAllElements() {
+        List<RedBlackTreeNode> aux = toInOrderListOfNodes();
+        for (int i = 0; i < aux.size(); i++) {
+            this.delete(aux.get(i));
+        }
+    }
+
+    ArrayList<RedBlackTreeNode> toInOrderListOfNodes() {
+        ArrayList<RedBlackTreeNode> list = new ArrayList<>();
+        fromRBTtoInOrderListOfNodes(root, list);
+        return list;
+    }
+
+    private void fromRBTtoInOrderListOfNodes(RedBlackTreeNode<T> node, ArrayList<RedBlackTreeNode> list) {
+
+        if (node.getLeftChild() != nil) {
+            fromRBTtoInOrderListOfNodes(node.getLeftChild(), list);
+        }
+
+        list.add(node);
+
+        if (node.getRightChild() != nil) {
+            fromRBTtoInOrderListOfNodes(node.getRightChild(), list);
+        }
     }
 }

@@ -2,16 +2,15 @@ package TpRedBlackTree;
 
 import java.util.Scanner;
 
-public class Runner {
+public class Runner implements Comparable{
 
     public static void main(String[] args) {
 
         RedBlackTree<Book> tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
 
-        if(!tree.isEmpty()) {
-            menu.recover();
-        }
+        menu.recover();
+
         Scanner scanner = new Scanner(System.in);
         int n;
         while(true){
@@ -178,14 +177,22 @@ public class Runner {
 
                 case 6:
                     menu.save();
+                    System.out.println("Data base saved");
                     break;
 
                 case 7:
                     menu.save();
                     System.exit(0);
                     break;
-
+//
+//                case 8:
+//                    menu.deleteAllElements();
+//                    break;
             }
         }
+    }
+
+    public int compareTo(Object o) {
+        return 0;
     }
 }

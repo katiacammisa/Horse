@@ -8,8 +8,8 @@ class Menu {
 
     RedBlackTree<Book> tree;
 
-    Menu(RedBlackTree<Book> tree2) {
-        tree = tree2;
+    Menu(RedBlackTree<Book> tree) {
+        this.tree = tree;
     }
 
     void insert(Book element) {
@@ -92,7 +92,7 @@ class Menu {
     }
 
     void recover() {
-        tree.recover();
+        tree = tree.recover();
     }
 
     Book findElement(int key) {
