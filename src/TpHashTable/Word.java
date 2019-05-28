@@ -24,6 +24,9 @@ public class Word implements Hashable,Comparable {
 
     @Override
     public int compareTo(Object o) {
+        if(o == null){
+            return 1;
+        }
         return word.compareTo(((Word) o).toString());
     }
 }

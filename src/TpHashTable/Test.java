@@ -20,7 +20,12 @@ public class Test {
             String text = scanner.next();
             String[] words = text.split(" ");
             for (int i = 0; i < words.length; i++) {
+
                 System.out.println(dic.find(words[i]).toString());
+
+                if(dic.find(words[i]).isVoid()){
+                    System.out.println("The word is not in de dictionary, nor are similar words.");
+                }
             }
         }
 
