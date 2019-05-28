@@ -1,19 +1,20 @@
 package TpHashTable;
 
+import Lists.DynamicList;
+
 import java.io.*;
 
 public class Dictionary {
 
     private OpenHashTable<Word> dictionary;
 
-    public Dictionary(int length, File file) {
+    public Dictionary(File file) {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        dictionary = new OpenHashTable<>(length);
         if(file.canRead()){
             int x = (int) file.length();
             String[] words = new String[x];
@@ -32,18 +33,46 @@ public class Dictionary {
                 if(words[i] != null){
                     ++counter;
                 }
-                System.out.println(words[i]);
             }
+
+            dictionary = new OpenHashTable<>(counter);
 
             for (int i = 0; i < counter; i++) {
                 insert(words[i]);
 
             }
         }
+
+
     }
 
     public void insert(String word){
        Word thisWord = new Word(word);
        dictionary.insert(thisWord);
+    }
+
+
+    public DynamicList<Word> find(String s) {
+
+        Word x = new Word(s);
+        int hash = 0;
+        if (dictionary.search(x) == null)
+            return getSimilar(s);
+
+        DynamicList<Word> result = new DynamicList<>();
+        result.insertNext(x);
+        return result;
+    }
+
+
+    private DynamicList<Word> getSimilar(String s){
+        Word x = new Word(s);
+        int hash = x.hash(dictionary.getCapacity());
+        if(dictionary.getPositionList(hash) != null){
+            return dictionary.getPositionList(hash);
+        } else {
+            System.out.println("No similar words.");
+        }
+        return null;
     }
 }

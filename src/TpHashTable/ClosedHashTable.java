@@ -8,7 +8,6 @@ public class ClosedHashTable<T extends Hashable> {
 
     private int capacity;
     private Object[] t;
-    private Function op2;
 
     public ClosedHashTable(int M) {
         if (!Prime.isPrime(M))
@@ -18,8 +17,22 @@ public class ClosedHashTable<T extends Hashable> {
     }
 
     public void insert (T x) {
+        double counter = 0;
+        for (Object aT : t)
+            if (aT != null)
+                counter++;
+
+        if(counter/capacity >= 0.8)
+            rehash();
+
         int k =(x).hash(capacity);
         if(t[k] != null){
+            for (int i = k; i < capacity; i++) {
+                if(t[i] == null){
+                    k = i;
+                    break;
+                }
+            }
 
         }
         t[k] = x;
@@ -36,5 +49,17 @@ public class ClosedHashTable<T extends Hashable> {
             a.insert((Comparable) t[i]);
         }
         return a;
+    }
+
+
+    private void rehash(){
+
+        capacity = Prime.proxPrime(capacity*2);
+        Object[] aux = new DynamicList[capacity];
+
+        System.arraycopy(t, 0, aux, 0, t.length);
+
+        t = aux;
+
     }
 }

@@ -11,7 +11,7 @@ public class TranslateTest{
 
     @Test
     public void toMorse() {
-        translate.toMorse("Hola Martin").print();
+        translate.toMorse("Hash Martin").print();
     }
 
     @Test

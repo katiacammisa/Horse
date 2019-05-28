@@ -254,7 +254,7 @@ public class TreeApi<T extends Serializable & Comparable> implements Serializabl
     public void save(BinaryTree<T> a) {
         ObjectOutputStream oos = null;
         try {
-            oos = new ObjectOutputStream(new FileOutputStream("Hola"));
+            oos = new ObjectOutputStream(new FileOutputStream("Hash"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -274,7 +274,7 @@ public class TreeApi<T extends Serializable & Comparable> implements Serializabl
     public BinaryTree retrieve() {
         ObjectInputStream ois = null;
         try {
-            ois = new ObjectInputStream(new FileInputStream("Hola"));
+            ois = new ObjectInputStream(new FileInputStream("Hash"));
         } catch (IOException e) {
             e.printStackTrace();
         }

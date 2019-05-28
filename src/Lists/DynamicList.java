@@ -114,4 +114,20 @@ public class DynamicList<T> implements List<T> {
     public GeneralList clone() {
         return null;
     }
+
+
+    @Override
+    public String toString(){
+        String result = "";
+        for (int i = 0; i < size; i++) {
+            goTo(i);
+
+            if(i == size-1){
+                result += getActual().toString() + ".";
+            } else {
+                result += getActual().toString() + ", ";
+            }
+        }
+        return result;
+    }
 }
