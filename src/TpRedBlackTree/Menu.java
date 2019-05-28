@@ -99,7 +99,7 @@ class Menu {
 
     void recover() {
         try {
-           tree =  tree.recover();
+           tree =  tree.recover("RedBlackTree");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

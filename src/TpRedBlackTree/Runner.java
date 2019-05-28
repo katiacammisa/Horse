@@ -1,16 +1,20 @@
 package TpRedBlackTree;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Runner {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         RedBlackTree<Book> tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
-        menu.recover();
 
-        menu.recover();
+        File file = new File("RedBlackTree");
+        if(file.exists()) {
+            menu.recover();
+        }
 
         Scanner scanner = new Scanner(System.in);
         int n;

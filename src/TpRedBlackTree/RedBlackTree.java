@@ -2,6 +2,7 @@ package TpRedBlackTree;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RedBlackTree<T extends Comparable<T> & Serializable> implements Serializable {
 
@@ -11,12 +12,13 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
     RedBlackTree() {
     }
 
-    RedBlackTree(T key) {
-        this(new RedBlackTreeNode<>(key));
+    RedBlackTree(T element) {
+        this(new RedBlackTreeNode<>(element));
     }
 
     private RedBlackTree(RedBlackTreeNode<T> root) {
         this.nil = new RedBlackTreeNode<>();
+        this.root = new RedBlackTreeNode<>();
         this.root = root;
         root.setLeftChild(nil);
         root.setRightChild(nil);
@@ -24,8 +26,8 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
         root.setColor(RedBlackTreeNode.RBT_COLORS.BLACK);
     }
 
-    void setRootNode(RedBlackTreeNode<T> root) {
-        this.root = root;
+    void setRootNode(RedBlackTreeNode<T> root2) {
+        root = root2;
     }
 
     RedBlackTreeNode<T> getRootNode() {
@@ -91,27 +93,27 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
         }
     }
 
-//    public RedBlackTreeNode<T> getMinNode() {
-//        return getMinNodeStartingFrom(root);
-//    }
+    public RedBlackTreeNode<T> getMinNode() {
+        return getMinNodeStartingFrom(root);
+    }
 
-//    private RedBlackTreeNode<T> getMaxNodeStartingFrom(RedBlackTreeNode<T> startingNode) {
-//        RedBlackTreeNode<T> x = startingNode;
-//        RedBlackTreeNode<T> y = nil;
-//        while (!x.equals(nil)) {
-//            y = x;
-//            x = x.getRightChild();
-//        }
-//        if (y != nil) {
-//            return y;
-//        } else {
-//            return null;
-//        }
-//    }
+    private RedBlackTreeNode<T> getMaxNodeStartingFrom(RedBlackTreeNode<T> startingNode) {
+        RedBlackTreeNode<T> x = startingNode;
+        RedBlackTreeNode<T> y = nil;
+        while (!x.equals(nil)) {
+            y = x;
+            x = x.getRightChild();
+        }
+        if (y != nil) {
+            return y;
+        } else {
+            return null;
+        }
+    }
 
-//    public RedBlackTreeNode<T> getMaxNode() {
-//        return getMaxNodeStartingFrom(root);
-//    }
+    public RedBlackTreeNode<T> getMaxNode() {
+        return getMaxNodeStartingFrom(root);
+    }
 
     void insert(T key) {
         insert(new RedBlackTreeNode<>(key));
@@ -120,7 +122,8 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
     private void insert(RedBlackTreeNode<T> node) {
         RedBlackTreeNode<T> x = root;
         RedBlackTreeNode<T> y = nil;
-        while (!x.equals(nil)) {
+
+        while (!Objects.equals(x, nil)) {
             y = x;
             if (node.getElement().compareTo(x.getElement()) >= 0) {
                 x = x.getRightChild();
@@ -128,19 +131,151 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
                 x = x.getLeftChild();
             }
         }
+
         if (y.getElement().compareTo(node.getElement()) > 0) {
             y.setLeftChild(node);
         } else {
             y.setRightChild(node);
         }
+
         node.setParent(y);
         node.setLeftChild(nil);
         node.setRightChild(nil);
         node.setColor(RedBlackTreeNode.RBT_COLORS.RED);
         RedBlackTreeUtils.rbtInsertFixup(this, node);
     }
+//
+//    public void insert2(T key) {
+//        insert2(new RedBlackTreeNode<T>(key));
+//    }
+//
+//    // @param: z, the node to be inserted into the Tree rooted at root
+//    // Inserts z into the appropriate position in the RedBlackTree while
+//    // updating numLeft and numRight values.
+//    private void insert2(RedBlackTreeNode<T> node) {
+//
+//        // Create a reference to root & initialize a node to nil
+//        RedBlackTreeNode<T> y = nil;
+//        RedBlackTreeNode<T> x = root;
+//
+//        // While we haven't reached a the end of the tree keep
+//        // tryint to figure out where z should go
+//        while (x != null) {
+//            y = x;
+//            // if z.key is < than the current key, go left
+//            if (node.getElement().compareTo(x.getElement()) < 0){
+//
+//                // Update x.numLeft as z is < than x
+//                x.numLeft++;
+//                x = x.left;
+//            }
+//
+//            // else z.key >= x.key so go right.
+//            else{
+//
+//                // Update x.numGreater as z is => x
+//                x.numRight++;
+//                x = x.right;
+//            }
+//        }
+//        // y will hold z's parent
+//        z.parent = y;
+//
+//        // Depending on the value of y.key, put z as the left or
+//        // right child of y
+//        if (isNil(y))
+//            root = z;
+//        else if (z.key.compareTo(y.key) < 0)
+//            y.left = z;
+//        else
+//            y.right = z;
+//
+//        // Initialize z's children to nil and z's color to red
+//        z.left = nil;
+//        z.right = nil;
+//        z.color = RedBlackNode.RED;
+//
+//        // Call insertFixup(z)
+//        insertFixup(z);
+//
+//    }// end insert(RedBlackNode z)
+//
+//
+//    // @param: z, the node which was inserted and may have caused a violation
+//    // of the RedBlackTree properties
+//    // Fixes up the violation of the RedBlackTree properties that may have
+//    // been caused during insert(z)
+//    private void insertFixup(RedBlackTreeNode<T> node) {
+//
+//        RedBlackTreeNode<T> y = nil;
+//        // While there is a violation of the RedBlackTree properties..
+//        while (node.getParent().getColor() == RedBlackTreeNode.RBT_COLORS.RED) {
+//
+//            // If z's parent is the the left child of it's parent.
+//            if (node.getParent() == node.getParent().getParent().getLeftChild()) {
+//
+//                // Initialize y to z 's cousin
+//                y = node.getParent().getParent().getRightChild();
+//
+//                // Case 1: if y is red...recolor
+//                if (y.getColor() == RedBlackTreeNode.RBT_COLORS.RED) {
+//                    node.getParent().setColor(RedBlackTreeNode.RBT_COLORS.BLACK);
+//                    y.setColor(RedBlackTreeNode.RBT_COLORS.BLACK);
+//                    node.getParent().getParent().setColor(RedBlackTreeNode.RBT_COLORS.RED);
+//                    node = node.getParent().getParent();
+//                }
+//                // Case 2: if y is black & z is a right child
+//                else if (node == node.getParent().getRightChild()) {
+//
+//                    // leftRotaet around z's parent
+//                    node = node.getParent();
+//                    leftRotate(node);
+//                }
+//
+//                // Case 3: else y is black & z is a left child
+//                else {
+//                    // recolor and rotate round z's grandpa
+//                    z.parent.color = RedBlackNode.BLACK;
+//                    z.parent.parent.color = RedBlackNode.RED;
+//                    rightRotate(z.parent.parent);
+//                }
+//            }
+//
+//            // If z's parent is the right child of it's parent.
+//            else {
+//
+//                // Initialize y to z's cousin
+//                y = z.parent.parent.left;
+//
+//                // Case 1: if y is red...recolor
+//                if (y.color == RedBlackNode.RED) {
+//                    z.parent.color = RedBlackNode.BLACK;
+//                    y.color = RedBlackNode.BLACK;
+//                    z.parent.parent.color = RedBlackNode.RED;
+//                    z = z.parent.parent;
+//                }
+//
+//                // Case 2: if y is black and z is a left child
+//                else if (z == z.parent.left) {
+//                    // rightRotate around z's parent
+//                    z = z.parent;
+//                    rightRotate(z);
+//                }
+//                // Case 3: if y  is black and z is a right child
+//                else {
+//                    // recolor and rotate around z's grandpa
+//                    z.parent.color = RedBlackNode.BLACK;
+//                    z.parent.parent.color = RedBlackNode.RED;
+//                    leftRotate(z.parent.parent);
+//                }
+//            }
+//        }
+//        // Color root black at all times
+//        root.setColor(RedBlackTreeNode.RBT_COLORS.BLACK);
+//    }
 
-    void delete(RedBlackTreeNode<T> node) {
+
+        void delete(RedBlackTreeNode<T> node) {
         RedBlackTreeNode<T> y = node;
         RedBlackTreeNode<T> x;
         RedBlackTreeNode.RBT_COLORS y_original_color = y.getColor();
@@ -309,9 +444,11 @@ public class RedBlackTree<T extends Comparable<T> & Serializable> implements Ser
 
     }
 
-    RedBlackTree<T> recover() throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("RedBlackTree"));
-        RedBlackTree<T> a = new RedBlackTree<T>();
+    RedBlackTree<T> recover(String name) throws IOException, ClassNotFoundException {
+
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name));
+
+        RedBlackTree<T> a;
         a = (RedBlackTree<T>) ois.readObject();
         ois.close();
         return a;

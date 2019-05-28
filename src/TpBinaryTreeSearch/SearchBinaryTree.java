@@ -91,7 +91,7 @@ public class SearchBinaryTree<T extends Comparable> {
 
         if (x.compareTo(t.getData()) == 0)
             return true;
-        else if (x.compareTo( t.getData())< 0)
+        else if (x.compareTo( t.getData()) < 0)
             return exists(t.getLeft(), x);
         else
             return exists(t.getRight(), x);
