@@ -1,12 +1,11 @@
 package TpRedBlackTree;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Runner {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args){
 
         RedBlackTree<Book> tree = new RedBlackTree<>();
         Menu menu = new Menu(tree);
@@ -61,8 +60,7 @@ public class Runner {
 
                     int i;
                     System.out.println("Enter 1 to change title. \n" +
-                            "Enter 2 to change author. \n" +
-                            "Enter 3 to change code");
+                            "Enter 2 to change author.");
                     i = scanner.nextInt();
 
                     switch (i) {
@@ -76,12 +74,6 @@ public class Runner {
                             System.out.println("Insert the new author");
                             String modifyAuthor = scanner.next();
                             menu.modifyAuthor(bookToModify, modifyAuthor);
-                            break;
-
-                        case 3:
-                            System.out.println("Insert the new code");
-                            long modifyCode = scanner.nextLong();
-                            menu.modifyCode(bookToModify, modifyCode);
                             break;
                     }
                     break;

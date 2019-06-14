@@ -167,6 +167,9 @@ class Menu {
                 finalList.add(anAux);
             }
         }
+        if(finalList.isEmpty()){
+            return "There are no books with that Title.";
+        }
         return myToString(finalList);
     }
 
@@ -178,6 +181,9 @@ class Menu {
                 finalList.add(anAux);
             }
         }
+        if(finalList.isEmpty()){
+            return "There are no books with that Author.";
+        }
         return myToString(finalList);
     }
 
@@ -188,6 +194,9 @@ class Menu {
             if (anAux.getCode() == code) {
                 finalList.add(anAux);
             }
+        }
+        if(finalList.isEmpty()){
+            return "There are no books with that Code.";
         }
         return myToString(finalList);
     }
