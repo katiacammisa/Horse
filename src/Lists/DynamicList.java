@@ -123,7 +123,7 @@ public class DynamicList<T> implements List<T> {
             goTo(i);
 
             if(i == size-1){
-                result += getActual().toString() + ".";
+                result += getActual().toString();
             } else {
                 result += getActual().toString() + ", ";
             }

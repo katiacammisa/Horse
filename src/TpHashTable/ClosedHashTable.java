@@ -16,7 +16,7 @@ public class ClosedHashTable<T extends Hashable> {
         t = new DynamicList[M];
     }
 
-    public void insert (T x) {
+    private void insert (T x) {
         double counter = 0;
         for (Object aT : t)
             if (aT != null)
@@ -38,9 +38,22 @@ public class ClosedHashTable<T extends Hashable> {
         t[k] = x;
     }
 
-    public Object search (T x) {
+    public Object search (int x) {
+        return t[x];
+    }
+
+    public boolean exists(T x){
         int k = x.hash(capacity);
-        return t[k];
+        for (int i = k; i < capacity; i++) {
+            if(t[i] == null){
+                return false;
+            }
+            if(t[i] == x){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public SearchBinaryTree getBinarySearchTree () {
@@ -55,11 +68,13 @@ public class ClosedHashTable<T extends Hashable> {
     private void rehash(){
 
         capacity = Prime.proxPrime(capacity*2);
-        Object[] aux = new DynamicList[capacity];
+        Object[] aux = t;
+        t = new Object[capacity];
 
-        System.arraycopy(t, 0, aux, 0, t.length);
-
-        t = aux;
-
+        for (int i = 0; i < t.length; i++) {
+            if(aux[i] != null){
+                insert((T)aux[i]);
+            }
+        }
     }
 }

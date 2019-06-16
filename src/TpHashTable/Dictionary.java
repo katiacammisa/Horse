@@ -35,7 +35,9 @@ public class Dictionary {
                 }
             }
 
-            dictionary = new OpenHashTable<>(counter);
+            int M = (int) (counter/0.8);
+
+            dictionary = new OpenHashTable<Word>(M);
 
             for (int i = 0; i < counter; i++) {
                 insert(words[i]);

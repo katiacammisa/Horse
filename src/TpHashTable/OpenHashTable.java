@@ -10,7 +10,7 @@ public class OpenHashTable<T extends Hashable> {
     private DynamicList<T>[] t;
     private int capacity;
 
-    public OpenHashTable(int M) {
+    OpenHashTable(int M) {
         if (!Prime.isPrime(M))
             M = Prime.proxPrime(M);
         capacity = M;
@@ -19,12 +19,12 @@ public class OpenHashTable<T extends Hashable> {
             t[i] = new DynamicList<T>();
     }
 
-    public void insert (T x) {
+    void insert (T x) {
         int k = x.hash(capacity);
         System.out.println(x.toString() + ": " + k);
         t[k].insertNext(x);
     }
-    public Object search (T x) {
+    Object search (T x) {
         int k = x.hash(capacity);
         int l = t[k].size();
         for (int i = 0 ; i < l ; i ++ )
@@ -33,7 +33,7 @@ public class OpenHashTable<T extends Hashable> {
                 return t[k].getActual();
         return null;
     }
-    public SearchBinaryTree<Comparable> getBinarySearchTree () {
+    SearchBinaryTree<Comparable> getBinarySearchTree () {
         SearchBinaryTree<Comparable> a = new SearchBinaryTree<>();
         for (int i = 0; i < capacity; i++ ) {
             if (!t[i].isVoid()) {
@@ -48,11 +48,11 @@ public class OpenHashTable<T extends Hashable> {
         return a;
     }
 
-    public int getCapacity() {
+    int getCapacity() {
         return capacity;
     }
 
-    public DynamicList<T> getPositionList(int x){
+    DynamicList<T> getPositionList(int x){
         return t[x];
     }
 }

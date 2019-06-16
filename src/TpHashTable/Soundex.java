@@ -31,7 +31,11 @@ public final class Soundex {
         for (int i = code_index; i < CODE_LENGTH; i++) {
             code[i] = '0';
         }
-        return Integer.parseInt(String.valueOf(code).substring(1));
+        Integer[] value = new Integer[2];
+        value[0] = (int) code[0];
+        value[1] = Integer.parseInt(String.valueOf(code).substring(1));
+        String valueX = "" + value[0] + value[1];
+        return Integer.parseInt(valueX);
 
     }
 
