@@ -1,5 +1,7 @@
 package MateDis;
 
+import Queue.DynamicQueue;
+import Stack.Stack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -54,7 +56,7 @@ class GraphApp<T> {
                     } else {
                         System.out.println("This edge doesn't exist.");
                     }
-
+                    break;
                 case 4:
                     System.out.println("Insert the vertex to delete.");
                     int del = scanner.nextInt();
@@ -74,6 +76,7 @@ class GraphApp<T> {
                     } else {
                         System.out.println("This edge doesn't exist.");
                     }
+                    break;
                 case 6:
                     System.out.println("Insert the vertex to get adj list.");
                     int adj = scanner.nextInt();
@@ -82,6 +85,7 @@ class GraphApp<T> {
                     } else {
                         System.out.println("This vertex doesn't exist");
                     }
+                    break;
                 case 7:
                     printGraph(g);
                     break;
@@ -94,7 +98,7 @@ class GraphApp<T> {
 
     WeightedGraph<Integer> rdmGraph(int order, int alpha){
         if(alpha > ((order*(order-1))/2)){
-            throw new IllegalArgumentException("alpha should be <= order*(order-1)/2");
+            throw new IllegalArgumentException("This alpha should be <= " + order*(order-1)/2);
         }
 
         WeightedGraph<Integer> g = new WeightedGraph<>(order);
@@ -142,8 +146,7 @@ class GraphApp<T> {
         }
     }
 
-    int[ ] Prim(WeightedGraph g, int s) {
-        //WeightedGraph: Grafo no dirigido ponderado
+    int[] Prim(WeightedGraph g, int s) {
         int n = g.order();
         int[] distance = new int[n];
         int[] padre = new int[n];
@@ -179,4 +182,72 @@ class GraphApp<T> {
         return padre;
     }
 
+    void flatSearch(WeightedGraph<Integer> g) {
+        List<Integer> V = g.getV();
+        for (int i = 0; i < g.order(); i++) {
+            System.out.println(V.get(i));
+        }
+    }
+
+    void DFS(WeightedGraph<Integer> g, int vertex) {
+        Stack<Integer> stack = new Stack<Integer>(g.order());
+        List<Integer> visited = new ArrayList<>();
+        List<Integer> V = g.getV();
+        int t;
+        stack.push(vertex);
+        visited.add(vertex);
+        while (!stack.isEmpty()) {
+            t = stack.peek();
+            stack.pop();
+            System.out.println(t);
+            List<Integer> adj = g.getAdjList(t);
+            for (int j = 0; j < adj.size(); j++) {
+                if (!visited.contains(adj.get(j))) {
+                    stack.push(adj.get(j));
+                    visited.add(adj.get(j));
+                }
+            }
+
+            if (visited.size() < V.size() && stack.isEmpty()) {
+                for (int i = 0; i < V.size(); i++) {
+                    if (!visited.contains(V.get(i))) {
+                        stack.push(V.get(i));
+                        visited.add(V.get(i));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    void BFS(WeightedGraph<Integer> g, int vertex) {
+        DynamicQueue<Integer> queue = new DynamicQueue<Integer>();
+        List<Integer> visited = new ArrayList<>();
+        List<Integer> V = g.getV();
+        int fr;
+        queue.enqueue(vertex);
+        visited.add(vertex);
+        while (!queue.isEmpty()) {
+            fr = queue.peek();
+            queue.dequeue();
+            System.out.println(fr);
+            List<Integer> adj = g.getAdjList(fr);
+            for (int i = 0; i < adj.size(); i++) {
+                if (!visited.contains(adj.get(i))) {
+                    visited.add(adj.get(i));
+                    queue.enqueue(adj.get(i));
+                }
+            }
+
+            if (visited.size() < V.size() && queue.isEmpty()) {
+                for (int i = 0; i < V.size(); i++) {
+                    if (!visited.contains(V.get(i))) {
+                        queue.enqueue(V.get(i));
+                        visited.add(V.get(i));
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

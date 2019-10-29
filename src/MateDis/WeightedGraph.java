@@ -40,7 +40,7 @@ public class WeightedGraph<T> {
     }
 
     void insertEdge(int v, int w, int cost){
-        if (!existsEdge(v, w) && v!=w){
+        if (!existsEdge(v, w) && v != w){
             A.get(v).add(new WeightedEdge(cost, w));
             A.get(w).add(new WeightedEdge(cost, v));
             alpha++;

@@ -31,12 +31,12 @@ public class TreeApiTest2{
 
     @Test
     public void size() {
-        assertEquals(3, api.size(a));
+        assertEquals(12, api.size(a));
     }
 
     @Test
     public void leaves() {
-        assertEquals(2, api.leaves(a));
+        assertEquals(3, api.leaves(a));
     }
 //
 //    @Test
@@ -142,10 +142,5 @@ public class TreeApiTest2{
     @Test
     public void save() {
         api.save(a);
-    }
-
-    @Test
-    public void retrieve() {
-        api.retrieve();
     }
 }
