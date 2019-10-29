@@ -2,6 +2,8 @@ package MateDis;
 
 import org.junit.Test;
 
+import java.util.Scanner;
+
 import static org.junit.Assert.*;
 
 public class GraphAppTest {
@@ -16,19 +18,20 @@ public class GraphAppTest {
         app.rdmGraph(order, alpha);
     }
 
+
+
     @Test
-    public void primTest() {
+    public void test() {
 
     }
 
     @Test
     public void printGraphTest(){
         GraphApp app = new GraphApp();
-        int order = 4;
-        int alpha = 6;
+        int order = 7;
+        int alpha = 1;
 
         WeightedGraph g = app.rdmGraph(order, alpha);
-
         app.printGraph(g);
     }
 

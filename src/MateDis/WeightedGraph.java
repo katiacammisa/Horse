@@ -40,7 +40,7 @@ public class WeightedGraph<T> {
     }
 
     void insertEdge(int v, int w, int cost){
-        if (!existsEdge(v, w)){
+        if (!existsEdge(v, w) && v!=w){
             A.get(v).add(new WeightedEdge(cost, w));
             A.get(w).add(new WeightedEdge(cost, v));
             alpha++;
@@ -82,24 +82,24 @@ public class WeightedGraph<T> {
         return false;
     }
 
-    boolean existsVertex(int v){return V.contains(v);}
+    boolean existsVertex(int v) {return V.contains(v);}
 
-    int order(){
+    int order() {
         return V.size();
     }
 
-    int edgeAmount(){
+    int edgeAmount() {
         return alpha;
     }
 
-    T getVertex(int v){
+    T getVertex(int v) {
         if (existsVertex(v)){
             return V.get(v);
         }
         return null;
     }
 
-    List<Integer> getAdjList(int v){
+    List<Integer> getAdjList(int v) {
         ArrayList<Integer> lst = new ArrayList<Integer>();
 
         for (int i = 0; i < A.get(v).size(); i++) {
