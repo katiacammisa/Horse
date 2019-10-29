@@ -13,13 +13,21 @@ public class WeightedGraph<T> {
        this(10);
     }
 
-    WeightedGraph(int capacity) {
-        V = new ArrayList<>(capacity);
-        A = new ArrayList<List<WeightedEdge>>(capacity);
-        for (int i = 0; i < capacity; i++) {
-            A.set(i,new ArrayList<>());
+    WeightedGraph(int order) {
+        V = new ArrayList<>(order);
+        A = new ArrayList<List<WeightedEdge>>(order);
+        for (int i = 0; i < order; i++) {
+            A.add(i,new ArrayList<>());
         }
         alpha = 0;
+    }
+
+    public List<T> getV() {
+        return V;
+    }
+
+    public List<List<WeightedEdge>> getA() {
+        return A;
     }
 
     WeightedGraph(List<T> V, List<List<WeightedEdge>> A){
@@ -66,8 +74,15 @@ public class WeightedGraph<T> {
     }
 
     boolean existsEdge(int v, int w){
-        return A.get(v).contains(w);
+        for (int i = 0; i < A.get(v).size(); i++) {
+            if(A.get(v).get(i).getNextVertex() == w){
+                return true;
+            }
+        }
+        return false;
     }
+
+    boolean existsVertex(int v){return V.contains(v);}
 
     int order(){
         return V.size();
@@ -78,7 +93,10 @@ public class WeightedGraph<T> {
     }
 
     T getVertex(int v){
-        return V.get(v);
+        if (existsVertex(v)){
+            return V.get(v);
+        }
+        return null;
     }
 
     List<Integer> getAdjList(int v){

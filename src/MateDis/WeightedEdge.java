@@ -17,4 +17,11 @@ public class WeightedEdge {
     public int getNextVertex() {
         return nextVertex;
     }
+
+    @Override
+    public String toString() {
+        return "{cost: " + cost +
+                ", nextVertex: " + nextVertex +
+                '}';
+    }
 }
