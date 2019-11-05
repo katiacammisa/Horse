@@ -22,6 +22,11 @@ public class WeightedGraph<T> {
         alpha = 0;
     }
 
+    WeightedGraph(List<T> V, List<List<WeightedEdge>> A) {
+        this.V = V;
+        this.A = A;
+    }
+
     public List<T> getV() {
         return V;
     }
@@ -30,16 +35,18 @@ public class WeightedGraph<T> {
         return A;
     }
 
-    WeightedGraph(List<T> V, List<List<WeightedEdge>> A){
-        this.V = V;
-        this.A = A;
-    }
-
     void insertVertex(T x){
         V.add(x);
+        int index = -1;
+        for (int i = 0; i < V.size(); i++) {
+            if(V.get(i) == x){
+                index = i;
+            }
+        }
+        A.add(index, new ArrayList<WeightedEdge>());
     }
 
-    void insertEdge(int v, int w, int cost){
+    void insertEdge(int v, int w, int cost) {
         if (!existsEdge(v, w) && v != w){
             A.get(v).add(new WeightedEdge(cost, w));
             A.get(w).add(new WeightedEdge(cost, v));
@@ -47,7 +54,7 @@ public class WeightedGraph<T> {
         }
     }
 
-    void deleteEdge(int v, int w){
+    void deleteEdge(int v, int w) {
         if (existsEdge(v,w)) {
             A.get(v).remove(w);
             A.get(w).remove(v);
@@ -55,8 +62,7 @@ public class WeightedGraph<T> {
         }
     }
 
-    void deleteVertex(int v){
-
+    void deleteVertex(int v) {
         for (int i = 0; i < V.size(); i++)
             if(existsEdge(v,i))
                 deleteEdge(v, i);
@@ -64,7 +70,7 @@ public class WeightedGraph<T> {
         A.remove(v);
     }
 
-    int getCost(int v, int w){
+    int getCost(int v, int w) {
         for (int i = 0; i < A.get(v).size(); i++) {
             if(A.get(v).get(i).getNextVertex() == w){
                 return A.get(v).get(i).getCost();
@@ -73,7 +79,7 @@ public class WeightedGraph<T> {
         return -1;
     }
 
-    boolean existsEdge(int v, int w){
+    boolean existsEdge(int v, int w) {
         for (int i = 0; i < A.get(v).size(); i++) {
             if(A.get(v).get(i).getNextVertex() == w){
                 return true;
@@ -82,7 +88,9 @@ public class WeightedGraph<T> {
         return false;
     }
 
-    boolean existsVertex(int v) {return V.contains(v);}
+    boolean existsVertex(int v) {
+        return V.contains(v);
+    }
 
     int order() {
         return V.size();
@@ -93,7 +101,7 @@ public class WeightedGraph<T> {
     }
 
     T getVertex(int v) {
-        if (existsVertex(v)){
+        if (existsVertex(v)) {
             return V.get(v);
         }
         return null;
@@ -101,17 +109,9 @@ public class WeightedGraph<T> {
 
     List<Integer> getAdjList(int v) {
         ArrayList<Integer> lst = new ArrayList<Integer>();
-
         for (int i = 0; i < A.get(v).size(); i++) {
             lst.add(A.get(v).get(i).getNextVertex());
         }
         return lst;
-    }
-
-    void printGraph(){
-        System.out.println(V.toString());
-        for (int i = 0; i < A.size(); i++) {
-            System.out.println(i + ": " + A.get(i).toString());
-        }
     }
 }

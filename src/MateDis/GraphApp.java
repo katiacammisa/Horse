@@ -3,24 +3,29 @@ package MateDis;
 import Queue.DynamicQueue;
 import Stack.Stack;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-class GraphApp<T> {
+class GraphApp {
 
     public static void main(String[] args) {
-        WeightedGraph<Integer> g = new WeightedGraph<>();
         Scanner scanner = new Scanner(System.in);
+//        System.out.println("Enter graph size.");
+//        int size = scanner.nextInt();
+        WeightedGraph<Integer> g = new WeightedGraph<>(/*size*/);
         int n;
-        while (true){
+        while (true) {
             System.out.println("Enter 1 to insert vertex. \n" +
                                 "Enter 2 to insert edge. \n" +
                                 "Enter 3 to delete vertex. \n" +
                                 "Enter 4 to delete edge. \n" +
                                 "Enter 5 to get cost of edge. \n" +
-                                "Enter 6 to get adjacent list. \n" +
+                                "Enter 6 to get adjacent list of edge. \n" +
                                 "Enter 7 to print graph. \n" +
-                                "Enter 8 to exit.");
+                                "Enter 8 to get the graph's order. \n" +
+                                "Enter 9 to get the amount of edges. \n" +
+                                "Enter 10 to exit.");
 
             n = scanner.nextInt();
             switch (n) {
@@ -72,7 +77,7 @@ class GraphApp<T> {
                     System.out.println("Insert the first vertex of the edge to get cost");
                     int c2 = scanner.nextInt();
                     if (g.existsEdge(c1, c2)) {
-                        g.getCost(c1, c2);
+                        System.out.println(g.getCost(c1, c2));
                     } else {
                         System.out.println("This edge doesn't exist.");
                     }
@@ -90,6 +95,12 @@ class GraphApp<T> {
                     printGraph(g);
                     break;
                 case 8:
+                    System.out.println("The graphs order is: " + g.order() + ".");
+                    break;
+                case 9:
+                    System.out.println("The graph has: " + g.edgeAmount() + " edges.");
+                    break;
+                case 10:
                     System.exit(0);
                     break;
             }
@@ -124,7 +135,6 @@ class GraphApp<T> {
             if(i == order-1 && alpha != 0) {
                 i = -1;
             }
-
         }
         return g;
     }
@@ -146,40 +156,38 @@ class GraphApp<T> {
         }
     }
 
-    int[] Prim(WeightedGraph g, int s) {
+    List<Integer> prim(WeightedGraph<Integer> g, int vertex) {
         int n = g.order();
-        int[] distance = new int[n];
-        int[] padre = new int[n];
-
-        for(int i =0; i < n ; i++){
-            distance[i] = -1;
-            padre[i] = -1;
-        }
-        distance[s] = 0;
-        ArrayList<Integer> V = new ArrayList<Integer>(n);
+        List<Integer> costo = new ArrayList<>(n);
+        List<Integer> father = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            V.add(i);
+            costo.add(1000000);
+            father.add(-1);
         }
-        List<Integer> lst;
-        while(!V.isEmpty()){
-            //buscar u en V tal que la distancia[u] sea mínima;
-            int u = 0;
-            for (Integer integer : V) {
-                if (distance[integer] < distance[V.get(u)]) {
-                    u = integer;
+        costo.set(vertex, 0);
+        List<Integer> V = g.getV();
+        List<Integer> U = new ArrayList<>();
+        while(!V.isEmpty()) {
+            int imin = 0;
+            int min = costo.get(V.get(0));
+            for (int i = 0; i < V.size(); i++) {
+                if (costo.get(V.get(i)) < min) {
+                    imin = i;
+                    min = costo.get(V.get(i));
                 }
             }
-            //sacar u de V;
-            V.remove(u);
-            lst = g.getAdjList(u);
-            for (int v : lst) {
-                if ((V.contains(v)) && g.getCost(v, u) < distance[v]) {
-                    padre[v] = u;
-                    distance[v] = g.getCost(v, u);
+            int imin2 = V.get(imin);
+            V.remove(imin);
+            U = g.getAdjList(imin2);
+
+            for (int u : U) {
+                if (V.contains(u) && g.getCost(u, imin2) < costo.get(u)) {
+                    father.set(u, imin2);
+                    costo.set(u, g.getCost(u, imin2));
                 }
             }
         }
-        return padre;
+        return father;
     }
 
     void flatSearch(WeightedGraph<Integer> g) {
@@ -201,18 +209,18 @@ class GraphApp<T> {
             stack.pop();
             System.out.println(t);
             List<Integer> adj = g.getAdjList(t);
-            for (int j = 0; j < adj.size(); j++) {
-                if (!visited.contains(adj.get(j))) {
-                    stack.push(adj.get(j));
-                    visited.add(adj.get(j));
+            for (Integer k : adj) {
+                if (!visited.contains(k)) {
+                    stack.push(k);
+                    visited.add(k);
                 }
             }
 
             if (visited.size() < V.size() && stack.isEmpty()) {
-                for (int i = 0; i < V.size(); i++) {
-                    if (!visited.contains(V.get(i))) {
-                        stack.push(V.get(i));
-                        visited.add(V.get(i));
+                for (Integer i : V) {
+                    if (!visited.contains(i)) {
+                        stack.push(i);
+                        visited.add(i);
                         break;
                     }
                 }
@@ -232,18 +240,18 @@ class GraphApp<T> {
             queue.dequeue();
             System.out.println(fr);
             List<Integer> adj = g.getAdjList(fr);
-            for (int i = 0; i < adj.size(); i++) {
-                if (!visited.contains(adj.get(i))) {
-                    visited.add(adj.get(i));
-                    queue.enqueue(adj.get(i));
+            for (Integer k : adj) {
+                if (!visited.contains(k)) {
+                    visited.add(k);
+                    queue.enqueue(k);
                 }
             }
 
             if (visited.size() < V.size() && queue.isEmpty()) {
-                for (int i = 0; i < V.size(); i++) {
-                    if (!visited.contains(V.get(i))) {
-                        queue.enqueue(V.get(i));
-                        visited.add(V.get(i));
+                for (Integer i : V) {
+                    if (!visited.contains(i)) {
+                        queue.enqueue(i);
+                        visited.add(i);
                         break;
                     }
                 }
