@@ -11,9 +11,7 @@ class GraphApp {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-//        System.out.println("Enter graph size.");
-//        int size = scanner.nextInt();
-        WeightedGraph<Integer> g = new WeightedGraph<>(/*size*/);
+        WeightedGraph<Integer> g = new WeightedGraph<>();
         int n;
         while (true) {
             System.out.println("Enter 1 to insert vertex. \n" +
@@ -156,40 +154,6 @@ class GraphApp {
         }
     }
 
-    List<Integer> prim(WeightedGraph<Integer> g, int vertex) {
-        int n = g.order();
-        List<Integer> costo = new ArrayList<>(n);
-        List<Integer> father = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) {
-            costo.add(1000000);
-            father.add(-1);
-        }
-        costo.set(vertex, 0);
-        List<Integer> V = g.getV();
-        List<Integer> U = new ArrayList<>();
-        while(!V.isEmpty()) {
-            int imin = 0;
-            int min = costo.get(V.get(0));
-            for (int i = 0; i < V.size(); i++) {
-                if (costo.get(V.get(i)) < min) {
-                    imin = i;
-                    min = costo.get(V.get(i));
-                }
-            }
-            int imin2 = V.get(imin);
-            V.remove(imin);
-            U = g.getAdjList(imin2);
-
-            for (int u : U) {
-                if (V.contains(u) && g.getCost(u, imin2) < costo.get(u)) {
-                    father.set(u, imin2);
-                    costo.set(u, g.getCost(u, imin2));
-                }
-            }
-        }
-        return father;
-    }
-
     void flatSearch(WeightedGraph<Integer> g) {
         List<Integer> V = g.getV();
         for (int i = 0; i < g.order(); i++) {
@@ -257,5 +221,39 @@ class GraphApp {
                 }
             }
         }
+    }
+
+    List<Integer> prim(WeightedGraph<Integer> g, int vertex) {
+        int n = g.order();
+        List<Integer> costo = new ArrayList<>(n);
+        List<Integer> father = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            costo.add(1000000);
+            father.add(-1);
+        }
+        costo.set(vertex, 0);
+        List<Integer> V = g.getV();
+        List<Integer> U = new ArrayList<>();
+        while(!V.isEmpty()) {
+            int imin = 0;
+            int min = costo.get(V.get(0));
+            for (int i = 0; i < V.size(); i++) {
+                if (costo.get(V.get(i)) < min) {
+                    imin = i;
+                    min = costo.get(V.get(i));
+                }
+            }
+            int imin2 = V.get(imin);
+            V.remove(imin);
+            U = g.getAdjList(imin2);
+
+            for (int u : U) {
+                if (V.contains(u) && g.getCost(u, imin2) < costo.get(u)) {
+                    father.set(u, imin2);
+                    costo.set(u, g.getCost(u, imin2));
+                }
+            }
+        }
+        return father;
     }
 }

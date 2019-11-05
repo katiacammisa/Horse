@@ -11,7 +11,6 @@ public class GraphAppTest {
 
     @Test
     public void rdmGraphTest() {
-
         int order = 4;
         int alpha = 5;
 
